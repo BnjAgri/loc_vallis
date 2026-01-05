@@ -41,8 +41,8 @@
       <h3 class="h6">Add opening period</h3>
       <%= simple_form_for([:admin, @room, @opening_period]) do |f| %>
         <div class="row">
-          <div class="col-md-3"><%= f.input :start_date, as: :date %></div>
-          <div class="col-md-3"><%= f.input :end_date, as: :date %></div>
+          <div class="col-md-3"><%= f.input :start_date, as: :string, input_html: { type: "text", data: { controller: "flatpickr" } } %></div>
+          <div class="col-md-3"><%= f.input :end_date, as: :string, input_html: { type: "text", data: { controller: "flatpickr" } } %></div>
           <div class="col-md-3"><%= f.input :nightly_price_cents, label: "Nightly price (cents)" %></div>
           <div class="col-md-3"><%= f.input :currency %></div>
         </div>
