@@ -1,0 +1,15 @@
+<h1>Booking #<%= @booking.id %> (Owner)</h1>
+
+<p>Guest: <%= @booking.user.email %></p>
+<p>Status: <strong><%= @booking.status %></strong></p>
+<p>Dates: <%= @booking.start_date %> → <%= @booking.end_date %> (<%= @booking.nights %> nights)</p>
+<p>Total: <%= @booking.total_price_cents %> <%= @booking.currency %></p>
+
+<% if policy(@booking).approve? %>
+  <%= button_to "Approve", approve_owner_booking_path(@booking), method: :patch, class: "btn btn-success" %>
+  <%= button_to "Decline", decline_owner_booking_path(@booking), method: :patch, class: "btn btn-outline-danger" %>
+<% end %>
+
+<% if policy(@booking).cancel? %>
+  <%= button_to "Cancel", cancel_owner_booking_path(@booking), method: :patch, class: "btn btn-outline-danger" %>
+<% end %>

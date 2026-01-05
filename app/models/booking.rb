@@ -55,6 +55,48 @@ class Booking < ApplicationRecord
     status == "refunded"
   end
 
+  def approve!(by:)
+    raise ArgumentError, "Only an owner can approve" unless by.is_a?(Owner)
+    raise StandardError, "Only requested bookings can be approved" unless requested?
+
+    now = Time.current
+    update!(
+      status: "approved_pending_payment",
+      approved_at: now,
+      payment_expires_at: now + 48.hours
+    )
+  end
+
+  def decline!(by:)
+    raise ArgumentError, "Only an owner can decline" unless by.is_a?(Owner)
+    raise StandardError, "Only requested bookings can be declined" unless requested?
+
+    update!(status: "declined")
+  end
+
+  def cancel!(by:)
+    raise ArgumentError, "Actor required" if by.nil?
+
+    allowed = %w[requested approved_pending_payment confirmed_paid].include?(status)
+    return false unless allowed
+
+    update!(status: "canceled")
+  end
+
+  def expire_if_needed!
+    return false unless approved_pending_payment?
+    return false if payment_expires_at.blank?
+    return false if Time.current < payment_expires_at
+
+    update!(status: "expired")
+  end
+
+  def self.expire_overdue!
+    where(status: "approved_pending_payment")
+      .where("payment_expires_at IS NOT NULL AND payment_expires_at < ?", Time.current)
+      .find_each(&:expire_if_needed!)
+  end
+
   private
 
   def default_status
