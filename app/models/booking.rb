@@ -24,11 +24,10 @@ class Booking < ApplicationRecord
   validates :stripe_refund_id, uniqueness: true, allow_nil: true
 
   validate :end_date_after_start_date
-  validate :fully_within_one_opening_period, on: :create
-  validate :no_overlapping_reserved_bookings, on: :create
+  validate :within_opening_period_and_available, on: :create
 
   before_validation :default_status, on: :create
-  before_validation :populate_pricing_from_opening_period, on: :create
+  before_validation :populate_pricing_from_quote, on: :create
 
   def nights
     return 0 if start_date.blank? || end_date.blank?
@@ -69,42 +68,26 @@ class Booking < ApplicationRecord
     errors.add(:end_date, "must be after start_date")
   end
 
-  def opening_period_covering_range
-    return nil if room_id.blank? || start_date.blank? || end_date.blank?
+  def quote
+    return nil if room.nil? || start_date.blank? || end_date.blank?
 
-    OpeningPeriod
-      .where(room_id: room_id)
-      .where("start_date <= ? AND end_date >= ?", start_date, end_date)
-      .order(:start_date)
-      .first
+    BookingQuote.call(room:, start_date:, end_date:)
   end
 
-  def fully_within_one_opening_period
-    return if start_date.blank? || end_date.blank?
+  def within_opening_period_and_available
+    result = quote
+    return if result.nil?
 
-    errors.add(:base, "Dates must be fully inside one opening period") if opening_period_covering_range.nil?
+    errors.add(:base, result.error) unless result.ok?
   end
 
-  def populate_pricing_from_opening_period
-    return if start_date.blank? || end_date.blank? || room_id.blank?
+  def populate_pricing_from_quote
     return if total_price_cents.present? && currency.present?
 
-    period = opening_period_covering_range
-    return if period.nil?
+    result = quote
+    return if result.nil? || !result.ok?
 
-    self.currency ||= period.currency
-    self.total_price_cents ||= period.nightly_price_cents * nights
-  end
-
-  def no_overlapping_reserved_bookings
-    return if room_id.blank? || start_date.blank? || end_date.blank?
-
-    overlap = Booking
-      .where(room_id: room_id)
-      .where(status: %w[approved_pending_payment confirmed_paid])
-      .where("start_date < ? AND end_date > ?", end_date, start_date)
-      .exists?
-
-    errors.add(:base, "Dates overlap an existing booking") if overlap
+    self.currency ||= result.currency
+    self.total_price_cents ||= result.total_price_cents
   end
 end
