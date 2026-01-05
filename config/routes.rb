@@ -18,6 +18,10 @@ Rails.application.routes.draw do
   post "stripe/webhook", to: "stripe_webhooks#create"
 
   namespace :admin do
+    resources :rooms, only: %i[index show new create edit update] do
+      resources :opening_periods, only: %i[create destroy]
+    end
+
     resources :bookings, only: %i[index show] do
       member do
         patch :approve

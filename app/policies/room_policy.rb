@@ -7,8 +7,18 @@ class RoomPolicy < ApplicationPolicy
     true
   end
 
+  def create?
+    user.is_a?(Owner)
+  end
+
+  def update?
+    user.is_a?(Owner) && record.owner_id == user.id
+  end
+
   class Scope < Scope
     def resolve
+      return scope.where(owner_id: user.id) if user.is_a?(Owner)
+
       scope.all
     end
   end

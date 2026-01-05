@@ -1,0 +1,53 @@
+<div class="container py-4">
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <div>
+      <h1 class="h3 mb-0"><%= @room.name %></h1>
+      <% if @room.capacity.present? %>
+        <small class="text-muted">Capacity: <%= @room.capacity %></small>
+      <% end %>
+    </div>
+    <div>
+      <%= link_to "Edit", edit_admin_room_path(@room), class: "btn btn-outline-primary" %>
+      <%= link_to "Back", admin_rooms_path, class: "btn btn-link" %>
+    </div>
+  </div>
+
+  <hr />
+
+  <h2 class="h5">Opening periods</h2>
+
+  <% if @opening_periods.empty? %>
+    <p class="text-muted">No opening periods yet.</p>
+  <% else %>
+    <div class="list-group mb-4">
+      <% @opening_periods.each do |period| %>
+        <div class="list-group-item d-flex justify-content-between align-items-center">
+          <div>
+            <div class="fw-bold"><%= period.start_date %> → <%= period.end_date %></div>
+            <small class="text-muted"><%= period.nightly_price_cents %> <%= period.currency %> / night</small>
+          </div>
+          <%= button_to "Remove",
+                admin_room_opening_period_path(@room, period),
+                method: :delete,
+                data: { turbo_confirm: "Remove this opening period?" },
+                class: "btn btn-sm btn-outline-danger" %>
+        </div>
+      <% end %>
+    </div>
+  <% end %>
+
+  <div class="card">
+    <div class="card-body">
+      <h3 class="h6">Add opening period</h3>
+      <%= simple_form_for([:admin, @room, @opening_period]) do |f| %>
+        <div class="row">
+          <div class="col-md-3"><%= f.input :start_date, as: :date %></div>
+          <div class="col-md-3"><%= f.input :end_date, as: :date %></div>
+          <div class="col-md-3"><%= f.input :nightly_price_cents, label: "Nightly price (cents)" %></div>
+          <div class="col-md-3"><%= f.input :currency %></div>
+        </div>
+        <%= f.submit "Add period", class: "btn btn-primary" %>
+      <% end %>
+    </div>
+  </div>
+</div>
