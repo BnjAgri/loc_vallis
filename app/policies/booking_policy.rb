@@ -35,6 +35,10 @@ class BookingPolicy < ApplicationPolicy
     owner? && record.status == "requested"
   end
 
+  def refund?
+    owner? && record.status == "confirmed_paid" && record.stripe_refund_id.blank?
+  end
+
   class Scope < Scope
     def resolve
       return scope.none if user.nil?

@@ -1,4 +1,4 @@
-module Owner
+module Admin
   class BookingsController < ApplicationController
     before_action :authenticate_owner!
     before_action :expire_overdue_bookings
@@ -17,7 +17,7 @@ module Owner
       authorize @booking, :approve?
 
       @booking.approve!(by: current_owner)
-      redirect_to owner_booking_path(@booking), notice: "Booking approved."
+      redirect_to admin_booking_path(@booking), notice: "Booking approved."
     end
 
     def decline
@@ -25,7 +25,7 @@ module Owner
       authorize @booking, :decline?
 
       @booking.decline!(by: current_owner)
-      redirect_to owner_booking_path(@booking), notice: "Booking declined."
+      redirect_to admin_booking_path(@booking), notice: "Booking declined."
     end
 
     def cancel
@@ -33,7 +33,17 @@ module Owner
       authorize @booking, :cancel?
 
       @booking.cancel!(by: current_owner)
-      redirect_to owner_booking_path(@booking), notice: "Booking canceled."
+      redirect_to admin_booking_path(@booking), notice: "Booking canceled."
+    end
+
+    def refund
+      @booking = Booking.find(params[:id])
+      authorize @booking, :refund?
+
+      StripeRefundCreator.call(booking: @booking)
+      redirect_to admin_booking_path(@booking), notice: "Refund initiated."
+    rescue StandardError => e
+      redirect_to admin_booking_path(@booking), alert: e.message
     end
 
     private

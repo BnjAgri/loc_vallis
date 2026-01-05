@@ -55,6 +55,12 @@ class Booking < ApplicationRecord
     status == "refunded"
   end
 
+  def mark_refunded!(refund_id:)
+    raise ArgumentError, "refund_id required" if refund_id.blank?
+
+    update!(status: "refunded", stripe_refund_id: refund_id, refunded_at: Time.current)
+  end
+
   def approve!(by:)
     raise ArgumentError, "Only an owner can approve" unless by.is_a?(Owner)
     raise StandardError, "Only requested bookings can be approved" unless requested?

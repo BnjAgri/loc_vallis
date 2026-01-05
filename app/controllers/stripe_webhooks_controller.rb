@@ -27,6 +27,8 @@ class StripeWebhooksController < ApplicationController
     when "checkout.session.async_payment_failed", "checkout.session.expired"
       # Intentionally no state change here; we expire via job/guard.
       nil
+    when "refund.updated"
+      handle_refund_updated(event.data.object)
     end
   end
 
@@ -44,5 +46,14 @@ class StripeWebhooksController < ApplicationController
     return if booking.payment_expires_at.present? && Time.current >= booking.payment_expires_at
 
     booking.update!(status: "confirmed_paid")
+  end
+
+  def handle_refund_updated(refund)
+    booking = Booking.find_by(stripe_refund_id: refund.id)
+    return if booking.nil?
+
+    # We set status/refunded_at on refund creation; keep it idempotent.
+    booking.update!(status: "refunded") unless booking.refunded?
+    booking.update!(refunded_at: Time.current) if booking.refunded_at.blank?
   end
 end
