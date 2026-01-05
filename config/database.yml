@@ -20,8 +20,15 @@ default: &default
   pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
 
 development:
-  <<: *default
-  database: loc_vallis_development
+  primary:
+    <<: *default
+    database: loc_vallis_development
+
+  queue:
+    <<: *default
+    database: loc_vallis_development_queue
+    migrations_paths: db/queue_migrate
+    schema_dump: queue_schema.rb
 
   # The specified database role being used to connect to PostgreSQL.
   # To create additional roles in PostgreSQL see `$ createuser --help`.
@@ -54,8 +61,15 @@ development:
 # re-generated from your development database when you run "rake".
 # Do not set this db to the same as development or production.
 test:
-  <<: *default
-  database: loc_vallis_test
+  primary:
+    <<: *default
+    database: loc_vallis_test
+
+  queue:
+    <<: *default
+    database: loc_vallis_test_queue
+    migrations_paths: db/queue_migrate
+    schema_dump: queue_schema.rb
 
 # As with config/credentials.yml, you never want to store sensitive information,
 # like your database password, in your source code. If your source code is
@@ -78,7 +92,16 @@ test:
 # for a full overview on how database connection configuration can be specified.
 #
 production:
-  <<: *default
-  database: loc_vallis_production
-  username: loc_vallis
-  password: <%= ENV["LOC_VALLIS_DATABASE_PASSWORD"] %>
+  primary:
+    <<: *default
+    database: loc_vallis_production
+    username: loc_vallis
+    password: <%= ENV["LOC_VALLIS_DATABASE_PASSWORD"] %>
+
+  queue:
+    <<: *default
+    database: loc_vallis_production_queue
+    username: loc_vallis
+    password: <%= ENV["LOC_VALLIS_DATABASE_PASSWORD"] %>
+    migrations_paths: db/queue_migrate
+    schema_dump: queue_schema.rb
