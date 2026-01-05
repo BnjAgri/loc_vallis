@@ -1,0 +1,19 @@
+<h2>Messages</h2>
+
+<ul>
+  <% messages.each do |message| %>
+    <li>
+      <strong><%= message.sender_type %>:</strong>
+      <%= message.body %>
+      <small>(<%= message.created_at %>)</small>
+    </li>
+  <% end %>
+</ul>
+
+<%= form_with model: [booking, Message.new], url: booking_messages_path(booking), method: :post do |f| %>
+  <div class="mb-3">
+    <%= f.label :body, "New message" %>
+    <%= f.text_area :body, class: "form-control" %>
+  </div>
+  <%= f.submit "Send", class: "btn btn-primary" %>
+<% end %>

@@ -9,6 +9,9 @@ class BookingsController < ApplicationController
   def show
     @booking = Booking.find(params[:id])
     authorize @booking
+
+    @messages = @booking.messages.includes(:sender).order(:created_at)
+    @message = Message.new
   end
 
   def checkout
@@ -39,6 +42,7 @@ class BookingsController < ApplicationController
     authorize @booking
 
     if @booking.save
+      BookingMailer.with(booking: @booking).requested.deliver_later
       redirect_to @booking, notice: "Booking request sent."
     else
       render :new, status: :unprocessable_entity
@@ -50,6 +54,7 @@ class BookingsController < ApplicationController
     authorize @booking, :cancel?
 
     if @booking.cancel!(by: current_user)
+      BookingMailer.with(booking: @booking, canceled_by: "user").canceled.deliver_later
       redirect_to @booking, notice: "Booking canceled."
     else
       redirect_to @booking, alert: "Unable to cancel booking."

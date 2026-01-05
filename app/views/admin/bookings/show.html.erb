@@ -17,3 +17,5 @@
 <% if policy(@booking).refund? %>
   <%= button_to "Refund", refund_admin_booking_path(@booking), method: :post, class: "btn btn-warning", data: { turbo_confirm: "Issue a refund for this booking?" } %>
 <% end %>
+
+<%= render "shared/messages", booking: @booking, messages: @messages %>

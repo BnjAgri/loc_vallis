@@ -8,6 +8,7 @@ Rails.application.routes.draw do
   end
 
   resources :bookings, only: %i[index show] do
+    resources :messages, only: %i[create]
     member do
       post :checkout
       patch :cancel

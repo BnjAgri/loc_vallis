@@ -46,6 +46,7 @@ class StripeWebhooksController < ApplicationController
     return if booking.payment_expires_at.present? && Time.current >= booking.payment_expires_at
 
     booking.update!(status: "confirmed_paid")
+    BookingMailer.with(booking: booking).confirmed.deliver_later
   end
 
   def handle_refund_updated(refund)

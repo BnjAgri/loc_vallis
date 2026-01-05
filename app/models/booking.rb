@@ -95,6 +95,7 @@ class Booking < ApplicationRecord
     return false if Time.current < payment_expires_at
 
     update!(status: "expired")
+    BookingMailer.with(booking: self).expired.deliver_later
   end
 
   def self.expire_overdue!

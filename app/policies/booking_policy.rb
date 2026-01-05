@@ -6,7 +6,7 @@ class BookingPolicy < ApplicationPolicy
   def show?
     return false unless user.present?
 
-    owner? || record.user_id == user.id
+    owner_for_room? || record.user_id == user.id
   end
 
   def create?
@@ -22,27 +22,27 @@ class BookingPolicy < ApplicationPolicy
   def cancel?
     return false unless user.present?
 
-    return true if owner?
+    return true if owner_for_room?
 
     record.user_id == user.id && %w[requested approved_pending_payment confirmed_paid].include?(record.status)
   end
 
   def approve?
-    owner? && record.status == "requested"
+    owner_for_room? && record.status == "requested"
   end
 
   def decline?
-    owner? && record.status == "requested"
+    owner_for_room? && record.status == "requested"
   end
 
   def refund?
-    owner? && record.status == "confirmed_paid" && record.stripe_refund_id.blank?
+    owner_for_room? && record.status == "confirmed_paid" && record.stripe_refund_id.blank?
   end
 
   class Scope < Scope
     def resolve
       return scope.none if user.nil?
-      return scope.all if user.is_a?(Owner)
+      return scope.joins(:room).where(rooms: { owner_id: user.id }) if user.is_a?(Owner)
 
       scope.where(user_id: user.id)
     end
@@ -50,7 +50,7 @@ class BookingPolicy < ApplicationPolicy
 
   private
 
-  def owner?
-    user.is_a?(Owner)
+  def owner_for_room?
+    user.is_a?(Owner) && record.room&.owner_id == user.id
   end
 end

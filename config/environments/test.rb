@@ -37,6 +37,10 @@ Rails.application.configure do
   # Store uploaded files on the local file system in a temporary directory.
   config.active_storage.service = :test
 
+  # Avoid background threads during tests (e.g., ActionMailer deliver_later)
+  # which can cause the test process to hang at shutdown.
+  config.active_job.queue_adapter = :test
+
   config.action_mailer.perform_caching = false
 
   # Tell Action Mailer not to deliver emails to the real world.

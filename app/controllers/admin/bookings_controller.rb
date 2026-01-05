@@ -10,6 +10,9 @@ module Admin
     def show
       @booking = Booking.find(params[:id])
       authorize @booking
+
+      @messages = @booking.messages.includes(:sender).order(:created_at)
+      @message = Message.new
     end
 
     def approve
@@ -17,6 +20,7 @@ module Admin
       authorize @booking, :approve?
 
       @booking.approve!(by: current_owner)
+      BookingMailer.with(booking: @booking).approved.deliver_later
       redirect_to admin_booking_path(@booking), notice: "Booking approved."
     end
 
@@ -25,6 +29,7 @@ module Admin
       authorize @booking, :decline?
 
       @booking.decline!(by: current_owner)
+      BookingMailer.with(booking: @booking).declined.deliver_later
       redirect_to admin_booking_path(@booking), notice: "Booking declined."
     end
 
@@ -33,6 +38,7 @@ module Admin
       authorize @booking, :cancel?
 
       @booking.cancel!(by: current_owner)
+      BookingMailer.with(booking: @booking, canceled_by: "owner").canceled.deliver_later
       redirect_to admin_booking_path(@booking), notice: "Booking canceled."
     end
 
@@ -41,6 +47,7 @@ module Admin
       authorize @booking, :refund?
 
       StripeRefundCreator.call(booking: @booking)
+      BookingMailer.with(booking: @booking).refunded.deliver_later
       redirect_to admin_booking_path(@booking), notice: "Refund initiated."
     rescue StandardError => e
       redirect_to admin_booking_path(@booking), alert: e.message
