@@ -9,9 +9,12 @@ Rails.application.routes.draw do
 
   resources :bookings, only: %i[index show] do
     member do
+      post :checkout
       patch :cancel
     end
   end
+
+  post "stripe/webhook", to: "stripe_webhooks#create"
 
   namespace :owner do
     resources :bookings, only: %i[index show] do

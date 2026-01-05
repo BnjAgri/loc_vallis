@@ -13,6 +13,12 @@ class BookingPolicy < ApplicationPolicy
     user.is_a?(User)
   end
 
+  def pay?
+    return false unless user.is_a?(User)
+
+    record.user_id == user.id && record.payment_window_open?
+  end
+
   def cancel?
     return false unless user.present?
 

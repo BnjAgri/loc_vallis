@@ -11,6 +11,16 @@ class BookingsController < ApplicationController
     authorize @booking
   end
 
+  def checkout
+    @booking = Booking.find(params[:id])
+    authorize @booking, :pay?
+
+    session = StripeCheckoutSessionCreator.call(booking: @booking)
+    redirect_to session.url, allow_other_host: true
+  rescue StandardError => e
+    redirect_to @booking, alert: e.message
+  end
+
   def new
     @room = Room.find(params[:room_id])
     authorize @room, :show?
