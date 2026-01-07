@@ -15,6 +15,10 @@ class RoomPolicy < ApplicationPolicy
     user.is_a?(Owner) && record.owner_id == user.id
   end
 
+  def destroy?
+    update?
+  end
+
   class Scope < Scope
     def resolve
       return scope.where(owner_id: user.id) if user.is_a?(Owner)

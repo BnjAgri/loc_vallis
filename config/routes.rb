@@ -1,6 +1,11 @@
 Rails.application.routes.draw do
   devise_for :owners
   devise_for :users
+
+  get "login", to: "unified_sessions#new"
+  post "login", to: "unified_sessions#create"
+  delete "logout", to: "unified_sessions#destroy"
+
   root to: "pages#home"
 
   resources :rooms, only: %i[index show] do
@@ -18,7 +23,7 @@ Rails.application.routes.draw do
   post "stripe/webhook", to: "stripe_webhooks#create"
 
   namespace :admin do
-    resources :rooms, only: %i[index show new create edit update] do
+    resources :rooms, only: %i[index show new create edit update destroy] do
       resources :opening_periods, only: %i[create destroy]
     end
 

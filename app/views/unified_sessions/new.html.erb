@@ -1,0 +1,9 @@
+<div class="container py-4">
+  <h1>Login</h1>
+
+  <%= simple_form_for :session, url: login_path do |f| %>
+    <%= f.input :email, autofocus: true, autocomplete: "email" %>
+    <%= f.input :password, as: :password, autocomplete: "current-password" %>
+    <%= f.button :submit, "Login", class: "btn btn-primary" %>
+  <% end %>
+</div>

@@ -47,10 +47,18 @@ module Admin
       end
     end
 
+    def destroy
+      @room = policy_scope(Room).find(params[:id])
+      authorize @room
+
+      @room.destroy!
+      redirect_to admin_rooms_path, notice: "Room deleted."
+    end
+
     private
 
     def room_params
-      params.require(:room).permit(:name, :capacity)
+      params.require(:room).permit(:name, :capacity, :room_url)
     end
   end
 end

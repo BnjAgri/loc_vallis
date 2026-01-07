@@ -1,5 +1,15 @@
 <h1><%= @room.name %></h1>
 
+<% if @room.image_urls.any? %>
+  <div class="row g-2 mb-3">
+    <% @room.image_urls.each do |url| %>
+      <div class="col-12 col-md-6">
+        <%= image_tag url, class: "img-fluid", alt: @room.name %>
+      </div>
+    <% end %>
+  </div>
+<% end %>
+
 <% if @room.description.present? %>
   <p><%= @room.description %></p>
 <% end %>

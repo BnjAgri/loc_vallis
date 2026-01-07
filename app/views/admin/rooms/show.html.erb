@@ -8,6 +8,11 @@
     </div>
     <div>
       <%= link_to "Edit", edit_admin_room_path(@room), class: "btn btn-outline-primary" %>
+      <%= button_to "Delete",
+            admin_room_path(@room),
+            method: :delete,
+            data: { turbo_confirm: "Delete this room?" },
+            class: "btn btn-outline-danger" %>
       <%= link_to "Back", admin_rooms_path, class: "btn btn-link" %>
     </div>
   </div>

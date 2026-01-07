@@ -8,6 +8,16 @@ class Room < ApplicationRecord
   validates :capacity, numericality: { only_integer: true, greater_than: 0 }, allow_nil: true
   validate :mvp_room_limit, on: :create
 
+  def image_urls
+    return [] if room_url.blank?
+
+    room_url
+      .to_s
+      .split(/\r?\n|,/)
+      .map(&:strip)
+      .reject(&:blank?)
+  end
+
   private
 
   def mvp_room_limit

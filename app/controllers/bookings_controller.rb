@@ -7,7 +7,7 @@ class BookingsController < ApplicationController
   end
 
   def show
-    @booking = Booking.find(params[:id])
+    @booking = policy_scope(Booking).find(params[:id])
     authorize @booking
 
     @messages = @booking.messages.includes(:sender).order(:created_at)
@@ -15,7 +15,7 @@ class BookingsController < ApplicationController
   end
 
   def checkout
-    @booking = Booking.find(params[:id])
+    @booking = policy_scope(Booking).find(params[:id])
     authorize @booking, :pay?
 
     session = StripeCheckoutSessionCreator.call(booking: @booking)
@@ -50,7 +50,7 @@ class BookingsController < ApplicationController
   end
 
   def cancel
-    @booking = Booking.find(params[:id])
+    @booking = policy_scope(Booking).find(params[:id])
     authorize @booking, :cancel?
 
     if @booking.cancel!(by: current_user)
