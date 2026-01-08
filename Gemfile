@@ -53,6 +53,8 @@ gem "sassc-rails"
 gem "pundit"
 gem "stripe"
 gem "solid_queue"
+gem "cloudinary"
+gem "activestorage-cloudinary-service"
 
 group :development, :test do
   gem "dotenv-rails"

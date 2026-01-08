@@ -34,8 +34,12 @@ Rails.application.configure do
     config.cache_store = :null_store
   end
 
-  # Store uploaded files on the local file system (see config/storage.yml for options).
-  config.active_storage.service = :local
+  # Store uploaded files. Use Cloudinary if configured, otherwise fall back to local disk.
+  config.active_storage.service = if ENV["CLOUDINARY_CLOUD_NAME"].present? && ENV["CLOUDINARY_API_KEY"].present? && ENV["CLOUDINARY_API_SECRET"].present?
+    :cloudinary
+  else
+    :local
+  end
 
   # Don't care if the mailer can't send.
   config.action_mailer.raise_delivery_errors = false

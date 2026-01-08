@@ -4,6 +4,7 @@
   <%= simple_form_for([:admin, @room]) do |f| %>
     <%= f.input :name %>
     <%= f.input :capacity, hint: "Optional" %>
+    <%= f.input :photos, as: :file, input_html: { multiple: true }, hint: "Upload one or more images" %>
     <%= f.input :room_url, as: :text, hint: "One image URL per line" %>
     <%= f.submit "Update room", class: "btn btn-primary" %>
     <%= link_to "Back", admin_room_path(@room), class: "btn btn-link" %>
