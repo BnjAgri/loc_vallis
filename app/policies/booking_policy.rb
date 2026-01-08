@@ -1,3 +1,11 @@
+## BookingPolicy
+# Autorisations Pundit pour les actions sur les bookings.
+#
+# Modèle d'acteurs :
+# - `User` : accès à ses propres bookings.
+# - `Owner` : accès aux bookings des rooms qu'il possède.
+#
+# NB : `Scope#resolve` reflète strictement cette séparation.
 class BookingPolicy < ApplicationPolicy
   def index?
     user.present?

@@ -1,3 +1,10 @@
+## BookingsController
+# Parcours et actions côté `User` autour des bookings.
+#
+# Points clés :
+# - Les actions sont protégées par Devise (`authenticate_user!`) + Pundit.
+# - `checkout` délègue la création de session Stripe à `StripeCheckoutSessionCreator`.
+# - Un garde-fou expire les bookings “en attente de paiement” via `Booking.expire_overdue!`.
 class BookingsController < ApplicationController
   before_action :authenticate_user!
   before_action :expire_overdue_bookings

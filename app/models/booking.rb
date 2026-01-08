@@ -1,3 +1,20 @@
+## Booking
+# Représente une demande de réservation d'un `User` sur une `Room`.
+#
+# La booking stocke des dates (start_date/end_date), un statut et (après création)
+# un prix total en cents + devise. Le prix est calculé à la création via `BookingQuote`
+# puis persisté pour éviter toute ambiguïté en cas de changement ultérieur de tarifs.
+#
+# Statuts (machine d'état “simple”, basée sur une string) :
+# - requested -> approved_pending_payment -> confirmed_paid
+# - requested -> declined
+# - requested|approved_pending_payment|confirmed_paid -> canceled
+# - approved_pending_payment -> expired (si fenêtre de paiement dépassée)
+# - confirmed_paid -> refunded
+#
+# Intégration Stripe :
+# - `stripe_checkout_session_id` et `stripe_payment_intent_id` servent à réconcilier les paiements.
+# - `stripe_refund_id` sert à réconcilier les remboursements.
 class Booking < ApplicationRecord
   belongs_to :room
   belongs_to :user

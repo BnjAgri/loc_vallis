@@ -1,5 +1,14 @@
+## Room
+# Représente un logement publié par un `Owner`.
+#
+# Points d'attention :
+# - Les photos utilisent Active Storage (`has_many_attached :photos`).
+# - Les disponibilités et le pricing sont portés par `OpeningPeriod`.
+# - Règle MVP : limitation volontaire à 2 rooms max (validation on create).
 class Room < ApplicationRecord
   belongs_to :owner
+
+  has_many_attached :photos
 
   has_many :opening_periods, dependent: :destroy
   has_many :bookings, dependent: :destroy

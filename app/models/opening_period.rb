@@ -1,3 +1,11 @@
+## OpeningPeriod
+# Période d'ouverture tarifée d'une `Room`.
+#
+# Règles métier :
+# - `end_date` doit être strictement après `start_date`.
+# - Deux périodes d'une même room ne doivent pas se chevaucher.
+#
+# `BookingQuote` exige qu'une demande de booking soit entièrement incluse dans une seule période.
 class OpeningPeriod < ApplicationRecord
   belongs_to :room
 

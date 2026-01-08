@@ -1,5 +1,15 @@
 # frozen_string_literal: true
 
+## StripeCheckoutSessionCreator
+# Crée une Stripe Checkout Session pour une `Booking` déjà approuvée.
+#
+# Précondition : `booking.payment_window_open?` doit être vrai.
+# Effets de bord :
+# - appelle l'API Stripe (création de session)
+# - persist `stripe_checkout_session_id` et `stripe_payment_intent_id` sur la booking
+#
+# Note : Stripe nécessite un `unit_amount` (prix unitaire). Ici on convertit le prix total
+# de la booking en prix par nuit (voir `unit_amount_cents`).
 class StripeCheckoutSessionCreator
   def self.call(booking:)
     new(booking:).call

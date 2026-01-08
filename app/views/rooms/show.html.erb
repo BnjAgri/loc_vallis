@@ -1,21 +1,48 @@
-<h1><%= @room.name %></h1>
+<% main_image_url = if @room.photos.attached?
+  url_for(@room.photos.first)
+elsif @room.image_urls.any?
+  @room.image_urls.first
+else
+  "https://raw.githubusercontent.com/lewagon/fullstack-images/master/uikit/greece.jpg"
+end %>
 
-<% if @room.image_urls.any? %>
-  <div class="row g-2 mb-3">
-    <% @room.image_urls.each do |url| %>
-      <div class="col-12 col-md-6">
-        <%= image_tag url, class: "img-fluid", alt: @room.name %>
-      </div>
+<% min_period = @room.opening_periods.order(:nightly_price_cents).first %>
+
+<div class="card-trip">
+  <%= image_tag main_image_url, alt: @room.name %>
+
+  <div class="card-trip-infos">
+    <div>
+      <h2><%= @room.name %></h2>
+      <% if @room.description.present? %>
+        <p><%= truncate(@room.description, length: 120) %></p>
+      <% else %>
+        <p>&nbsp;</p>
+      <% end %>
+    </div>
+
+    <% if min_period.present? %>
+      <h2 class="card-trip-pricing"><%= number_to_currency(min_period.nightly_price_cents / 100.0, unit: "#{min_period.currency.upcase} ", format: "%u%n") %></h2>
     <% end %>
+
+    <%= image_tag "https://kitt.lewagon.com/placeholder/users/krokrob", class: "card-trip-user avatar-bordered", alt: "Owner" %>
   </div>
-<% end %>
+</div>
 
-<% if @room.description.present? %>
-  <p><%= @room.description %></p>
-<% end %>
+<div class="mt-3">
+  <% if user_signed_in? %>
+    <%= link_to "Request booking", new_room_booking_path(@room), class: "btn btn-primary" %>
+  <% else %>
+    <p><%= link_to "Log in", new_user_session_path %> to request a booking.</p>
+  <% end %>
+</div>
 
-<% if user_signed_in? %>
-  <%= link_to "Request booking", new_room_booking_path(@room) %>
-<% else %>
-  <p><%= link_to "Log in", new_user_session_path %> to request a booking.</p>
-<% end %>
+<div class="mt-4">
+  <input
+    type="text"
+    data-controller="availability-calendar"
+    data-availability-calendar-enabled-ranges-value='<%= (@enabled_ranges || []).to_json %>'
+    data-availability-calendar-disabled-ranges-value='<%= (@disabled_ranges || []).to_json %>'
+    aria-label="Availability calendar"
+  />
+</div>

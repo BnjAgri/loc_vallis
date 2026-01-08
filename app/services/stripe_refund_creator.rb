@@ -1,5 +1,16 @@
 # frozen_string_literal: true
 
+## StripeRefundCreator
+# Déclenche un remboursement Stripe pour une `Booking` payée.
+#
+# Préconditions :
+# - booking.status == "confirmed_paid"
+# - `stripe_payment_intent_id` présent
+# - pas déjà remboursée
+#
+# Effets de bord :
+# - appelle l'API Stripe (création refund)
+# - passe la booking à `refunded` et stocke `stripe_refund_id` + `refunded_at`
 class StripeRefundCreator
   def self.call(booking:)
     new(booking:).call

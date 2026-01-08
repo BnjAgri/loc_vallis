@@ -1,3 +1,10 @@
+## StripeWebhooksController
+# Endpoint de réception des webhooks Stripe.
+#
+# Contrainte importante : les webhooks doivent être traités de manière **idempotente**
+# (Stripe peut renvoyer le même événement).
+#
+# Vérification : la signature est validée via `STRIPE_WEBHOOK_SECRET`.
 class StripeWebhooksController < ApplicationController
   skip_before_action :verify_authenticity_token
 

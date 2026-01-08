@@ -1,5 +1,14 @@
 # frozen_string_literal: true
 
+## BookingQuote
+# Calcule un devis de réservation (prix + validations métier) pour une `Room`.
+#
+# Règles appliquées :
+# - start_date/end_date doivent être présentes et cohérentes (end_date > start_date).
+# - l'intervalle doit être entièrement couvert par un unique `OpeningPeriod`.
+# - l'intervalle ne doit pas chevaucher une booking “réservante” (statuts `RESERVED_STATUSES`).
+#
+# Retourne un `Result` (struct) avec `ok?` + attributs métier ou une `error` lisible.
 class BookingQuote
   RESERVED_STATUSES = %w[approved_pending_payment confirmed_paid].freeze
 
