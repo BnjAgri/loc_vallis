@@ -2,6 +2,6 @@ Booking #<%= @booking.id %> was requested.
 
 Room: <%= @booking.room.name %>
 Dates: <%= @booking.start_date %> → <%= @booking.end_date %> (<%= @booking.nights %> nights)
-Total: <%= @booking.total_price_cents %> <%= @booking.currency %>
+Total: <%= number_to_currency(@booking.total_price_cents.to_i / 100.0, unit: "#{@booking.currency.to_s.upcase} ", format: "%u%n") %>
 
 View: <%= @booking_url %>

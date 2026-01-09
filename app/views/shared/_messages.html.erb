@@ -1,8 +1,20 @@
 <h2>Messages</h2>
 
+<% sender_label_for = lambda do |message|
+  if current_owner.present? && message.sender_type == "Owner" && message.sender_id == current_owner.id
+    "Vous"
+  elsif current_user.present? && message.sender_type == "User" && message.sender_id == current_user.id
+    "Vous"
+  elsif message.sender_type == "Owner"
+    "Hôte"
+  else
+    "Voyageur"
+  end
+end %>
+
 <% rendered_messages = messages.map do |m|
   {
-    sender: m.sender_type,
+    sender: sender_label_for.call(m),
     body: m.body,
     created_at: m.created_at.to_s
   }
@@ -27,7 +39,7 @@ end %>
     <ul>
       <% messages.each do |message| %>
         <li>
-          <strong><%= message.sender_type %>:</strong>
+          <strong><%= sender_label_for.call(message) %>:</strong>
           <%= message.body %>
           <small>(<%= message.created_at %>)</small>
         </li>

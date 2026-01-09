@@ -31,15 +31,8 @@ end %>
   </div>
 </div>
 
-<div class="mt-3">
-  <% if user_signed_in? %>
-    <%= link_to "Request booking", new_room_booking_path(@room), class: "btn btn-primary" %>
-  <% else %>
-    <p><%= link_to "Log in", new_user_session_path %> to request a booking.</p>
-  <% end %>
-</div>
-
 <div class="mt-4">
+  <p class="text-muted mb-2">Sélectionnez vos dates pour afficher le total et réserver.</p>
   <div
     class="row"
     data-controller="booking-summary"
@@ -75,9 +68,9 @@ end %>
         </div>
 
         <% if user_signed_in? %>
-          <%= link_to "Réserver", new_room_booking_path(@room), class: "btn btn-primary w-100" %>
+          <%= link_to "Réserver", new_room_booking_path(@room), class: "btn btn-primary w-100", data: { "booking-summary-target": "cta" } %>
         <% else %>
-          <%= link_to "Réserver", new_user_session_path, class: "btn btn-primary w-100" %>
+          <%= link_to "Réserver", login_path(return_to: new_room_booking_path(@room)), class: "btn btn-primary w-100", data: { turbo: false, "booking-summary-target": "cta" } %>
         <% end %>
       </div>
     </div>

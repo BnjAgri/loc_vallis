@@ -6,7 +6,7 @@ Rails.application.routes.draw do
   post "login", to: "unified_sessions#create"
   delete "logout", to: "unified_sessions#destroy"
 
-  root to: "pages#home"
+  root to: "rooms#index"
 
   resources :rooms, only: %i[index show] do
     resources :bookings, only: %i[new create]

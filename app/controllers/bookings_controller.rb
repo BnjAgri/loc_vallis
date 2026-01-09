@@ -36,6 +36,8 @@ class BookingsController < ApplicationController
     authorize @room, :show?
 
     @booking = Booking.new(room: @room)
+    @booking.start_date = parse_date_param(params[:start_date]) if params[:start_date].present?
+    @booking.end_date = parse_date_param(params[:end_date]) if params[:end_date].present?
   end
 
   def create
@@ -76,5 +78,11 @@ class BookingsController < ApplicationController
 
   def expire_overdue_bookings
     Booking.expire_overdue!
+  end
+
+  def parse_date_param(value)
+    Date.parse(value.to_s)
+  rescue Date::Error
+    nil
   end
 end

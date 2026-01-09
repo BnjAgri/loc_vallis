@@ -33,7 +33,7 @@
           </li>
         <% else %>
           <li class="nav-item">
-            <%= link_to "Login", login_path, class: "nav-link", data: { turbo: false } %>
+            <%= link_to "Login", login_path(return_to: request.fullpath), class: "nav-link", data: { turbo: false } %>
           </li>
         <% end %>
       </ul>
