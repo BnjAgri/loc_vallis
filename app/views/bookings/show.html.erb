@@ -1,0 +1,19 @@
+<h1>Booking #<%= @booking.id %></h1>
+
+<p>Status: <strong><%= @booking.status %></strong></p>
+<p>Dates: <%= @booking.start_date %> → <%= @booking.end_date %> (<%= @booking.nights %> nights)</p>
+<p>
+  Total:
+  <%= number_to_currency(@booking.total_price_cents.to_i / 100.0, unit: "#{@booking.currency.to_s.upcase} ", format: "%u%n") %>
+</p>
+
+<% if policy(@booking).pay? %>
+  <%= button_to "Pay now", checkout_booking_path(@booking), method: :post, class: "btn btn-primary" %>
+  <p class="mt-2">Deadline: <%= @booking.payment_expires_at %></p>
+<% end %>
+
+<% if policy(@booking).cancel? %>
+  <%= button_to "Cancel", cancel_booking_path(@booking), method: :patch, class: "btn btn-outline-danger" %>
+<% end %>
+
+<%= render "shared/messages", booking: @booking, messages: @messages %>

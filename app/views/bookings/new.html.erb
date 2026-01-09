@@ -1,0 +1,25 @@
+<h1>Request booking for <%= @room.name %></h1>
+
+<%= form_with model: [@room, @booking] do |f| %>
+  <% if @booking.errors.any? %>
+    <div class="alert alert-danger">
+      <ul>
+        <% @booking.errors.full_messages.each do |msg| %>
+          <li><%= msg %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="mb-3">
+    <%= f.label :start_date %>
+    <%= f.text_field :start_date, class: "form-control", data: { controller: "flatpickr" } %>
+  </div>
+
+  <div class="mb-3">
+    <%= f.label :end_date %>
+    <%= f.text_field :end_date, class: "form-control", data: { controller: "flatpickr" } %>
+  </div>
+
+  <%= f.submit "Send request", class: "btn btn-primary" %>
+<% end %>

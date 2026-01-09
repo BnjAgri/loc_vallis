@@ -7,3 +7,145 @@
 #   ["Action", "Comedy", "Drama", "Horror"].each do |genre_name|
 #     MovieGenre.find_or_create_by!(name: genre_name)
 #   end
+
+require "securerandom"
+require "faker"
+require "net/http"
+require "uri"
+require "json"
+
+puts "Seeding…"
+
+if Rails.env.development?
+
+  puts "Cleaning existing data (development only)…"
+  Message.delete_all
+  Booking.delete_all
+  OpeningPeriod.delete_all
+  Room.delete_all
+  User.delete_all
+  Owner.delete_all
+end
+
+PASSWORD = "password123".freeze
+CURRENCY = "EUR".freeze
+
+FALLBACK_ROOM_IMAGE_URL = "https://raw.githubusercontent.com/lewagon/fullstack-images/master/uikit/breakfast.jpg".freeze
+
+# Pixabay pages are behind Cloudflare and Google Images is not a stable/legal source for automated seeding.
+# Use a small pool of reliable, hotlink-friendly image URLs instead.
+ROOM_IMAGE_URLS = [
+  "https://images.unsplash.com/photo-1505691938895-1758d7feb511?auto=format&fit=crop&w=1600&q=80",
+  "https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?auto=format&fit=crop&w=1600&q=80",
+  "https://images.unsplash.com/photo-1551887373-6a6d5e5d2f2f?auto=format&fit=crop&w=1600&q=80",
+  "https://images.unsplash.com/photo-1560448070-c26f9bba7ed5?auto=format&fit=crop&w=1600&q=80",
+  "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?auto=format&fit=crop&w=1600&q=80",
+  "https://images.unsplash.com/photo-1512918728675-ed5a9ecdebfd?auto=format&fit=crop&w=1600&q=80"
+].freeze
+
+def seeded_room_image_url
+  ROOM_IMAGE_URLS.sample || FALLBACK_ROOM_IMAGE_URL
+end
+
+owner = Owner.find_or_create_by!(email: "owner@locvallis.test") do |o|
+  o.password = PASSWORD
+  o.password_confirmation = PASSWORD
+end
+
+puts "Owner: #{owner.email} / #{PASSWORD}"
+
+rooms = Room.where(owner_id: owner.id).order(:created_at).to_a
+needed = 2 - rooms.size
+needed.times do
+  rooms << Room.create!(
+    owner:,
+    name: Faker::Commerce.unique.product_name,
+    description: Faker::Lorem.paragraph(sentence_count: 2),
+    capacity: [1, 2].sample,
+    room_url: seeded_room_image_url
+  )
+end
+
+rooms = Room.where(owner_id: owner.id).order(:created_at).limit(2).to_a
+
+rooms.each do |room|
+  next if room.room_url.present?
+
+  room.update!(room_url: seeded_room_image_url)
+end
+
+puts "Rooms: #{rooms.map(&:name).join(", ")}"
+
+rooms.each do |room|
+  next if room.opening_periods.exists?
+
+  OpeningPeriod.create!(
+    room:,
+    start_date: Date.current,
+    end_date: Date.current + 180,
+    nightly_price_cents: rand(8_000..18_000),
+    currency: CURRENCY
+  )
+end
+
+users = []
+5.times do
+  users << User.create!(
+    email: Faker::Internet.unique.email,
+    password: PASSWORD,
+    password_confirmation: PASSWORD
+  )
+end
+puts "Users: #{users.size} created (password: #{PASSWORD})"
+puts "user 1: #{users.first.email}, password: #{PASSWORD}"
+
+def create_booking!(room:, user:, start_date:, nights:)
+  Booking.create!(
+    room:,
+    user:,
+    start_date:,
+    end_date: start_date + nights
+  )
+end
+
+def fake_stripe_ids!
+  {
+    stripe_checkout_session_id: "cs_test_#{SecureRandom.hex(10)}",
+    stripe_payment_intent_id: "pi_test_#{SecureRandom.hex(10)}"
+  }
+end
+
+bookings = []
+
+# Create 8 non-overlapping bookings (4 per room)
+rooms.each_with_index do |room, room_index|
+  base = Date.current + 10 + (room_index * 60)
+
+  # 1) requested
+  bookings << create_booking!(room:, user: users.sample, start_date: base + 0, nights: 3)
+
+  # 2) approved_pending_payment
+  b2 = create_booking!(room:, user: users.sample, start_date: base + 7, nights: 2)
+  b2.approve!(by: owner)
+  bookings << b2
+
+  # 3) confirmed_paid
+  b3 = create_booking!(room:, user: users.sample, start_date: base + 14, nights: 4)
+  b3.approve!(by: owner)
+  b3.update!(status: "confirmed_paid", **fake_stripe_ids!)
+  bookings << b3
+
+  # 4) refunded
+  b4 = create_booking!(room:, user: users.sample, start_date: base + 25, nights: 2)
+  b4.approve!(by: owner)
+  b4.update!(status: "confirmed_paid", **fake_stripe_ids!)
+  b4.update!(
+    status: "refunded",
+    stripe_refund_id: "re_test_#{SecureRandom.hex(10)}",
+    refunded_at: Time.current
+  )
+  bookings << b4
+end
+
+puts "Bookings: #{bookings.size} created"
+puts "Done."

@@ -50,9 +50,15 @@ gem "autoprefixer-rails"
 gem "font-awesome-sass", "~> 6.1"
 gem "simple_form", github: "heartcombo/simple_form"
 gem "sassc-rails"
+gem "pundit"
+gem "stripe"
+gem "solid_queue"
+gem "cloudinary"
+gem "activestorage-cloudinary-service"
 
 group :development, :test do
   gem "dotenv-rails"
+  gem "faker", require: false
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
   gem "debug", platforms: %i[ mri windows ]
 end
@@ -69,6 +75,7 @@ group :development do
 end
 
 group :test do
+  gem "minitest", "~> 5.0"
   # Use system testing [https://guides.rubyonrails.org/testing.html#system-testing]
   gem "capybara"
   gem "selenium-webdriver"
