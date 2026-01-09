@@ -10,6 +10,9 @@
 
 require "securerandom"
 require "faker"
+require "net/http"
+require "uri"
+require "json"
 
 puts "Seeding…"
 
@@ -27,6 +30,23 @@ end
 PASSWORD = "password123".freeze
 CURRENCY = "EUR".freeze
 
+FALLBACK_ROOM_IMAGE_URL = "https://raw.githubusercontent.com/lewagon/fullstack-images/master/uikit/breakfast.jpg".freeze
+
+# Pixabay pages are behind Cloudflare and Google Images is not a stable/legal source for automated seeding.
+# Use a small pool of reliable, hotlink-friendly image URLs instead.
+ROOM_IMAGE_URLS = [
+  "https://images.unsplash.com/photo-1505691938895-1758d7feb511?auto=format&fit=crop&w=1600&q=80",
+  "https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?auto=format&fit=crop&w=1600&q=80",
+  "https://images.unsplash.com/photo-1551887373-6a6d5e5d2f2f?auto=format&fit=crop&w=1600&q=80",
+  "https://images.unsplash.com/photo-1560448070-c26f9bba7ed5?auto=format&fit=crop&w=1600&q=80",
+  "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?auto=format&fit=crop&w=1600&q=80",
+  "https://images.unsplash.com/photo-1512918728675-ed5a9ecdebfd?auto=format&fit=crop&w=1600&q=80"
+].freeze
+
+def seeded_room_image_url
+  ROOM_IMAGE_URLS.sample || FALLBACK_ROOM_IMAGE_URL
+end
+
 owner = Owner.find_or_create_by!(email: "owner@locvallis.test") do |o|
   o.password = PASSWORD
   o.password_confirmation = PASSWORD
@@ -41,11 +61,19 @@ needed.times do
     owner:,
     name: Faker::Commerce.unique.product_name,
     description: Faker::Lorem.paragraph(sentence_count: 2),
-    capacity: [1, 2].sample
+    capacity: [1, 2].sample,
+    room_url: seeded_room_image_url
   )
 end
 
 rooms = Room.where(owner_id: owner.id).order(:created_at).limit(2).to_a
+
+rooms.each do |room|
+  next if room.room_url.present?
+
+  room.update!(room_url: seeded_room_image_url)
+end
+
 puts "Rooms: #{rooms.map(&:name).join(", ")}"
 
 rooms.each do |room|
@@ -69,6 +97,7 @@ users = []
   )
 end
 puts "Users: #{users.size} created (password: #{PASSWORD})"
+puts "user 1: #{users.first.email}, password: #{PASSWORD}"
 
 def create_booking!(room:, user:, start_date:, nights:)
   Booking.create!(

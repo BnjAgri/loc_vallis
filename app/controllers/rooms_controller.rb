@@ -1,6 +1,9 @@
 class RoomsController < ApplicationController
   def index
-    @rooms = Room.order(:created_at)
+    @rooms = Room
+      .with_attached_photos
+      .includes(:opening_periods)
+      .order(:created_at)
   end
 
   def show

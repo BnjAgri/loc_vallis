@@ -21,11 +21,13 @@ end %>
       <% end %>
     </div>
 
+    <% if @room.capacity.present? %>
+      <small class="text-muted">Capacité : <%= @room.capacity %> pers.</small>
+    <% end %>
+
     <% if min_period.present? %>
       <h2 class="card-trip-pricing"><%= number_to_currency(min_period.nightly_price_cents / 100.0, unit: "#{min_period.currency.upcase} ", format: "%u%n") %></h2>
     <% end %>
-
-    <%= image_tag "https://kitt.lewagon.com/placeholder/users/krokrob", class: "card-trip-user avatar-bordered", alt: "Owner" %>
   </div>
 </div>
 
@@ -38,11 +40,46 @@ end %>
 </div>
 
 <div class="mt-4">
-  <input
-    type="text"
-    data-controller="availability-calendar"
-    data-availability-calendar-enabled-ranges-value='<%= (@enabled_ranges || []).to_json %>'
-    data-availability-calendar-disabled-ranges-value='<%= (@disabled_ranges || []).to_json %>'
-    aria-label="Availability calendar"
-  />
+  <div
+    class="row"
+    data-controller="booking-summary"
+    data-booking-summary-nightly-price-cents-value="<%= min_period&.nightly_price_cents.to_i %>"
+    data-booking-summary-currency-value="<%= min_period&.currency.to_s.presence || "EUR" %>"
+    data-action="availability-calendar:range-selected->booking-summary#update"
+  >
+    <div class="col-12 col-lg-8">
+      <input
+        type="text"
+        data-controller="availability-calendar"
+        data-availability-calendar-enabled-ranges-value='<%= (@enabled_ranges || []).to_json %>'
+        data-availability-calendar-disabled-ranges-value='<%= (@disabled_ranges || []).to_json %>'
+        aria-label="Availability calendar"
+      />
+    </div>
+
+    <div class="col-12 col-lg-4 mt-3 mt-lg-0">
+      <div class="card p-3 d-none" data-booking-summary-target="panel">
+        <div class="mb-2">
+          <div class="text-muted">Tarif / nuit</div>
+          <div data-booking-summary-target="nightly"></div>
+        </div>
+
+        <div class="mb-2">
+          <div class="text-muted">Nombre de nuits</div>
+          <div data-booking-summary-target="nights"></div>
+        </div>
+
+        <div class="mb-3">
+          <div class="text-muted">Total</div>
+          <div class="fw-bold" data-booking-summary-target="total"></div>
+        </div>
+
+        <% if user_signed_in? %>
+          <%= link_to "Réserver", new_room_booking_path(@room), class: "btn btn-primary w-100" %>
+        <% else %>
+          <%= link_to "Réserver", new_user_session_path, class: "btn btn-primary w-100" %>
+        <% end %>
+      </div>
+    </div>
+  </div>
 </div>

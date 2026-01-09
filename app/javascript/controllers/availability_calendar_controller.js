@@ -7,6 +7,25 @@ export default class extends Controller {
     disabledRanges: Array
   }
 
+  handleChange(selectedDates, _dateStr, instance) {
+    const detail = { startDate: null, endDate: null }
+
+    if (selectedDates.length >= 1) {
+      detail.startDate = instance.formatDate(selectedDates[0], "Y-m-d")
+    }
+
+    if (selectedDates.length >= 2) {
+      detail.endDate = instance.formatDate(selectedDates[1], "Y-m-d")
+    }
+
+    this.element.dispatchEvent(
+      new CustomEvent("availability-calendar:range-selected", {
+        detail,
+        bubbles: true
+      })
+    )
+  }
+
   connect() {
     const enabled = (this.enabledRangesValue || []).map((range) => ({
       from: range.from,
@@ -19,13 +38,15 @@ export default class extends Controller {
     }))
 
     this.picker = flatpickr(this.element, {
+      mode: "range",
       inline: true,
       allowInput: false,
       clickOpens: false,
       dateFormat: "Y-m-d",
       disableMobile: true,
       enable: enabled,
-      disable: disabled
+      disable: disabled,
+      onChange: this.handleChange.bind(this)
     })
   }
 
