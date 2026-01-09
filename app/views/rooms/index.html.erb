@@ -50,3 +50,31 @@
     <% end %>
   </div>
 </div>
+
+<% mapbox_access_token = ENV["MAPBOX_ACCESS_TOKEN"].to_s %>
+<% map_address = ENV.fetch("MAP_ADDRESS", "Anglès, France") %>
+<% map_lat = ENV.fetch("MAP_LAT", "43.5644").to_f %>
+<% map_lng = ENV.fetch("MAP_LNG", "2.5617").to_f %>
+
+<div class="container mt-4">
+  <div class="card-category p-0" style="height: 320px; display: block;">
+    <% if mapbox_access_token.present? %>
+      <div
+        data-controller="mapbox"
+        data-mapbox-access-token-value="<%= mapbox_access_token %>"
+        data-mapbox-lat-value="<%= map_lat %>"
+        data-mapbox-lng-value="<%= map_lng %>"
+        data-mapbox-zoom-value="13"
+        data-mapbox-interactive-value="true"
+        data-mapbox-animate-zoom-value="true"
+        data-mapbox-animate-duration-ms-value="2000"
+        style="height: 100%; width: 100%;"
+      ></div>
+    <% else %>
+      <div class="h-100 w-100 d-flex align-items-center justify-content-center bg-white text-muted">
+        MAPBOX_ACCESS_TOKEN manquant
+      </div>
+    <% end %>
+  </div>
+  <div class="mt-2 text-muted"><strong>Adresse :</strong> <%= map_address %></div>
+</div>
