@@ -28,7 +28,20 @@ if Rails.env.development?
 end
 
 PASSWORD = "password123".freeze
+TOTO_PASSWORD = "toto".freeze
 CURRENCY = "EUR".freeze
+
+toto_user = User.find_or_create_by!(email: "user@toto.com") do |u|
+  u.password = TOTO_PASSWORD
+  u.password_confirmation = TOTO_PASSWORD
+end
+puts "User: #{toto_user.email} / #{TOTO_PASSWORD} (statut: user)"
+
+toto_owner = Owner.find_or_create_by!(email: "owner@toto.com") do |o|
+  o.password = TOTO_PASSWORD
+  o.password_confirmation = TOTO_PASSWORD
+end
+puts "Owner: #{toto_owner.email} / #{TOTO_PASSWORD} (statut: owner)"
 
 FALLBACK_ROOM_IMAGE_URL = "https://raw.githubusercontent.com/lewagon/fullstack-images/master/uikit/breakfast.jpg".freeze
 

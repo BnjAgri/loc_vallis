@@ -1,5 +1,6 @@
 import { Controller } from "@hotwired/stimulus"
 import flatpickr from "flatpickr"
+import "flatpickr/dist/l10n/fr.js"
 
 export default class extends Controller {
   static values = {
@@ -43,6 +44,11 @@ export default class extends Controller {
       allowInput: false,
       clickOpens: false,
       dateFormat: "Y-m-d",
+      altInput: true,
+      altFormat: "d/m/Y",
+      altInputClass: "form-control",
+      locale: "fr",
+      rangeSeparator: " au ",
       disableMobile: true,
       enable: enabled,
       disable: disabled,
