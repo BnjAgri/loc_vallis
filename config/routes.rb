@@ -1,6 +1,6 @@
 Rails.application.routes.draw do
-  devise_for :owners
-  devise_for :users
+  devise_for :owners, skip: [:sessions]
+  devise_for :users, skip: [:sessions]
 
   get "login", to: "unified_sessions#new"
   post "login", to: "unified_sessions#create"
