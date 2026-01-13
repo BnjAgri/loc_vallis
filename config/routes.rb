@@ -14,6 +14,7 @@ Rails.application.routes.draw do
 
   resources :bookings, only: %i[index show] do
     resources :messages, only: %i[create]
+    resources :reviews, only: %i[create]
     member do
       post :checkout
       patch :cancel

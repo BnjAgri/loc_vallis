@@ -19,6 +19,8 @@ class BookingsController < ApplicationController
 
     @messages = @booking.messages.includes(:sender).order(:created_at)
     @message = Message.new
+
+    @review = @booking.review || @booking.build_review(user: current_user)
   end
 
   def checkout

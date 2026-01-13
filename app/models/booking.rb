@@ -19,6 +19,8 @@ class Booking < ApplicationRecord
   belongs_to :room
   belongs_to :user
 
+  has_one :review, dependent: :destroy
+
   has_many :messages, dependent: :destroy
 
   STATUSES = %w[

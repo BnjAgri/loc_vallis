@@ -17,3 +17,31 @@
 <% end %>
 
 <%= render "shared/messages", booking: @booking, messages: @messages %>
+
+<div class="mt-4">
+  <h2 class="h4">Votre avis</h2>
+
+  <% if @booking.review.present? %>
+    <div class="d-flex align-items-center gap-2">
+      <span class="review-stars"><%= stars_for_rating(@booking.review.rating) %></span>
+      <span class="text-muted"><%= @booking.review.rating %>/5</span>
+    </div>
+    <div class="mt-2">
+      <%= simple_format(@booking.review.comment) %>
+    </div>
+  <% elsif policy(@review).create? %>
+    <%= simple_form_for [@booking, @review] do |f| %>
+      <div class="row g-2">
+        <div class="col-12 col-md-3">
+          <%= f.input :rating, collection: (1..5).to_a, include_blank: false, label: "Note" %>
+        </div>
+        <div class="col-12 col-md-9">
+          <%= f.input :comment, as: :text, label: "Commentaire", input_html: { rows: 3 } %>
+        </div>
+      </div>
+      <%= f.button :submit, "Envoyer mon avis", class: "btn btn-primary" %>
+    <% end %>
+  <% else %>
+    <p class="text-muted mb-0">Vous pourrez laisser un avis après votre séjour (et une seule fois par réservation).</p>
+  <% end %>
+</div>

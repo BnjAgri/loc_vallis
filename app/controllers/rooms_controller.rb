@@ -28,5 +28,10 @@ class RoomsController < ApplicationController
           to: (end_date - 1.day).to_s
         }
       end
+
+    reviews = @room.reviews.includes(:user).order(created_at: :desc)
+    @average_rating = reviews.average(:rating)&.to_f
+    @reviews_count = reviews.count
+    @latest_reviews = reviews.limit(2)
   end
 end

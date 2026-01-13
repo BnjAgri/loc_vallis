@@ -13,6 +13,8 @@ class Room < ApplicationRecord
   has_many :opening_periods, dependent: :destroy
   has_many :bookings, dependent: :destroy
 
+  has_many :reviews, through: :bookings
+
   validates :name, presence: true
   validates :capacity, numericality: { only_integer: true, greater_than: 0 }, allow_nil: true
   validate :mvp_room_limit, on: :create

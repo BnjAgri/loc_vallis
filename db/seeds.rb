@@ -20,6 +20,7 @@ if Rails.env.development?
 
   puts "Cleaning existing data (development only)…"
   Message.delete_all
+  Review.delete_all
   Booking.delete_all
   OpeningPeriod.delete_all
   Room.delete_all
@@ -45,8 +46,7 @@ puts "Owner: #{toto_owner.email} / #{TOTO_PASSWORD} (statut: owner)"
 
 FALLBACK_ROOM_IMAGE_URL = "https://raw.githubusercontent.com/lewagon/fullstack-images/master/uikit/breakfast.jpg".freeze
 
-# Pixabay pages are behind Cloudflare and Google Images is not a stable/legal source for automated seeding.
-# Use a small pool of reliable, hotlink-friendly image URLs instead.
+# Small pool image URLs.
 ROOM_IMAGE_URLS = [
   "https://images.unsplash.com/photo-1505691938895-1758d7feb511?auto=format&fit=crop&w=1600&q=80",
   "https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?auto=format&fit=crop&w=1600&q=80",
@@ -94,7 +94,8 @@ rooms.each do |room|
 
   OpeningPeriod.create!(
     room:,
-    start_date: Date.current,
+    # Allow seeding past and future bookings (useful for reviews demo).
+    start_date: Date.current - 180,
     end_date: Date.current + 180,
     nightly_price_cents: rand(8_000..18_000),
     currency: CURRENCY
@@ -132,24 +133,25 @@ bookings = []
 
 # Create 8 non-overlapping bookings (4 per room)
 rooms.each_with_index do |room, room_index|
-  base = Date.current + 10 + (room_index * 60)
+  future_base = Date.current + 10 + (room_index * 60)
+  past_base = Date.current - 60 - (room_index * 60)
 
   # 1) requested
-  bookings << create_booking!(room:, user: users.sample, start_date: base + 0, nights: 3)
+  bookings << create_booking!(room:, user: users.sample, start_date: future_base + 0, nights: 3)
 
   # 2) approved_pending_payment
-  b2 = create_booking!(room:, user: users.sample, start_date: base + 7, nights: 2)
+  b2 = create_booking!(room:, user: users.sample, start_date: future_base + 7, nights: 2)
   b2.approve!(by: owner)
   bookings << b2
 
-  # 3) confirmed_paid
-  b3 = create_booking!(room:, user: users.sample, start_date: base + 14, nights: 4)
+  # 3) confirmed_paid (past stay -> review eligible)
+  b3 = create_booking!(room:, user: users.sample, start_date: past_base + 0, nights: 4)
   b3.approve!(by: owner)
   b3.update!(status: "confirmed_paid", **fake_stripe_ids!)
   bookings << b3
 
-  # 4) refunded
-  b4 = create_booking!(room:, user: users.sample, start_date: base + 25, nights: 2)
+  # 4) refunded (past stay -> review eligible)
+  b4 = create_booking!(room:, user: users.sample, start_date: past_base + 10, nights: 2)
   b4.approve!(by: owner)
   b4.update!(status: "confirmed_paid", **fake_stripe_ids!)
   b4.update!(
@@ -161,4 +163,21 @@ rooms.each_with_index do |room, room_index|
 end
 
 puts "Bookings: #{bookings.size} created"
+
+# Reviews
+# Seed a few reviews so the room page can show average rating + latest comments.
+def seed_review_for!(booking)
+  Review.find_or_create_by!(booking: booking) do |review|
+    review.user = booking.user
+    review.rating = rand(4..5)
+    review.comment = Faker::Lorem.sentence(word_count: 16)
+  end
+end
+
+reviewable_bookings = bookings.select do |b|
+  %w[confirmed_paid refunded].include?(b.status) && b.end_date.present? && b.end_date < Date.current
+end
+reviews = reviewable_bookings.first(4).map { |b| seed_review_for!(b) }
+puts "Reviews: #{reviews.size} created"
+
 puts "Done."
