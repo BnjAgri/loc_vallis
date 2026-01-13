@@ -24,6 +24,8 @@ Rails.application.routes.draw do
   post "stripe/webhook", to: "stripe_webhooks#create"
 
   namespace :admin do
+    get "inbox", to: "inbox#index"
+
     resources :rooms, only: %i[index show new create edit update destroy] do
       resources :opening_periods, only: %i[create destroy]
     end

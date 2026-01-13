@@ -1,0 +1,77 @@
+<div class="container py-4">
+  <div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-4">
+    <div>
+      <h1 class="h3 mb-0">Inbox</h1>
+      <div class="text-muted">Conversations par réservation</div>
+    </div>
+
+    <div class="d-flex gap-2">
+      <%= link_to "Tableau de bord", admin_bookings_path, class: "btn btn-outline-primary" %>
+      <%= link_to "Hébergements", admin_rooms_path, class: "btn btn-outline-primary" %>
+    </div>
+  </div>
+
+  <% if @bookings.blank? %>
+    <div class="card">
+      <div class="card-body">
+        <p class="text-muted mb-0">Aucune conversation pour le moment.</p>
+      </div>
+    </div>
+  <% else %>
+    <div class="card">
+      <div class="card-body p-0">
+        <div class="list-group list-group-flush">
+          <% @bookings.each do |booking| %>
+            <% last_message = @last_message_by_booking_id[booking.id] %>
+            <% unread_count = @unread_count_by_booking_id[booking.id].to_i %>
+
+            <%= link_to admin_booking_path(booking), class: "list-group-item list-group-item-action" do %>
+              <div class="d-flex justify-content-between align-items-start gap-2">
+                <div class="flex-grow-1" style="min-width: 0;">
+                  <div class="d-flex align-items-center gap-2 flex-wrap">
+                    <strong class="text-truncate" style="max-width: 520px;">
+                      <%= booking.room&.name %>
+                    </strong>
+                    <span class="text-muted">·</span>
+                    <span class="text-muted text-truncate" style="max-width: 360px;">
+                      <%= booking.user&.email %>
+                    </span>
+                    <span class="text-muted">·</span>
+                    <span class="text-muted">Booking #<%= booking.id %></span>
+
+                    <% if unread_count.positive? %>
+                      <span class="badge text-bg-warning"><%= unread_count %> non lu(s)</span>
+                    <% end %>
+                  </div>
+
+                  <div class="text-muted small mt-1">
+                    <%= booking.start_date %> → <%= booking.end_date %>
+                    <span class="mx-1">·</span>
+                    <span class="badge <%= booking_status_badge_class(booking.status) %>"><%= booking.status %></span>
+                  </div>
+
+                  <div class="mt-2">
+                    <% if last_message.present? %>
+                      <span class="text-muted"><%= last_message.sender_type == "Owner" ? "Vous" : "Voyageur" %> :</span>
+                      <%= truncate(last_message.body.to_s, length: 140) %>
+                    <% else %>
+                      <span class="text-muted">Aucun message pour le moment.</span>
+                    <% end %>
+                  </div>
+                </div>
+
+                <div class="text-muted small text-end" style="white-space: nowrap;">
+                  <% if last_message.present? %>
+                    <%= last_message.created_at.in_time_zone.strftime("%d/%m %H:%M") %>
+                  <% else %>
+                    <%= booking.created_at.in_time_zone.strftime("%d/%m %H:%M") %>
+                  <% end %>
+                </div>
+              </div>
+            <% end %>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  <% end %>
+</div>
