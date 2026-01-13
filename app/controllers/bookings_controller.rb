@@ -17,6 +17,8 @@ class BookingsController < ApplicationController
     @booking = policy_scope(Booking).find(params[:id])
     authorize @booking
 
+    @booking.mark_user_read!
+
     @messages = @booking.messages.includes(:sender).order(:created_at)
     @message = Message.new
 

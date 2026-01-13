@@ -2,7 +2,12 @@
   <div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-4">
     <div>
       <h1 class="h3 mb-0">Tableau de bord</h1>
-      <div class="text-muted">Messages, réservations et gestion des hébergements</div>
+      <div class="text-muted">
+        Messages, réservations et gestion des hébergements
+        <% if @unread_conversations_count.to_i.positive? %>
+          · <span class="badge text-bg-warning"><%= @unread_conversations_count %> non lu(s)</span>
+        <% end %>
+      </div>
     </div>
 
     <div class="d-flex gap-2">
@@ -25,9 +30,15 @@
             <div class="list-group list-group-flush">
               <% @recent_messages.each do |message| %>
                 <% booking = message.booking %>
+                <% unread = message.sender_type == "User" && (booking.owner_last_read_at.nil? || message.created_at > booking.owner_last_read_at) %>
                 <%= link_to admin_booking_path(booking), class: "list-group-item list-group-item-action" do %>
                   <div class="d-flex justify-content-between align-items-baseline gap-2">
-                    <strong class="text-truncate"><%= message.sender&.respond_to?(:email) ? message.sender.email : "—" %></strong>
+                    <div class="d-flex align-items-center gap-2 text-truncate">
+                      <strong class="text-truncate"><%= message.sender&.respond_to?(:email) ? message.sender.email : "—" %></strong>
+                      <% if unread %>
+                        <span class="badge text-bg-warning">Non lu</span>
+                      <% end %>
+                    </div>
                     <small class="text-muted"><%= message.created_at.in_time_zone.strftime("%d/%m %H:%M") %></small>
                   </div>
                   <div class="text-muted small">

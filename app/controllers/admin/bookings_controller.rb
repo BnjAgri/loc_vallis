@@ -8,6 +8,15 @@ module Admin
 
       @bookings = bookings_scope.includes(:room, :user).order(created_at: :desc)
       @rooms = policy_scope(Room).includes(:opening_periods).order(created_at: :desc)
+
+      unread_bookings_scope = bookings_scope
+        .joins(:messages)
+        .where(messages: { sender_type: "User" })
+        .where("messages.created_at > COALESCE(bookings.owner_last_read_at, ?)", Time.at(0))
+        .distinct
+
+      @unread_conversations_count = unread_bookings_scope.count
+
       @recent_messages = Message
         .joins(:booking)
         .merge(bookings_scope)
@@ -19,6 +28,8 @@ module Admin
     def show
       @booking = Booking.find(params[:id])
       authorize @booking
+
+      @booking.mark_owner_read!
 
       @messages = @booking.messages.includes(:sender).order(:created_at)
       @message = Message.new

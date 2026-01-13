@@ -54,6 +54,24 @@ class Booking < ApplicationRecord
     (end_date - start_date).to_i
   end
 
+  def mark_owner_read!
+    update!(owner_last_read_at: Time.current)
+  end
+
+  def mark_user_read!
+    update!(user_last_read_at: Time.current)
+  end
+
+  def unread_messages_for_owner_count
+    threshold = owner_last_read_at || Time.at(0)
+    messages.where(sender_type: "User").where("created_at > ?", threshold).count
+  end
+
+  def unread_messages_for_user_count
+    threshold = user_last_read_at || Time.at(0)
+    messages.where(sender_type: "Owner").where("created_at > ?", threshold).count
+  end
+
   def payment_window_open?
     approved_pending_payment? && payment_expires_at.present? && Time.current < payment_expires_at
   end
