@@ -3,6 +3,10 @@
 }
 
 @media (min-width: 992px) {
+  .room-show-datepicker-col {
+    margin-right: calc(-1 * var(--bs-gutter-x) / 2);
+  }
+
   .room-show-datepicker {
     width: 460px;
   }

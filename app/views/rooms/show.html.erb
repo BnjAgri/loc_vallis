@@ -8,11 +8,15 @@ end %>
 
 <% min_period = @room.opening_periods.order(:nightly_price_cents).first %>
 
+<%# Layout header: 2-column grid (left = room card, right = booking/date picker sidebar). %>
 <div class="row g-4 align-items-start room-show-header">
+  <%# Left column: main room presentation card (image + title + meta + starting price). %>
   <div class="col-12 col-lg">
+    <%# Reuse the shared "card-trip" component styles for a prominent hero card. %>
     <div class="card-trip">
       <%= image_tag main_image_url, alt: @room.name %>
 
+      <%# Card content area: room name/description + capacity + price, aligned with flex. %>
       <div class="card-trip-infos">
         <div>
           <h2><%= @room.name %></h2>
@@ -28,15 +32,20 @@ end %>
         <% end %>
 
         <% if min_period.present? %>
-          <h2 class="card-trip-pricing"><%= number_to_currency(min_period.nightly_price_cents / 100.0, unit: "#{min_period.currency.upcase} ", format: "%u%n") %></h2>
+          <h2 class="card-trip-pricing"><%= number_to_currency(min_period.nightly_price_cents / 100.0, unit: "€", format: "%n %u") %>/nuit</h2>
         <% end %>
       </div>
     </div>
   </div>
 
-  <div class="col-12 col-lg-auto ms-lg-auto">
+  <%# Right column: fixed-width sidebar (desktop) for date selection + booking price summary. %>
+  <div class="col-12 col-lg-auto ms-lg-auto pe-lg-0 room-show-datepicker-col">
+    <%# Wrapper used to control the sidebar width and flush it to the right edge. %>
     <div class="room-show-datepicker">
+      <%# Short instruction text for the user. %>
       <p class="text-muted mb-2">Sélectionnez vos dates pour afficher le total et réserver.</p>
+
+      <%# Booking summary container: listens to calendar events and updates the right panel. %>
       <div
         class="row"
         data-controller="booking-summary"
@@ -44,6 +53,7 @@ end %>
         data-booking-summary-currency-value="<%= min_period&.currency.to_s.presence || "EUR" %>"
         data-action="availability-calendar:range-selected->booking-summary#update"
       >
+        <%# Datepicker column: inline range picker (Stimulus + Flatpickr). %>
         <div class="col-12 col-lg-8">
           <input
             type="text"
@@ -54,6 +64,7 @@ end %>
           />
         </div>
 
+        <%# Summary column: hidden until a date range is selected; shows nightly/nights/total + CTA. %>
         <div class="col-12 col-lg-4 mt-3 mt-lg-0">
           <div class="card p-3 d-none" data-booking-summary-target="panel">
             <div class="mb-2">
@@ -83,32 +94,40 @@ end %>
   </div>
 </div>
 
-<div class="card p-3 mt-5">
-  <h2 class="h4 mb-3">Avis</h2>
+<%# Reviews section: reuse card-trip styling as a container (without image). %>
+<div class="card-trip mt-5">
+  <%# Card content area: title + average rating + latest reviews list. %>
+  <div class="card-trip-infos w-100 align-items-start">
+    <div class="w-100">
+      <h2 class="h4 mb-3">Avis</h2>
 
-  <% if @reviews_count.to_i.positive? %>
-    <div class="d-flex align-items-center gap-2">
-      <span class="review-stars"><%= stars_for_rating(@average_rating) %></span>
-      <span class="text-muted">
-        <%= number_with_precision(@average_rating.to_f, precision: 1) %>/5 · <%= pluralize(@reviews_count, "avis") %>
-      </span>
-    </div>
-
-    <div class="mt-3">
-      <% @latest_reviews.each do |review| %>
-        <div class="card p-3 mb-2">
-          <div class="d-flex justify-content-between align-items-center">
-            <div>
-              <strong><%= review.user.display_name %></strong>
-              <small class="text-muted">· <%= review.created_at.in_time_zone.strftime("%d/%m/%Y") %></small>
-            </div>
-            <span class="review-stars"><%= stars_for_rating(review.rating) %></span>
-          </div>
-          <div class="mt-2"><%= simple_format(review.comment) %></div>
+      <% if @reviews_count.to_i.positive? %>
+        <div class="d-flex align-items-center gap-2">
+          <span class="review-stars"><%= stars_for_rating(@average_rating) %></span>
+          <span class="text-muted">
+            <%= number_with_precision(@average_rating.to_f, precision: 1) %>/5 · <%= pluralize(@reviews_count, "avis") %>
+          </span>
         </div>
+
+        <%# Latest reviews list: we show the 2 most recent reviews for this room. %>
+        <div class="mt-3">
+          <% @latest_reviews.each do |review| %>
+            <%# Single review card: author + date + stars + comment. %>
+            <div class="card p-3 mb-2">
+              <div class="d-flex justify-content-between align-items-center">
+                <div>
+                  <strong><%= review.user.display_name %></strong>
+                  <small class="text-muted">· <%= review.created_at.in_time_zone.strftime("%d/%m/%Y") %></small>
+                </div>
+                <span class="review-stars"><%= stars_for_rating(review.rating) %></span>
+              </div>
+              <div class="mt-2"><%= simple_format(review.comment) %></div>
+            </div>
+          <% end %>
+        </div>
+      <% else %>
+        <p class="text-muted mb-0">Aucun avis pour le moment.</p>
       <% end %>
     </div>
-  <% else %>
-    <p class="text-muted mb-0">Aucun avis pour le moment.</p>
-  <% end %>
+  </div>
 </div>
