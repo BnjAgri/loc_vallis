@@ -15,8 +15,42 @@ require "uri"
 require "json"
 
 puts "Seeding…"
-
 if Rails.env.development?
+  PASSWORD = "password123".freeze
+  TOTO_PASSWORD = "toto".freeze
+  CURRENCY = "EUR".freeze
+
+  FALLBACK_ROOM_IMAGE_URL = "https://raw.githubusercontent.com/lewagon/fullstack-images/master/uikit/breakfast.jpg".freeze
+  ROOM_IMAGE_URLS = [
+    "https://images.unsplash.com/photo-1505691938895-1758d7feb511?auto=format&fit=crop&w=1600&q=80",
+    "https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?auto=format&fit=crop&w=1600&q=80",
+    "https://images.unsplash.com/photo-1551887373-6a6d5e5d2f2f?auto=format&fit=crop&w=1600&q=80",
+    "https://images.unsplash.com/photo-1560448070-c26f9bba7ed5?auto=format&fit=crop&w=1600&q=80",
+    "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?auto=format&fit=crop&w=1600&q=80",
+    "https://images.unsplash.com/photo-1512918728675-ed5a9ecdebfd?auto=format&fit=crop&w=1600&q=80"
+  ].freeze
+
+  def seeded_room_image_url
+    ROOM_IMAGE_URLS.sample || FALLBACK_ROOM_IMAGE_URL
+  end
+
+  def fake_stripe_ids
+    {
+      stripe_checkout_session_id: "cs_test_#{SecureRandom.hex(10)}",
+      stripe_payment_intent_id: "pi_test_#{SecureRandom.hex(10)}"
+    }
+  end
+
+  def create_booking!(room:, user:, start_date:, nights:)
+    Booking.create!(
+      room:,
+      user:,
+      start_date:,
+      end_date: start_date + nights
+    )
+  end
+
+  today = Date.current
 
   puts "Cleaning existing data (development only)…"
   Message.delete_all
@@ -26,158 +60,113 @@ if Rails.env.development?
   Room.delete_all
   User.delete_all
   Owner.delete_all
-end
 
-PASSWORD = "password123".freeze
-TOTO_PASSWORD = "toto".freeze
-CURRENCY = "EUR".freeze
+  owner = Owner.create!(email: "owner@toto.com", password: TOTO_PASSWORD, password_confirmation: TOTO_PASSWORD)
+  puts "Owner (fixed): #{owner.email} / #{TOTO_PASSWORD}"
 
-toto_user = User.find_or_create_by!(email: "user@toto.com") do |u|
-  u.password = TOTO_PASSWORD
-  u.password_confirmation = TOTO_PASSWORD
-end
-puts "User: #{toto_user.email} / #{TOTO_PASSWORD} (statut: user)"
+  users = []
+  fixed_user = User.create!(email: "user@toto.com", password: TOTO_PASSWORD, password_confirmation: TOTO_PASSWORD)
+  users << fixed_user
 
-toto_owner = Owner.find_or_create_by!(email: "owner@toto.com") do |o|
-  o.password = TOTO_PASSWORD
-  o.password_confirmation = TOTO_PASSWORD
-end
-puts "Owner: #{toto_owner.email} / #{TOTO_PASSWORD} (statut: owner)"
-
-FALLBACK_ROOM_IMAGE_URL = "https://raw.githubusercontent.com/lewagon/fullstack-images/master/uikit/breakfast.jpg".freeze
-
-# Small pool image URLs.
-ROOM_IMAGE_URLS = [
-  "https://images.unsplash.com/photo-1505691938895-1758d7feb511?auto=format&fit=crop&w=1600&q=80",
-  "https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?auto=format&fit=crop&w=1600&q=80",
-  "https://images.unsplash.com/photo-1551887373-6a6d5e5d2f2f?auto=format&fit=crop&w=1600&q=80",
-  "https://images.unsplash.com/photo-1560448070-c26f9bba7ed5?auto=format&fit=crop&w=1600&q=80",
-  "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?auto=format&fit=crop&w=1600&q=80",
-  "https://images.unsplash.com/photo-1512918728675-ed5a9ecdebfd?auto=format&fit=crop&w=1600&q=80"
-].freeze
-
-def seeded_room_image_url
-  ROOM_IMAGE_URLS.sample || FALLBACK_ROOM_IMAGE_URL
-end
-
-owner = Owner.find_or_create_by!(email: "owner@locvallis.test") do |o|
-  o.password = PASSWORD
-  o.password_confirmation = PASSWORD
-end
-
-puts "Owner: #{owner.email} / #{PASSWORD}"
-
-rooms = Room.where(owner_id: owner.id).order(:created_at).to_a
-needed = 2 - rooms.size
-needed.times do
-  rooms << Room.create!(
-    owner:,
-    name: Faker::Commerce.unique.product_name,
-    description: Faker::Lorem.paragraph(sentence_count: 2),
-    capacity: [1, 2].sample,
-    room_url: seeded_room_image_url
-  )
-end
-
-rooms = Room.where(owner_id: owner.id).order(:created_at).limit(2).to_a
-
-rooms.each do |room|
-  next if room.room_url.present?
-
-  room.update!(room_url: seeded_room_image_url)
-end
-
-puts "Rooms: #{rooms.map(&:name).join(", ")}"
-
-rooms.each do |room|
-  next if room.opening_periods.exists?
-
-  OpeningPeriod.create!(
-    room:,
-    # Allow seeding past and future bookings (useful for reviews demo).
-    start_date: Date.current - 180,
-    end_date: Date.current + 180,
-    nightly_price_cents: rand(8_000..18_000),
-    currency: CURRENCY
-  )
-end
-
-users = []
-5.times do
-  users << User.create!(
-    email: Faker::Internet.unique.email,
-    password: PASSWORD,
-    password_confirmation: PASSWORD
-  )
-end
-puts "Users: #{users.size} created (password: #{PASSWORD})"
-puts "user 1: #{users.first.email}, password: #{PASSWORD}"
-
-def create_booking!(room:, user:, start_date:, nights:)
-  Booking.create!(
-    room:,
-    user:,
-    start_date:,
-    end_date: start_date + nights
-  )
-end
-
-def fake_stripe_ids!
-  {
-    stripe_checkout_session_id: "cs_test_#{SecureRandom.hex(10)}",
-    stripe_payment_intent_id: "pi_test_#{SecureRandom.hex(10)}"
-  }
-end
-
-bookings = []
-
-# Create 8 non-overlapping bookings (4 per room)
-rooms.each_with_index do |room, room_index|
-  future_base = Date.current + 10 + (room_index * 60)
-  past_base = Date.current - 60 - (room_index * 60)
-
-  # 1) requested
-  bookings << create_booking!(room:, user: users.sample, start_date: future_base + 0, nights: 3)
-
-  # 2) approved_pending_payment
-  b2 = create_booking!(room:, user: users.sample, start_date: future_base + 7, nights: 2)
-  b2.approve!(by: owner)
-  bookings << b2
-
-  # 3) confirmed_paid (past stay -> review eligible)
-  b3 = create_booking!(room:, user: users.sample, start_date: past_base + 0, nights: 4)
-  b3.approve!(by: owner)
-  b3.update!(status: "confirmed_paid", **fake_stripe_ids!)
-  bookings << b3
-
-  # 4) refunded (past stay -> review eligible)
-  b4 = create_booking!(room:, user: users.sample, start_date: past_base + 10, nights: 2)
-  b4.approve!(by: owner)
-  b4.update!(status: "confirmed_paid", **fake_stripe_ids!)
-  b4.update!(
-    status: "refunded",
-    stripe_refund_id: "re_test_#{SecureRandom.hex(10)}",
-    refunded_at: Time.current
-  )
-  bookings << b4
-end
-
-puts "Bookings: #{bookings.size} created"
-
-# Reviews
-# Seed a few reviews so the room page can show average rating + latest comments.
-def seed_review_for!(booking)
-  Review.find_or_create_by!(booking: booking) do |review|
-    review.user = booking.user
-    review.rating = rand(4..5)
-    review.comment = Faker::Lorem.sentence(word_count: 16)
+  (1..7).each do |i|
+    users << User.create!(
+      email: "user#{i}@locvallis.test",
+      password: PASSWORD,
+      password_confirmation: PASSWORD
+    )
   end
-end
 
-reviewable_bookings = bookings.select do |b|
-  %w[confirmed_paid refunded].include?(b.status) && b.end_date.present? && b.end_date < Date.current
+  puts "Users: #{users.size} created"
+  puts "User (fixed): #{fixed_user.email} / #{TOTO_PASSWORD}"
+  puts "User sample: #{users[1].email} / #{PASSWORD}"
+
+  rooms = []
+  2.times do |i|
+    rooms << Room.create!(
+      owner:,
+      name: "Chambre #{i + 1}",
+      description: Faker::Lorem.paragraph(sentence_count: 2),
+      capacity: [1, 2, 3, 4].sample,
+      room_url: seeded_room_image_url
+    )
+  end
+  puts "Rooms: #{rooms.size} created"
+
+  rooms.each do |room|
+    OpeningPeriod.create!(
+      room:,
+      start_date: today - 200,
+      end_date: today + 200,
+      nightly_price_cents: rand(8_000..18_000),
+      currency: CURRENCY
+    )
+  end
+  puts "Opening periods: #{OpeningPeriod.count}"
+
+  bookings = []
+
+  rooms.each do |room|
+    # 1) requested (future)
+    bookings << create_booking!(room:, user: users.sample, start_date: today + 10, nights: 3)
+
+    # 2) approved_pending_payment (future)
+    b2 = create_booking!(room:, user: users.sample, start_date: today + 20, nights: 2)
+    b2.approve!(by: owner)
+    bookings << b2
+
+    # 3) confirmed_paid (past) -> review eligible
+    b3 = create_booking!(room:, user: users.sample, start_date: today - 30, nights: 4)
+    b3.approve!(by: owner)
+    b3.update!(status: "confirmed_paid", **fake_stripe_ids)
+    bookings << b3
+
+    # 4) refunded (past) -> review eligible
+    b4 = create_booking!(room:, user: users.sample, start_date: today - 20, nights: 2)
+    b4.approve!(by: owner)
+    b4.update!(status: "confirmed_paid", **fake_stripe_ids)
+    b4.mark_refunded!(refund_id: "re_test_#{SecureRandom.hex(10)}")
+    bookings << b4
+  end
+
+  puts "Bookings: #{bookings.size} created"
+
+  bookings.each_with_index do |booking, idx|
+    Message.create!(
+      booking:,
+      sender: booking.user,
+      body: Faker::Lorem.sentence(word_count: 10),
+      created_at: (3.days.ago + idx.minutes),
+      updated_at: (3.days.ago + idx.minutes)
+    )
+
+    Message.create!(
+      booking:,
+      sender: owner,
+      body: Faker::Lorem.sentence(word_count: 12),
+      created_at: (2.days.ago + idx.minutes),
+      updated_at: (2.days.ago + idx.minutes)
+    )
+
+    if idx.even?
+      booking.update!(owner_last_read_at: 4.days.ago, user_last_read_at: 1.day.ago)
+    else
+      booking.update!(owner_last_read_at: Time.current, user_last_read_at: Time.current)
+    end
+  end
+  puts "Messages: #{Message.count}"
+
+  reviewable = bookings.select { |b| b.end_date < today }
+  reviewable.first(4).each_with_index do |booking, idx|
+    Review.create!(
+      booking:,
+      user: booking.user,
+      rating: (5 - (idx % 2)),
+      comment: Faker::Lorem.paragraph(sentence_count: 2)
+    )
+  end
+  puts "Reviews: #{Review.count}"
+else
+  puts "Skipping demo seed data (development only)."
 end
-reviews = reviewable_bookings.first(4).map { |b| seed_review_for!(b) }
-puts "Reviews: #{reviews.size} created"
 
 puts "Done."
