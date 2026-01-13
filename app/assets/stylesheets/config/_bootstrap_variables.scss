@@ -7,16 +7,24 @@
 // General style
 $font-family-sans-serif: $body-font;
 $headings-font-family:   $headers-font;
-$body-bg:                $light-gray;
+$body-bg:                $lv-background;
 $font-size-base:         1rem;
 
 // Colors
-$body-color: $gray;
-$primary:    $blue;
-$success:    $green;
-$info:       $yellow;
+$body-color: $lv-text;
+$primary:    $lv-primary;
+$success:    $lv-accent;
+$info:       $lv-secondary;
 $danger:     $red;
-$warning:    $orange;
+$warning:    lighten($lv-primary, 10%);
+
+// Links
+$link-color: darken($lv-primary, 10%);
+$link-hover-color: darken($lv-primary, 20%);
+
+// Cards
+$card-bg: #fff;
+$card-border-color: rgba($lv-primary, 0.22);
 
 // Buttons & inputs' radius
 $border-radius-sm:            .0625rem;

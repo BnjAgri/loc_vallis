@@ -1,6 +1,22 @@
 // Define variables for your color scheme
 
-// For example:
+// --- Base palette (easy to swap)
+// Loc Vallis palette (ColorHunt): https://colorhunt.co/palette/f6f0d7c5d89d9cab8489986d
+$color1: #F6F0D7;
+$color2: #C5D89D;
+$color3: #9CAB84;
+$color4: #89986D;
+
+// Optional derived/semantic tokens (use these in components)
+$lv-background: $color1;
+$lv-surface: $color1;
+$lv-primary: $color4;
+$lv-secondary: $color3;
+$lv-accent: $color2;
+$lv-text: darken($color4, 35%);
+
+// --- Legacy / Bootstrap-friendly variables
+// Keep these around so existing components and Bootstrap overrides still compile.
 $red: #FD1015;
 $blue: #0D6EFD;
 $yellow: #FFC65A;
