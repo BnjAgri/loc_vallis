@@ -43,6 +43,7 @@ export default class extends Controller {
       inline: true,
       allowInput: false,
       clickOpens: false,
+      minDate: "today",
       dateFormat: "Y-m-d",
       altInput: true,
       altFormat: "d/m/Y",

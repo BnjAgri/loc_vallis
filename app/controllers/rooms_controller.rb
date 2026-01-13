@@ -9,14 +9,19 @@ class RoomsController < ApplicationController
   def show
     @room = Room.find(params[:id])
 
+    today = Date.current
     @enabled_ranges = @room.opening_periods
       .pluck(:start_date, :end_date)
       .map do |start_date, end_date|
+        start_date = [start_date, today].max
+        next if end_date <= start_date
+
         {
           from: start_date.to_s,
           to: (end_date - 1.day).to_s
         }
       end
+      .compact
 
     reserved_statuses = %w[approved_pending_payment confirmed_paid]
     @disabled_ranges = @room.bookings
