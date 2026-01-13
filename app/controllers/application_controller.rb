@@ -3,6 +3,7 @@ class ApplicationController < ActionController::Base
 
   before_action :configure_permitted_parameters, if: :devise_controller?
   before_action :set_owner_unread_conversations_count, if: :owner_signed_in?
+  before_action :set_user_unread_conversations_count, if: :user_signed_in?
 
   rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
 
@@ -27,6 +28,17 @@ class ApplicationController < ActionController::Base
       .joins(:messages)
       .where(messages: { sender_type: "User" })
       .where("messages.created_at > COALESCE(bookings.owner_last_read_at, ?)", Time.at(0))
+      .distinct
+      .count
+  end
+
+  def set_user_unread_conversations_count
+    bookings_scope = policy_scope(Booking)
+
+    @user_unread_conversations_count = bookings_scope
+      .joins(:messages)
+      .where(messages: { sender_type: "Owner" })
+      .where("messages.created_at > COALESCE(bookings.user_last_read_at, ?)", Time.at(0))
       .distinct
       .count
   end

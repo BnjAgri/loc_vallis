@@ -21,6 +21,8 @@ Rails.application.routes.draw do
     end
   end
 
+  get "inbox", to: "inbox#index"
+
   post "stripe/webhook", to: "stripe_webhooks#create"
 
   namespace :admin do
