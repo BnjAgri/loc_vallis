@@ -4,7 +4,16 @@ module Admin
     before_action :expire_overdue_bookings
 
     def index
-      @bookings = policy_scope(Booking).order(created_at: :desc)
+      bookings_scope = policy_scope(Booking)
+
+      @bookings = bookings_scope.includes(:room, :user).order(created_at: :desc)
+      @rooms = policy_scope(Room).includes(:opening_periods).order(created_at: :desc)
+      @recent_messages = Message
+        .joins(:booking)
+        .merge(bookings_scope)
+        .includes(:sender, booking: %i[room user])
+        .order(created_at: :desc)
+        .limit(10)
     end
 
     def show

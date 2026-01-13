@@ -1,11 +1,130 @@
-<h1>Bookings (Owner)</h1>
+<div class="container py-4">
+  <div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-4">
+    <div>
+      <h1 class="h3 mb-0">Tableau de bord</h1>
+      <div class="text-muted">Messages, réservations et gestion des hébergements</div>
+    </div>
 
-<ul>
-  <% @bookings.each do |booking| %>
-    <li>
-      <%= link_to "Booking ##{booking.id}", admin_booking_path(booking) %>
-      — <%= booking.status %>
-      — <%= booking.start_date %> → <%= booking.end_date %>
-    </li>
-  <% end %>
-</ul>
+    <div class="d-flex gap-2">
+      <%= link_to "Nouvel hébergement", new_admin_room_path, class: "btn btn-primary" %>
+      <%= link_to "Gérer les hébergements", admin_rooms_path, class: "btn btn-outline-primary" %>
+    </div>
+  </div>
+
+  <div class="row g-4">
+    <div class="col-12 col-lg-4">
+      <div class="card h-100">
+        <div class="card-body">
+          <div class="d-flex justify-content-between align-items-center mb-2">
+            <h2 class="h5 mb-0">Messages</h2>
+          </div>
+
+          <% if @recent_messages.blank? %>
+            <p class="text-muted mb-0">Aucun message pour le moment.</p>
+          <% else %>
+            <div class="list-group list-group-flush">
+              <% @recent_messages.each do |message| %>
+                <% booking = message.booking %>
+                <%= link_to admin_booking_path(booking), class: "list-group-item list-group-item-action" do %>
+                  <div class="d-flex justify-content-between align-items-baseline gap-2">
+                    <strong class="text-truncate"><%= message.sender&.respond_to?(:email) ? message.sender.email : "—" %></strong>
+                    <small class="text-muted"><%= message.created_at.in_time_zone.strftime("%d/%m %H:%M") %></small>
+                  </div>
+                  <div class="text-muted small">
+                    <%= booking.room&.name %> · Booking #<%= booking.id %>
+                  </div>
+                  <div><%= truncate(message.body.to_s, length: 90) %></div>
+                <% end %>
+              <% end %>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-12 col-lg-8">
+      <div class="card h-100">
+        <div class="card-body">
+          <div class="d-flex justify-content-between align-items-center mb-3">
+            <h2 class="h5 mb-0">Réservations</h2>
+          </div>
+
+          <% if @bookings.blank? %>
+            <p class="text-muted mb-0">Aucune réservation pour le moment.</p>
+          <% else %>
+            <div class="table-responsive">
+              <table class="table align-middle mb-0">
+                <thead>
+                  <tr>
+                    <th>Booking</th>
+                    <th>Hébergement</th>
+                    <th>Client</th>
+                    <th>Dates</th>
+                    <th>Statut</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <% @bookings.each do |booking| %>
+                    <tr>
+                      <td><%= link_to "##{booking.id}", admin_booking_path(booking) %></td>
+                      <td><%= booking.room&.name %></td>
+                      <td class="text-truncate" style="max-width: 220px;"><%= booking.user&.email %></td>
+                      <td><%= booking.start_date %> → <%= booking.end_date %></td>
+                      <td><span class="badge text-bg-light"><%= booking.status %></span></td>
+                    </tr>
+                  <% end %>
+                </tbody>
+              </table>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card mt-4">
+    <div class="card-body">
+      <div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-3">
+        <h2 class="h5 mb-0">Gestion des hébergements</h2>
+        <%= link_to "Nouvel hébergement", new_admin_room_path, class: "btn btn-primary btn-sm" %>
+      </div>
+
+      <% if @rooms.blank? %>
+        <p class="text-muted mb-0">Aucun hébergement pour le moment.</p>
+      <% else %>
+        <div class="table-responsive">
+          <table class="table align-middle mb-0">
+            <thead>
+              <tr>
+                <th>Hébergement</th>
+                <th>Capacité</th>
+                <th>Périodes</th>
+                <th class="text-end">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% @rooms.each do |room| %>
+                <tr>
+                  <td><%= link_to room.name, admin_room_path(room) %></td>
+                  <td><%= room.capacity.presence || "—" %></td>
+                  <td><%= room.opening_periods.size %></td>
+                  <td class="text-end">
+                    <div class="d-inline-flex flex-wrap gap-2">
+                      <%= link_to "Tarifs & périodes", admin_room_path(room), class: "btn btn-outline-primary btn-sm" %>
+                      <%= link_to "Éditer", edit_admin_room_path(room), class: "btn btn-outline-secondary btn-sm" %>
+                      <%= button_to "Supprimer",
+                            admin_room_path(room),
+                            method: :delete,
+                            data: { turbo_confirm: "Supprimer cet hébergement ?" },
+                            class: "btn btn-outline-danger btn-sm" %>
+                    </div>
+                  </td>
+                </tr>
+              <% end %>
+            </tbody>
+          </table>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>
