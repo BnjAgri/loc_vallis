@@ -16,7 +16,7 @@ end %>
   {
     sender: sender_label_for.call(m),
     body: m.body,
-    created_at: m.created_at.to_s
+    created_at: m.created_at.in_time_zone.strftime("%d/%m/%Y %H:%M")
   }
 end %>
 
@@ -41,7 +41,7 @@ end %>
         <li>
           <strong><%= sender_label_for.call(message) %>:</strong>
           <%= message.body %>
-          <small>(<%= message.created_at %>)</small>
+          <small>(<%= message.created_at.in_time_zone.strftime("%d/%m/%Y %H:%M") %>)</small>
         </li>
       <% end %>
     </ul>

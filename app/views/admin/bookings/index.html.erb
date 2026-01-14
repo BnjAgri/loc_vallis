@@ -58,6 +58,7 @@
         <div class="card-body">
           <div class="d-flex justify-content-between align-items-center mb-3">
             <h2 class="h5 mb-0">Réservations</h2>
+            <%= link_to "Gérer les réservations", admin_rooms_path, class: "btn btn-outline-primary btn-sm" %>
           </div>
 
           <% if @bookings.blank? %>

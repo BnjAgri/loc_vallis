@@ -3,7 +3,7 @@ class MessagesController < ApplicationController
     authenticate_actor!
 
     booking = Booking.find(params[:booking_id])
-    authorize booking
+    authorize booking, :show?
 
     message = booking.messages.build(message_params)
     message.sender = current_owner || current_user

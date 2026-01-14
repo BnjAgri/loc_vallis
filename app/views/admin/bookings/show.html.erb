@@ -1,21 +1,40 @@
-<h1>Booking #<%= @booking.id %> (Owner)</h1>
+<div class="container py-4">
+  <div class="row g-4">
+    <div class="col-12 col-lg-5">
+      <div class="card h-100">
+        <div class="card-body">
+          <h1 class="h4 mb-3">Réservation #<%= @booking.id %></h1>
 
-<p>Guest: <%= @booking.user.email %></p>
-<p>Status: <strong><%= booking_status_label(@booking.status) %></strong></p>
-<p>Dates: <%= @booking.start_date %> → <%= @booking.end_date %> (<%= @booking.nights %> nights)</p>
-<p>Total: <%= @booking.total_price_cents %> <%= @booking.currency %></p>
+          <p class="mb-1">Voyageur : <%= @booking.user.email %></p>
+          <p class="mb-1">Statut : <strong><%= booking_status_label(@booking.status) %></strong></p>
+          <p class="mb-1">Dates : <%= @booking.start_date.strftime("%d/%m/%Y") %> → <%= @booking.end_date.strftime("%d/%m/%Y") %> (<%= @booking.nights %> nuits)</p>
+          <p class="mb-3">Total : <%= @booking.total_price_cents %> <%= @booking.currency %></p>
 
-<% if policy(@booking).approve? %>
-  <%= button_to "Approve", approve_admin_booking_path(@booking), method: :patch, class: "btn btn-success" %>
-  <%= button_to "Decline", decline_admin_booking_path(@booking), method: :patch, class: "btn btn-outline-danger" %>
-<% end %>
+          <div class="d-flex flex-wrap gap-2">
+            <% if policy(@booking).approve? %>
+              <%= button_to "Approuver", approve_admin_booking_path(@booking), method: :patch, class: "btn btn-success" %>
+              <%= button_to "Refuser", decline_admin_booking_path(@booking), method: :patch, class: "btn btn-outline-danger" %>
+            <% end %>
 
-<% if policy(@booking).cancel? %>
-  <%= button_to "Cancel", cancel_admin_booking_path(@booking), method: :patch, class: "btn btn-outline-danger" %>
-<% end %>
+            <% if policy(@booking).cancel? %>
+              <%= button_to "Annuler", cancel_admin_booking_path(@booking), method: :patch, class: "btn btn-outline-danger" %>
+            <% end %>
 
-<% if policy(@booking).refund? %>
-  <%= button_to "Refund", refund_admin_booking_path(@booking), method: :post, class: "btn btn-warning", data: { turbo_confirm: "Issue a refund for this booking?" } %>
-<% end %>
+            <% if policy(@booking).refund? %>
+              <%= button_to "Rembourser", refund_admin_booking_path(@booking), method: :post, class: "btn btn-warning", data: { turbo_confirm: "Effectuer un remboursement pour cette réservation ?" } %>
+            <% end %>
+          </div>
+        </div>
+      </div>
+    </div>
 
-<%= render "shared/messages", booking: @booking, messages: @messages %>
+    <div class="col-12 col-lg-7">
+      <div class="card h-100">
+        <div class="card-body">
+          <h2 class="h5 mb-3">Messagerie</h2>
+          <%= render "shared/messages", booking: @booking, messages: @messages %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

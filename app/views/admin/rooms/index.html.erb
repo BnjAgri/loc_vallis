@@ -11,12 +11,14 @@
   </div>
 
   <div class="d-flex flex-wrap gap-3 align-items-center mb-3">
-    <div class="form-check form-switch">
-      <input class="form-check-input" type="checkbox" role="switch" id="lv-toggle-combined" checked
-             data-admin-rooms-calendar-toggle-target="combinedToggle"
-             data-action="change->admin-rooms-calendar-toggle#toggleCombined">
-      <label class="form-check-label" for="lv-toggle-combined">Afficher la vue combinée</label>
-    </div>
+    <% if @rooms.size > 1 %>
+      <div class="form-check form-switch">
+        <input class="form-check-input" type="checkbox" role="switch" id="lv-toggle-combined" checked
+               data-admin-rooms-calendar-toggle-target="combinedToggle"
+               data-action="change->admin-rooms-calendar-toggle#toggleCombined">
+        <label class="form-check-label" for="lv-toggle-combined">Afficher la vue combinée</label>
+      </div>
+    <% end %>
     <div class="form-check form-switch">
       <input class="form-check-input" type="checkbox" role="switch" id="lv-toggle-per-room" checked
              data-admin-rooms-calendar-toggle-target="perRoomToggle"
@@ -49,35 +51,39 @@
   <% if @rooms.empty? %>
     <p class="text-muted">Aucune chambre pour le moment.</p>
   <% else %>
-    <div class="list-group">
+    <div class="row g-3">
       <% @rooms.each do |room| %>
         <% open_ranges = room.opening_periods.sort_by(&:start_date).map { |p| { from: p.start_date, to: (p.end_date - 1.day) } } %>
         <% booked_ranges = room.bookings.select { |b| Booking::RESERVED_STATUSES.include?(b.status) }.sort_by(&:start_date).map { |b| { from: b.start_date, to: (b.end_date - 1.day) } } %>
         <% pending_ranges = room.bookings.select { |b| b.status == "requested" }.sort_by(&:start_date).map { |b| { from: b.start_date, to: (b.end_date - 1.day) } } %>
 
-        <div class="list-group-item">
-          <div class="d-flex justify-content-between align-items-start gap-3">
-            <div>
-              <div class="fw-bold"><%= link_to room.name, admin_room_path(room), class: "text-decoration-none" %></div>
-              <% if room.capacity.present? %>
-                <small class="text-muted">Capacité : <%= room.capacity %></small>
-              <% end %>
-            </div>
-            <div class="d-flex gap-2">
-              <%= link_to "Modifier", edit_admin_room_path(room), class: "btn btn-sm btn-outline-primary" %>
-              <%= button_to "Supprimer",
-                    admin_room_path(room),
-                    method: :delete,
-                    data: { turbo_confirm: "Supprimer cette chambre ?" },
-                    class: "btn btn-sm btn-outline-danger" %>
-            </div>
-          </div>
+        <div class="col-12 col-md-6">
+          <div class="card h-100">
+            <div class="card-body">
+              <div class="d-flex justify-content-between align-items-start gap-3">
+                <div>
+                  <div class="fw-bold"><%= link_to room.name, admin_room_path(room), class: "text-decoration-none" %></div>
+                  <% if room.capacity.present? %>
+                    <small class="text-muted">Capacité : <%= room.capacity %></small>
+                  <% end %>
+                </div>
+                <div class="d-flex gap-2">
+                  <%= link_to "Modifier", edit_admin_room_path(room), class: "btn btn-sm btn-outline-primary" %>
+                  <%= button_to "Supprimer",
+                        admin_room_path(room),
+                        method: :delete,
+                        data: { turbo_confirm: "Supprimer cette chambre ?" },
+                        class: "btn btn-sm btn-outline-danger" %>
+                </div>
+              </div>
 
-          <div class="mt-3" data-admin-rooms-calendar-toggle-target="perRoomCalendar">
-            <input type="text" class="lv-calendar-input" data-controller="admin-room-calendar"
-                   data-admin-room-calendar-open-ranges-value="<%= open_ranges.to_json %>"
-                   data-admin-room-calendar-booked-ranges-value="<%= booked_ranges.to_json %>"
-                   data-admin-room-calendar-pending-ranges-value="<%= pending_ranges.to_json %>" />
+              <div class="mt-3" data-admin-rooms-calendar-toggle-target="perRoomCalendar">
+                <input type="text" class="lv-calendar-input" data-controller="admin-room-calendar"
+                       data-admin-room-calendar-open-ranges-value="<%= open_ranges.to_json %>"
+                       data-admin-room-calendar-booked-ranges-value="<%= booked_ranges.to_json %>"
+                       data-admin-room-calendar-pending-ranges-value="<%= pending_ranges.to_json %>" />
+              </div>
+            </div>
           </div>
         </div>
       <% end %>
