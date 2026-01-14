@@ -80,8 +80,8 @@
                       <td><%= link_to "##{booking.id}", admin_booking_path(booking) %></td>
                       <td><%= booking.room&.name %></td>
                       <td class="text-truncate" style="max-width: 220px;"><%= booking.user&.email %></td>
-                      <td><%= booking.start_date %> → <%= booking.end_date %></td>
-                      <td><span class="badge <%= booking_status_badge_class(booking.status) %>"><%= booking.status %></span></td>
+                      <td><%= booking.start_date.strftime("%d/%m/%Y") %> → <%= booking.end_date.strftime("%d/%m/%Y") %></td>
+                      <td><span class="badge <%= booking_status_badge_class(booking.status) %>"><%= booking_status_label(booking.status) %></span></td>
                     </tr>
                   <% end %>
                 </tbody>

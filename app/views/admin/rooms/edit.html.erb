@@ -1,12 +1,12 @@
 <div class="container py-4">
-  <h1 class="h3">Edit room</h1>
+  <h1 class="h3">Modifier la chambre</h1>
 
   <%= simple_form_for([:admin, @room]) do |f| %>
     <%= f.input :name %>
-    <%= f.input :capacity, hint: "Optional" %>
-    <%= f.input :photos, as: :file, input_html: { multiple: true }, hint: "Upload one or more images" %>
-    <%= f.input :room_url, as: :text, hint: "One image URL per line" %>
-    <%= f.submit "Update room", class: "btn btn-primary" %>
-    <%= link_to "Back", admin_room_path(@room), class: "btn btn-link" %>
+    <%= f.input :capacity, hint: "Optionnel" %>
+    <%= f.input :photos, as: :file, input_html: { multiple: true }, hint: "Importer une ou plusieurs images" %>
+    <%= f.input :room_url, as: :text, hint: "Une URL d'image par ligne" %>
+    <%= f.submit "Mettre à jour", class: "btn btn-primary" %>
+    <%= link_to "Retour", admin_room_path(@room), class: "btn btn-link" %>
   <% end %>
 </div>

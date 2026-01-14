@@ -33,6 +33,8 @@ class Booking < ApplicationRecord
     refunded
   ].freeze
 
+  RESERVED_STATUSES = %w[approved_pending_payment confirmed_paid].freeze
+
   validates :status, inclusion: { in: STATUSES }
   validates :start_date, :end_date, presence: true
   validates :total_price_cents, numericality: { only_integer: true, greater_than_or_equal_to: 0 }, allow_nil: true

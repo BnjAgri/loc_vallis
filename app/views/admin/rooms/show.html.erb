@@ -7,22 +7,40 @@
       <% end %>
     </div>
     <div>
-      <%= link_to "Edit", edit_admin_room_path(@room), class: "btn btn-outline-primary" %>
-      <%= button_to "Delete",
+      <%= link_to "Modifier", edit_admin_room_path(@room), class: "btn btn-outline-primary" %>
+      <%= button_to "Supprimer",
             admin_room_path(@room),
             method: :delete,
-            data: { turbo_confirm: "Delete this room?" },
+        data: { turbo_confirm: "Supprimer cette chambre ?" },
             class: "btn btn-outline-danger" %>
-      <%= link_to "Back", admin_rooms_path, class: "btn btn-link" %>
+      <%= link_to "Retour", admin_rooms_path, class: "btn btn-link" %>
     </div>
   </div>
 
   <hr />
 
-  <h2 class="h5">Opening periods</h2>
+  <h2 class="h5">Calendrier des disponibilités</h2>
+  <div class="lv-calendar-legend text-muted mb-2">
+    <span><span class="lv-calendar-dot lv-calendar-dot--open"></span>Ouvert</span>
+    <span><span class="lv-calendar-dot lv-calendar-dot--pending"></span>Demande (à approuver)</span>
+    <span><span class="lv-calendar-dot lv-calendar-dot--booked"></span>Réservé (en attente/payé)</span>
+  </div>
+
+  <% open_ranges = @opening_periods.map { |p| { from: p.start_date, to: (p.end_date - 1.day) } } %>
+  <% booked_ranges = @room.bookings.select { |b| Booking::RESERVED_STATUSES.include?(b.status) }.sort_by(&:start_date).map { |b| { from: b.start_date, to: (b.end_date - 1.day) } } %>
+    <% pending_ranges = @room.bookings.select { |b| b.status == "requested" }.sort_by(&:start_date).map { |b| { from: b.start_date, to: (b.end_date - 1.day) } } %>
+
+  <div class="mb-4">
+    <input type="text" class="lv-calendar-input" data-controller="admin-room-calendar"
+           data-admin-room-calendar-open-ranges-value="<%= open_ranges.to_json %>"
+           data-admin-room-calendar-booked-ranges-value="<%= booked_ranges.to_json %>"
+           data-admin-room-calendar-pending-ranges-value="<%= pending_ranges.to_json %>" />
+  </div>
+
+  <h2 class="h5">Périodes d'ouverture</h2>
 
   <% if @opening_periods.empty? %>
-    <p class="text-muted">No opening periods yet.</p>
+    <p class="text-muted">Aucune période d'ouverture pour le moment.</p>
   <% else %>
     <div class="list-group mb-4">
       <% @opening_periods.each do |period| %>
@@ -31,10 +49,10 @@
             <div class="fw-bold"><%= period.start_date %> → <%= period.end_date %></div>
             <small class="text-muted"><%= period.nightly_price_cents %> <%= period.currency %> / night</small>
           </div>
-          <%= button_to "Remove",
+              <%= button_to "Retirer",
                 admin_room_opening_period_path(@room, period),
                 method: :delete,
-                data: { turbo_confirm: "Remove this opening period?" },
+                data: { turbo_confirm: "Retirer cette période d'ouverture ?" },
                 class: "btn btn-sm btn-outline-danger" %>
         </div>
       <% end %>
@@ -43,15 +61,15 @@
 
   <div class="card">
     <div class="card-body">
-      <h3 class="h6">Add opening period</h3>
+      <h3 class="h6">Ajouter une période d'ouverture</h3>
       <%= simple_form_for([:admin, @room, @opening_period]) do |f| %>
         <div class="row">
           <div class="col-md-3"><%= f.input :start_date, as: :string, input_html: { type: "text", data: { controller: "flatpickr" } } %></div>
           <div class="col-md-3"><%= f.input :end_date, as: :string, input_html: { type: "text", data: { controller: "flatpickr" } } %></div>
-          <div class="col-md-3"><%= f.input :nightly_price_cents, label: "Nightly price (cents)" %></div>
+          <div class="col-md-3"><%= f.input :nightly_price_cents, label: "Prix par nuit (centimes)" %></div>
           <div class="col-md-3"><%= f.input :currency %></div>
         </div>
-        <%= f.submit "Add period", class: "btn btn-primary" %>
+        <%= f.submit "Ajouter", class: "btn btn-primary" %>
       <% end %>
     </div>
   </div>

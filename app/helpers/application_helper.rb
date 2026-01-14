@@ -27,4 +27,25 @@ module ApplicationHelper
 			"text-bg-light"
 		end
 	end
+
+	def booking_status_label(status)
+		case status.to_s
+		when "requested"
+			"demande"
+		when "approved_pending_payment"
+			"approuvé, paiement en attente"
+		when "confirmed_paid"
+			"paiement confirmé"
+		when "declined"
+			"refusée"
+		when "canceled"
+			"annulée"
+		when "expired"
+			"expirée"
+		when "refunded"
+			"remboursée"
+		else
+			status.to_s
+		end
+	end
 end

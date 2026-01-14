@@ -1,0 +1,59 @@
+.lv-calendar-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.lv-calendar-input {
+  display: none;
+}
+
+.lv-calendar-dot {
+  display: inline-block;
+  width: 0.75rem;
+  height: 0.75rem;
+  border-radius: 50%;
+  margin-right: 0.4rem;
+  vertical-align: middle;
+}
+
+.lv-calendar-dot--open {
+  background: #d1e7dd;
+  border: 1px solid #0f5132;
+}
+
+.lv-calendar-dot--booked {
+  background: #f8d7da;
+  border: 1px solid #842029;
+}
+
+.lv-calendar-dot--pending {
+  background: #fff3cd;
+  border: 1px solid #664d03;
+}
+
+.flatpickr-calendar .flatpickr-day.lv-open-day {
+  background: #d1e7dd;
+  border-color: #badbcc;
+  color: #0f5132;
+}
+
+.flatpickr-calendar .flatpickr-day.lv-booked-day {
+  background: #f8d7da;
+  border-color: #f5c2c7;
+  color: #842029;
+}
+
+.flatpickr-calendar .flatpickr-day.lv-pending-day {
+  background: #fff3cd;
+  border-color: #ffecb5;
+  color: #664d03;
+}
+
+.flatpickr-day.lv-booked-day:hover,
+.flatpickr-day.lv-pending-day:hover,
+.flatpickr-day.lv-open-day:hover {
+  background: inherit;
+  border-color: inherit;
+}

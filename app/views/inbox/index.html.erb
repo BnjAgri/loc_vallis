@@ -60,7 +60,7 @@
                   <div class="text-muted small mt-1">
                     <%= booking.start_date %> → <%= booking.end_date %>
                     <span class="mx-1">·</span>
-                    <span class="badge <%= booking_status_badge_class(booking.status) %>"><%= booking.status %></span>
+                    <span class="badge <%= booking_status_badge_class(booking.status) %>"><%= booking_status_label(booking.status) %></span>
                   </div>
 
                   <div class="mt-2">

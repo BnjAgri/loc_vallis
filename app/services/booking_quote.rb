@@ -10,8 +10,6 @@
 #
 # Retourne un `Result` (struct) avec `ok?` + attributs métier ou une `error` lisible.
 class BookingQuote
-  RESERVED_STATUSES = %w[approved_pending_payment confirmed_paid].freeze
-
   Result = Struct.new(
     :ok?,
     :opening_period,
@@ -77,7 +75,7 @@ class BookingQuote
   def overlaps_reserved_booking?
     Booking
       .where(room_id: room.id)
-      .where(status: RESERVED_STATUSES)
+      .where(status: Booking::RESERVED_STATUSES)
       .where("start_date < ? AND end_date > ?", end_date, start_date)
       .exists?
   end

@@ -3,11 +3,40 @@ module Admin
     before_action :authenticate_owner!
 
     def index
-      @rooms = policy_scope(Room).order(:created_at)
+      @rooms = policy_scope(Room).includes(:opening_periods, :bookings).order(:created_at)
+
+      open_sets = @rooms.map do |room|
+        DateRangeSet.from_records(room.opening_periods, start_attr: :start_date, end_attr: :end_date, end_exclusive: true)
+      end
+
+      booked_set = DateRangeSet.from_records(
+        @rooms.flat_map { |room| room.bookings.select { |b| Booking::RESERVED_STATUSES.include?(b.status) } },
+        start_attr: :start_date,
+        end_attr: :end_date,
+        end_exclusive: true
+      )
+
+      pending_set = DateRangeSet.from_records(
+        @rooms.flat_map { |room| room.bookings.select { |b| b.status == "requested" } },
+        start_attr: :start_date,
+        end_attr: :end_date,
+        end_exclusive: true
+      )
+
+      @combined_open_ranges = if open_sets.empty?
+        []
+      else
+        combined_open = open_sets.reduce { |acc, set| acc.intersect(set) }
+        combined_open.subtract(booked_set).to_range_hashes
+      end
+
+      @combined_booked_ranges = booked_set.to_range_hashes
+
+      @combined_pending_ranges = pending_set.to_range_hashes
     end
 
     def show
-      @room = policy_scope(Room).find(params[:id])
+      @room = policy_scope(Room).includes(:opening_periods, :bookings).find(params[:id])
       authorize @room
 
       @opening_period = OpeningPeriod.new(room: @room, currency: "EUR")
