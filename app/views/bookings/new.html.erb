@@ -1,4 +1,4 @@
-<h1>Request booking for <%= @room.name %></h1>
+<h1>Demande de réservation pour <%= @room.name %></h1>
 
 <%= form_with model: [@room, @booking] do |f| %>
   <% if @booking.errors.any? %>

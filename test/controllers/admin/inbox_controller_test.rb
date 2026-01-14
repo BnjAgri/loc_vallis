@@ -61,10 +61,10 @@ class Admin::InboxControllerTest < ActionDispatch::IntegrationTest
     get admin_inbox_path
     assert_response :success
 
-    assert_includes @response.body, "Booking ##{@booking.id}"
+    assert_includes @response.body, "Réservation ##{@booking.id}"
     assert_includes @response.body, "Room inbox"
 
-    refute_includes @response.body, "Booking ##{@other_booking.id}"
+    refute_includes @response.body, "Réservation ##{@other_booking.id}"
     refute_includes @response.body, "Other room"
   end
 
@@ -72,7 +72,7 @@ class Admin::InboxControllerTest < ActionDispatch::IntegrationTest
     get admin_inbox_path(filter: "unread")
     assert_response :success
 
-    assert_includes @response.body, "Booking ##{@booking.id}"
-    refute_includes @response.body, "Booking ##{@read_booking.id}"
+    assert_includes @response.body, "Réservation ##{@booking.id}"
+    refute_includes @response.body, "Réservation ##{@read_booking.id}"
   end
 end

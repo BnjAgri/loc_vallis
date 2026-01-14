@@ -54,17 +54,17 @@ class InboxControllerTest < ActionDispatch::IntegrationTest
     get inbox_path
     assert_response :success
 
-    assert_includes @response.body, "Booking ##{@booking.id}"
+    assert_includes @response.body, "Réservation ##{@booking.id}"
     assert_includes @response.body, "Room user inbox"
 
-    refute_includes @response.body, "Booking ##{@other_booking.id}"
+    refute_includes @response.body, "Réservation ##{@other_booking.id}"
   end
 
   test "inbox filter unread shows only unread conversations" do
     get inbox_path(filter: "unread")
     assert_response :success
 
-    assert_includes @response.body, "Booking ##{@booking.id}"
-    refute_includes @response.body, "Booking ##{@read_booking.id}"
+    assert_includes @response.body, "Réservation ##{@booking.id}"
+    refute_includes @response.body, "Réservation ##{@read_booking.id}"
   end
 end

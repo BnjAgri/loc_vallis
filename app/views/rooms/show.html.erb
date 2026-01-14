@@ -8,7 +8,7 @@ end %>
 
 <% min_period = @room.opening_periods.order(:nightly_price_cents).first %>
 
-<%# Layout header: 2-column grid (left = room card, right = booking/date picker sidebar). %>
+<%# Layout header: 2-column grid (left = room card, right = réservation/date picker sidebar). %>
 <div class="row g-4 align-items-start room-show-header">
   <%# Left column: main room presentation card (image + title + meta + starting price). %>
   <div class="col-12 col-lg">
@@ -38,14 +38,14 @@ end %>
     </div>
   </div>
 
-  <%# Right column: fixed-width sidebar (desktop) for date selection + booking price summary. %>
+  <%# Right column: fixed-width sidebar (desktop) for date selection + réservation price summary. %>
   <div class="col-12 col-lg-auto ms-lg-auto pe-lg-0 room-show-datepicker-col">
     <%# Wrapper used to control the sidebar width and flush it to the right edge. %>
     <div class="room-show-datepicker">
       <%# Short instruction text for the user. %>
       <p class="text-muted mb-2">Sélectionnez vos dates pour afficher le total et réserver.</p>
 
-      <%# Booking summary container: listens to calendar events and updates the right panel. %>
+      <%# Réservation summary container: listens to calendar events and updates the right panel. %>
       <div
         class="row"
         data-controller="booking-summary"

@@ -1,12 +1,12 @@
 <div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-3">
-  <h1 class="h3 mb-0">My booking requests</h1>
+  <h1 class="h3 mb-0">Mes demandes de réservation</h1>
   <%= link_to "Inbox", inbox_path, class: "btn btn-outline-primary" %>
 </div>
 
 <ul>
   <% @bookings.each do |booking| %>
     <li>
-      <%= link_to "Booking ##{booking.id}", booking_path(booking) %>
+      <%= link_to "Réservation ##{booking.id}", booking_path(booking) %>
       — <%= booking_status_label(booking.status) %>
       — <%= booking.start_date %> → <%= booking.end_date %>
     </li>
