@@ -10,6 +10,7 @@ class User < ApplicationRecord
   has_many :reviews, dependent: :destroy
 
   def display_name
-    email.to_s.split("@").first.presence || "Guest"
+    full_name = [first_name, last_name].map { |s| s.to_s.strip.presence }.compact.join(" ").presence
+    full_name || email.to_s.split("@").first.presence || "Guest"
   end
 end
