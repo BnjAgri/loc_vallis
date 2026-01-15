@@ -24,6 +24,18 @@ module Admin
       opening_period = room.opening_periods.find(params[:id])
       authorize opening_period
 
+      blocking_statuses = Booking::RESERVED_STATUSES + ["requested"]
+      has_upcoming_blocking_bookings = room.bookings
+        .where(status: blocking_statuses)
+        .where("end_date > ?", Date.current)
+        .where("start_date < ? AND end_date > ?", opening_period.end_date, opening_period.start_date)
+        .exists?
+
+      if has_upcoming_blocking_bookings
+        redirect_to admin_room_path(room), alert: "Réservations à venir, suppression impossible"
+        return
+      end
+
       opening_period.destroy
       redirect_to admin_room_path(room), notice: "Opening period removed."
     end

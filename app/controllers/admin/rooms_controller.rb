@@ -23,12 +23,13 @@ module Admin
         end_exclusive: true
       )
 
-      @combined_open_ranges = if open_sets.empty?
-        []
-      else
-        combined_open = open_sets.reduce { |acc, set| acc.intersect(set) }
-        combined_open.subtract(booked_set).to_range_hashes
-      end
+      @combined_open_ranges =
+        if open_sets.empty?
+          []
+        else
+          combined_open = open_sets.reduce { |acc, set| acc.intersect(set) }
+          combined_open.subtract(booked_set).to_range_hashes
+        end
 
       @combined_booked_ranges = booked_set.to_range_hashes
 
@@ -79,6 +80,17 @@ module Admin
     def destroy
       @room = policy_scope(Room).find(params[:id])
       authorize @room
+
+      blocking_statuses = Booking::RESERVED_STATUSES + ["requested"]
+      has_upcoming_blocking_bookings = @room.bookings
+        .where(status: blocking_statuses)
+        .where("end_date > ?", Date.current)
+        .exists?
+
+      if has_upcoming_blocking_bookings
+        redirect_to admin_room_path(@room), alert: "Réservations à venir, suppression impossible"
+        return
+      end
 
       @room.destroy!
       redirect_to admin_rooms_path, notice: "Room deleted."
