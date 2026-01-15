@@ -39,6 +39,14 @@
   color: #0f5132;
 }
 
+.flatpickr-calendar .flatpickr-day.lv-open-day.flatpickr-disabled {
+  background: #d1e7dd;
+  border-color: #badbcc;
+  color: #0f5132;
+  opacity: 1;
+  cursor: not-allowed;
+}
+
 .flatpickr-calendar .flatpickr-day.lv-booked-day {
   background: #f8d7da;
   border-color: #f5c2c7;
