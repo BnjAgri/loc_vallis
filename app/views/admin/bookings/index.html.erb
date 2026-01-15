@@ -10,10 +10,7 @@
       </div>
     </div>
 
-    <div class="d-flex gap-2">
-      <%= link_to "Nouvel hébergement", new_admin_room_path, class: "btn btn-primary" %>
-      <%= link_to "Gérer les hébergements", admin_rooms_path, class: "btn btn-outline-primary" %>
-    </div>
+    <div class="d-flex gap-2"></div>
   </div>
 
   <div class="row g-4">
@@ -54,6 +51,46 @@
     </div>
 
     <div class="col-12 col-lg-8">
+      <div class="card mb-4">
+        <div class="card-body">
+          <div class="d-flex flex-wrap justify-content-between align-items-center gap-2">
+            <div>
+              <h2 class="h5 mb-0">Gérer les chambres</h2>
+              <div class="text-muted small">Créer, éditer, tarifs & périodes d'ouverture</div>
+            </div>
+
+            <div class="d-flex flex-wrap gap-2">
+              <%= link_to "Voir les chambres", admin_rooms_path, class: "btn btn-outline-primary btn-sm" %>
+              <%= link_to "Créer une chambre", new_admin_room_path, class: "btn btn-primary btn-sm" %>
+            </div>
+          </div>
+
+          <hr class="my-3" />
+
+          <% if @rooms.blank? %>
+            <p class="text-muted mb-0">Aucune chambre pour le moment.</p>
+          <% else %>
+            <div class="list-group list-group-flush">
+              <% @rooms.each do |room| %>
+                <div class="list-group-item d-flex flex-wrap justify-content-between align-items-center gap-2">
+                  <div class="fw-semibold"><%= room.name %></div>
+
+                  <div class="d-inline-flex flex-wrap gap-2">
+                    <%= link_to "Planning", admin_room_path(room), class: "btn btn-outline-primary btn-sm" %>
+                    <%= link_to "Modifier", edit_admin_room_path(room), class: "btn btn-outline-secondary btn-sm" %>
+                    <%= button_to "Supprimer",
+                          admin_room_path(room),
+                          method: :delete,
+                          data: { turbo_confirm: "Supprimer cette chambre ?" },
+                          class: "btn btn-warning btn-sm" %>
+                  </div>
+                </div>
+              <% end %>
+            </div>
+          <% end %>
+        </div>
+      </div>
+
       <div class="card h-100">
         <div class="card-body">
           <div class="d-flex justify-content-between align-items-center mb-3">
@@ -94,57 +131,4 @@
     </div>
   </div>
 
-  <div class="card mt-4">
-    <div class="card-body">
-      <div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-3">
-        <h2 class="h5 mb-0">Gestion des hébergements</h2>
-        <%= link_to "Nouvel hébergement", new_admin_room_path, class: "btn btn-primary btn-sm" %>
-      </div>
-
-      <% if @rooms.blank? %>
-        <p class="text-muted mb-0">Aucun hébergement pour le moment.</p>
-      <% else %>
-        <div class="table-responsive">
-          <table class="table align-middle mb-0">
-            <thead>
-              <tr>
-                <th>Hébergement</th>
-                <th>Capacité</th>
-                <th>Périodes</th>
-                <th class="text-end">Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              <% @rooms.each do |room| %>
-                <% min_period = room.opening_periods.min_by(&:nightly_price_cents) %>
-                <tr>
-                  <td><%= link_to room.name, admin_room_path(room) %></td>
-                  <td><%= room.capacity.presence || "—" %></td>
-                  <td>
-                    <%= room.opening_periods.size %>
-                    <% if min_period.present? %>
-                      <div class="text-muted small">
-                        À partir de <%= number_to_currency(min_period.nightly_price_cents / 100.0, unit: "#{min_period.currency.upcase} ", format: "%u%n") %>/nuit
-                      </div>
-                    <% end %>
-                  </td>
-                  <td class="text-end">
-                    <div class="d-inline-flex flex-wrap gap-2">
-                      <%= link_to "Tarifs & périodes", admin_room_path(room), class: "btn btn-outline-primary btn-sm" %>
-                      <%= link_to "Éditer", edit_admin_room_path(room), class: "btn btn-outline-secondary btn-sm" %>
-                      <%= button_to "Supprimer",
-                            admin_room_path(room),
-                            method: :delete,
-                            data: { turbo_confirm: "Supprimer cet hébergement ?" },
-                            class: "btn btn-outline-danger btn-sm" %>
-                    </div>
-                  </td>
-                </tr>
-              <% end %>
-            </tbody>
-          </table>
-        </div>
-      <% end %>
-    </div>
-  </div>
 </div>
