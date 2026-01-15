@@ -43,7 +43,7 @@ module Admin
     private
 
     def opening_period_params
-      params.require(:opening_period).permit(:start_date, :end_date, :nightly_price_cents, :currency)
+      params.require(:opening_period).permit(:start_date, :end_date, :nightly_price_euros, :currency)
     end
   end
 end

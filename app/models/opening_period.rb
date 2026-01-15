@@ -9,12 +9,35 @@
 class OpeningPeriod < ApplicationRecord
   belongs_to :room
 
+  attr_accessor :nightly_price_euros
+
+  before_validation :populate_nightly_price_cents_from_euros
+
   validates :start_date, :end_date, :nightly_price_cents, :currency, presence: true
   validates :nightly_price_cents, numericality: { only_integer: true, greater_than: 0 }
   validate :end_date_after_start_date
   validate :no_overlapping_periods
 
   private
+
+  def populate_nightly_price_cents_from_euros
+    return if nightly_price_euros.blank?
+
+    raw = nightly_price_euros.to_s.strip.tr(",", ".")
+
+    euros = begin
+      BigDecimal(raw)
+    rescue ArgumentError
+      nil
+    end
+
+    if euros.nil?
+      errors.add(:nightly_price_euros, "is invalid")
+      return
+    end
+
+    self.nightly_price_cents = (euros * 100).round(0).to_i
+  end
 
   def end_date_after_start_date
     return if start_date.blank? || end_date.blank?

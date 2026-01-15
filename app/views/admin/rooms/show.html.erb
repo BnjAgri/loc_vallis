@@ -64,10 +64,10 @@
       <h3 class="h6">Ajouter une période d'ouverture</h3>
       <%= simple_form_for([:admin, @room, @opening_period]) do |f| %>
         <div class="row">
-          <div class="col-md-3"><%= f.input :start_date, as: :string, input_html: { type: "text", data: { controller: "flatpickr", "flatpickr-open-ranges-value": open_ranges.to_json } } %></div>
-          <div class="col-md-3"><%= f.input :end_date, as: :string, input_html: { type: "text", data: { controller: "flatpickr", "flatpickr-open-ranges-value": open_ranges.to_json } } %></div>
-          <div class="col-md-3"><%= f.input :nightly_price_cents, label: "Prix par nuit (centimes)" %></div>
-          <div class="col-md-3"><%= f.input :currency %></div>
+          <div class="col-md-3"><%= f.input :start_date, as: :string, label: "Date de début", input_html: { type: "text", data: { controller: "flatpickr", "flatpickr-open-ranges-value": open_ranges.to_json } } %></div>
+          <div class="col-md-3"><%= f.input :end_date, as: :string, label: "Date de fin", input_html: { type: "text", data: { controller: "flatpickr", "flatpickr-open-ranges-value": open_ranges.to_json } } %></div>
+          <div class="col-md-3"><%= f.input :nightly_price_euros, label: "Prix par nuit (€)", input_html: { inputmode: "decimal", step: "0.01", min: 0 } %></div>
+          <div class="col-md-3"><%= f.input :currency, label: "Devise" %></div>
         </div>
         <%= f.submit "Ajouter", class: "btn btn-primary" %>
       <% end %>
