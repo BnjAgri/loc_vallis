@@ -37,10 +37,10 @@
            data-admin-room-calendar-pending-ranges-value="<%= pending_ranges.to_json %>" />
   </div>
 
-  <h2 class="h5">Périodes d'ouverture</h2>
+  <h2 class="h5"><%= t('admin.rooms.show.opening_periods_title') %></h2>
 
   <% if @opening_periods.empty? %>
-    <p class="text-muted">Aucune période d'ouverture pour le moment.</p>
+    <p class="text-muted"><%= t('admin.rooms.show.no_opening_periods') %></p>
   <% else %>
     <div class="list-group mb-4">
       <% @opening_periods.each do |period| %>
@@ -48,16 +48,16 @@
           <div>
             <div class="fw-bold"><%= period.start_date %> → <%= period.end_date %></div>
             <small class="text-muted">
-              <%= number_to_currency(period.nightly_price_cents.to_i / 100.0, unit: "€", format: "%n %u") %> / nuit
+              <%= format_price_euros(period.nightly_price_cents) %> <%= t('admin.rooms.show.per_night') %>
             </small>
           </div>
 
           <div class="d-inline-flex flex-wrap gap-2">
-            <%= link_to "Modifier cette période", edit_admin_room_opening_period_path(@room, period), class: "btn btn-sm btn-outline-secondary" %>
-            <%= button_to "Retirer",
+            <%= link_to t('admin.rooms.show.edit_period'), edit_admin_room_opening_period_path(@room, period), class: "btn btn-sm btn-outline-secondary" %>
+            <%= button_to t('admin.rooms.show.remove_period'),
                   admin_room_opening_period_path(@room, period),
                   method: :delete,
-                  data: { turbo_confirm: "Retirer cette période d'ouverture ?" },
+                  data: { turbo_confirm: t('admin.rooms.show.remove_period_confirm') },
                   class: "btn btn-sm btn-outline-danger" %>
           </div>
         </div>
@@ -67,15 +67,15 @@
 
   <div class="card">
     <div class="card-body">
-      <h3 class="h6">Ajouter une période d'ouverture</h3>
+      <h3 class="h6"><%= t('admin.rooms.show.add_period_title') %></h3>
       <%= simple_form_for([:admin, @room, @opening_period]) do |f| %>
         <div class="row">
-          <div class="col-md-3"><%= f.input :start_date, as: :string, label: "Date de début", input_html: { type: "text", data: { controller: "flatpickr", "flatpickr-open-ranges-value": open_ranges.to_json } } %></div>
-          <div class="col-md-3"><%= f.input :end_date, as: :string, label: "Date de fin", input_html: { type: "text", data: { controller: "flatpickr", "flatpickr-open-ranges-value": open_ranges.to_json } } %></div>
-          <div class="col-md-3"><%= f.input :nightly_price_euros, label: "Prix par nuit (€)", input_html: { inputmode: "decimal", step: "0.01", min: 0 } %></div>
-          <div class="col-md-3"><%= f.input :currency, label: "Devise" %></div>
+          <div class="col-md-3"><%= f.input :start_date, as: :string, label: t('admin.rooms.show.start_date'), input_html: { type: "text", data: { controller: "flatpickr", "flatpickr-open-ranges-value": open_ranges.to_json } } %></div>
+          <div class="col-md-3"><%= f.input :end_date, as: :string, label: t('admin.rooms.show.end_date'), input_html: { type: "text", data: { controller: "flatpickr", "flatpickr-open-ranges-value": open_ranges.to_json } } %></div>
+          <div class="col-md-3"><%= f.input :nightly_price_euros, label: t('admin.rooms.show.nightly_price'), input_html: { inputmode: "decimal", step: "0.01", min: 0 } %></div>
+          <div class="col-md-3"><%= f.input :currency, label: t('admin.rooms.show.currency') %></div>
         </div>
-        <%= f.submit "Ajouter", class: "btn btn-primary" %>
+        <%= f.submit t('admin.rooms.show.add_button'), class: "btn btn-primary" %>
       <% end %>
     </div>
   </div>

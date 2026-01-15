@@ -1,0 +1,7 @@
+<%# locals: (rating:, count: 0) %>
+<% if count > 0 %>
+  <div class="review-stars d-inline-flex align-items-center gap-1">
+    <%= stars_for_rating(rating) %>
+    <span class="text-muted small">(<%= count %>)</span>
+  </div>
+<% end %>

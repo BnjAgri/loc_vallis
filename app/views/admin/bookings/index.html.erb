@@ -1,11 +1,11 @@
 <div class="container py-4">
   <div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-4">
     <div>
-      <h1 class="h3 mb-0">Tableau de bord</h1>
+      <h1 class="h3 mb-0"><%= t('admin.bookings.index.title') %></h1>
       <div class="text-muted">
-        Messages, réservations et gestion des hébergements
+        <%= t('admin.bookings.index.subtitle') %>
         <% if @unread_conversations_count.to_i.positive? %>
-          · <span class="badge text-bg-warning"><%= @unread_conversations_count %> non lu(s)</span>
+          · <span class="badge text-bg-warning"><%= t('admin.bookings.index.unread_badge', count: @unread_conversations_count) %></span>
         <% end %>
       </div>
     </div>
@@ -18,11 +18,11 @@
       <div class="card h-100">
         <div class="card-body">
           <div class="d-flex justify-content-between align-items-center mb-2">
-            <h2 class="h5 mb-0">Messages</h2>
+            <h2 class="h5 mb-0"><%= t('admin.bookings.index.messages_title') %></h2>
           </div>
 
           <% if @recent_messages.blank? %>
-            <p class="text-muted mb-0">Aucun message pour le moment.</p>
+            <p class="text-muted mb-0"><%= t('admin.bookings.index.no_messages') %></p>
           <% else %>
             <div class="list-group list-group-flush">
               <% @recent_messages.each do |message| %>
@@ -55,20 +55,20 @@
         <div class="card-body">
           <div class="d-flex flex-wrap justify-content-between align-items-center gap-2">
             <div>
-              <h2 class="h5 mb-0">Gérer les chambres</h2>
-              <div class="text-muted small">Créer, éditer, tarifs & périodes d'ouverture</div>
+              <h2 class="h5 mb-0"><%= t('admin.bookings.index.manage_rooms') %></h2>
+              <div class="text-muted small"><%= t('admin.bookings.index.manage_rooms_subtitle') %></div>
             </div>
 
             <div class="d-flex flex-wrap gap-2">
-              <%= link_to "Planning", admin_rooms_path, class: "btn btn-outline-primary btn-sm" %>
-              <%= link_to "Créer une chambre", new_admin_room_path, class: "btn btn-primary btn-sm" %>
+              <%= link_to t('admin.bookings.index.planning'), admin_rooms_path, class: "btn btn-outline-primary btn-sm" %>
+              <%= link_to t('admin.bookings.index.create_room'), new_admin_room_path, class: "btn btn-primary btn-sm" %>
             </div>
           </div>
 
           <hr class="my-3" />
 
           <% if @rooms.blank? %>
-            <p class="text-muted mb-0">Aucune chambre pour le moment.</p>
+            <p class="text-muted mb-0"><%= t('admin.bookings.index.no_rooms') %></p>
           <% else %>
             <div class="list-group list-group-flush">
               <% @rooms.each do |room| %>
@@ -76,12 +76,12 @@
                   <div class="fw-semibold"><%= room.name %></div>
 
                   <div class="d-inline-flex flex-wrap gap-2">
-                    <%= link_to "Planning", admin_room_path(room), class: "btn btn-outline-primary btn-sm" %>
-                    <%= link_to "Modifier", edit_admin_room_path(room), class: "btn btn-outline-secondary btn-sm" %>
-                    <%= button_to "Supprimer",
+                    <%= link_to t('admin.bookings.index.planning_button'), admin_room_path(room), class: "btn btn-outline-primary btn-sm" %>
+                    <%= link_to t('admin.bookings.index.edit_button'), edit_admin_room_path(room), class: "btn btn-outline-secondary btn-sm" %>
+                    <%= button_to t('admin.bookings.index.delete_button'),
                           admin_room_path(room),
                           method: :delete,
-                          data: { turbo_confirm: "Supprimer cette chambre ?" },
+                          data: { turbo_confirm: t('admin.bookings.index.delete_confirm') },
                           class: "btn btn-warning btn-sm" %>
                   </div>
                 </div>
@@ -94,12 +94,12 @@
       <div class="card h-100">
         <div class="card-body">
           <div class="d-flex justify-content-between align-items-center mb-3">
-            <h2 class="h5 mb-0">Réservations</h2>
-            <%= link_to "Gérer les réservations", admin_rooms_path, class: "btn btn-outline-primary btn-sm" %>
+            <h2 class="h5 mb-0"><%= t('admin.bookings.index.reservations_title') %></h2>
+            <%= link_to t('admin.bookings.index.manage_reservations'), admin_bookings_path, class: "btn btn-outline-primary btn-sm" %>
           </div>
 
           <% if @bookings.blank? %>
-            <p class="text-muted mb-0">Aucune réservation pour le moment.</p>
+            <p class="text-muted mb-0"><%= t('admin.bookings.index.no_reservations') %></p>
           <% else %>
             <div class="table-responsive">
               <table class="table align-middle mb-0">

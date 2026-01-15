@@ -1,0 +1,77 @@
+fr:
+  hello: "Bonjour"
+  
+  devise:
+    registrations:
+      new:
+        sign_up: "Inscription"
+        first_name: "Prénom"
+        last_name: "Nom"
+        email: "E-mail"
+        postal_address: "Adresse postale"
+        phone: "Téléphone"
+        guesthouse_name: "Nom du gîte"
+        password: "Mot de passe"
+        password_confirmation: "Confirmation du mot de passe"
+        minimum_password_length: "%{count} caractères minimum"
+        sign_up_button: "S'inscrire"
+  
+  admin:
+    bookings:
+      index:
+        title: "Tableau de bord"
+        subtitle: "Messages, réservations et gestion des chambres"
+        unread_badge: "%{count} non lu(s)"
+        manage_rooms: "Gérer les chambres"
+        manage_rooms_subtitle: "Créer, éditer, tarifs & périodes d'ouverture"
+        planning: "Planning"
+        create_room: "Créer une chambre"
+        messages_title: "Messages"
+        no_messages: "Aucun message pour le moment."
+        reservations_title: "Réservations"
+        manage_reservations: "Gérer les réservations"
+        no_reservations: "Aucune réservation pour le moment."
+        no_rooms: "Aucune chambre pour le moment."
+        room: "Chambre"
+        planning_button: "Planning"
+        edit_button: "Modifier"
+        delete_button: "Supprimer"
+        delete_confirm: "Supprimer cette chambre ?"
+    rooms:
+      show:
+        calendar_title: "Calendrier des disponibilités"
+        legend_open: "Ouvert"
+        legend_pending: "Demande (à approuver)"
+        legend_booked: "Réservé (en attente/payé)"
+        opening_periods_title: "Périodes d'ouverture"
+        no_opening_periods: "Aucune période d'ouverture pour le moment."
+        per_night: "/ nuit"
+        edit_period: "Modifier cette période"
+        remove_period: "Retirer"
+        remove_period_confirm: "Retirer cette période d'ouverture ?"
+        add_period_title: "Ajouter une période d'ouverture"
+        start_date: "Date de début"
+        end_date: "Date de fin"
+        nightly_price: "Prix par nuit (€)"
+        currency: "Devise"
+        add_button: "Ajouter"
+  
+  rooms:
+    index:
+      welcome: "Bienvenue chez <strong>%{owner}</strong> à <strong>%{location}</strong>!"
+      subtitle: "Maison et chambres d'hôtes sur la route de Saint Jacques de Compostelle"
+      accommodations: "Hébergements"
+      capacity: "Capacité : %{count} pers."
+      from_price: "À partir de"
+      per_night: "par nuit"
+      reviews_label: "Avis :"
+      book_button: "Réservation"
+      no_reviews: "Aucun avis"
+      address_label: "Adresse :"
+      contact_title: "Coordonnées"
+      guesthouse_name_label: "Nom du gîte"
+      owner_label: "Propriétaire"
+      postal_address_label: "Adresse postale"
+      phone_label: "Téléphone"
+      email_label: "E-mail"
+      not_provided: "Non renseigné"

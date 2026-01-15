@@ -11,6 +11,12 @@ module ApplicationHelper
 		)
 	end
 
+	def format_price_euros(cents)
+		return "—" if cents.nil?
+
+		number_to_currency(cents.to_i / 100.0, unit: "€", format: "%n %u", precision: 2)
+	end
+
 	def booking_status_badge_class(status)
 		case status.to_s
 		when "requested"

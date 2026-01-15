@@ -38,20 +38,15 @@
 
             <% if min_period.present? %>
               <div>
-                À partir de
-                <%= number_to_currency(min_period.nightly_price_cents / 100.0, unit: "#{min_period.currency.upcase} ", format: "%u%n") %>
-                par nuit
+                <%= t('rooms.index.from_price') %>
+                <%= format_price_euros(min_period.nightly_price_cents) %>
+                <%= t('rooms.index.per_night') %>
               </div>
             <% end %>
 
             <div class="d-flex justify-content-between align-items-center mt-2">
-              <% if room.reviews_count.to_i.positive? %>
-                <div class="small text-muted d-flex align-items-center">
-                  <span>Avis :</span>
-                  <span class="review-stars ms-1"><%= stars_for_rating(room.average_rating) %></span>
-                </div>
-              <% end %>
-              <%= link_to "Réservation", room_path(room), class: "btn btn-flat btn-sm" %>
+              <%= render "shared/review_stars", rating: room.average_rating, count: room.reviews_count.to_i %>
+              <%= link_to t('rooms.index.book_button'), room_path(room), class: "btn btn-flat btn-sm" %>
             </div>
           </div>
         </div>
