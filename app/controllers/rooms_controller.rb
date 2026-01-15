@@ -3,6 +3,13 @@ class RoomsController < ApplicationController
     @rooms = Room
       .with_attached_photos
       .includes(:opening_periods)
+      .left_joins(:reviews)
+      .select(
+        "rooms.*",
+        "AVG(reviews.rating) AS average_rating",
+        "COUNT(reviews.id) AS reviews_count"
+      )
+      .group("rooms.id")
       .order(:created_at)
   end
 
