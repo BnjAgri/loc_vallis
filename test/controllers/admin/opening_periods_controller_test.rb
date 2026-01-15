@@ -30,6 +30,43 @@ module Admin
       assert_equal "EUR", opening_period.currency
     end
 
+    test "edit loads and update accepts euros" do
+      owner = Owner.create!(
+        email: "owner_op_edit@example.com",
+        password: "password123",
+        first_name: "Claude",
+        last_name: "Owner"
+      )
+
+      room = Room.create!(owner:, name: "Chambre OP edit", capacity: 2)
+
+      opening_period = OpeningPeriod.create!(
+        room:,
+        start_date: Date.current + 10,
+        end_date: Date.current + 20,
+        nightly_price_cents: 10_00,
+        currency: "EUR"
+      )
+
+      sign_in owner
+
+      get edit_admin_room_opening_period_path(room, opening_period)
+      assert_response :success
+
+      patch admin_room_opening_period_path(room, opening_period), params: {
+        opening_period: {
+          start_date: (Date.current + 11).to_s,
+          end_date: (Date.current + 21).to_s,
+          nightly_price_euros: "22.00",
+          currency: "EUR"
+        }
+      }
+
+      assert_redirected_to admin_room_path(room)
+      opening_period.reload
+      assert_equal 2200, opening_period.nightly_price_cents
+    end
+
     test "destroy is blocked when opening period overlaps upcoming requested booking" do
       owner = Owner.create!(
         email: "owner_op_block@example.com",

@@ -47,13 +47,19 @@
         <div class="list-group-item d-flex justify-content-between align-items-center">
           <div>
             <div class="fw-bold"><%= period.start_date %> → <%= period.end_date %></div>
-            <small class="text-muted"><%= period.nightly_price_cents %> <%= period.currency %> / night</small>
+            <small class="text-muted">
+              <%= number_to_currency(period.nightly_price_cents.to_i / 100.0, unit: "€", format: "%n %u") %> / nuit
+            </small>
           </div>
-              <%= button_to "Retirer",
-                admin_room_opening_period_path(@room, period),
-                method: :delete,
-                data: { turbo_confirm: "Retirer cette période d'ouverture ?" },
-                class: "btn btn-sm btn-outline-danger" %>
+
+          <div class="d-inline-flex flex-wrap gap-2">
+            <%= link_to "Modifier cette période", edit_admin_room_opening_period_path(@room, period), class: "btn btn-sm btn-outline-secondary" %>
+            <%= button_to "Retirer",
+                  admin_room_opening_period_path(@room, period),
+                  method: :delete,
+                  data: { turbo_confirm: "Retirer cette période d'ouverture ?" },
+                  class: "btn btn-sm btn-outline-danger" %>
+          </div>
         </div>
       <% end %>
     </div>

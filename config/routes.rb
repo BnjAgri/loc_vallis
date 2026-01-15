@@ -29,7 +29,7 @@ Rails.application.routes.draw do
     get "inbox", to: "inbox#index"
 
     resources :rooms, only: %i[index show new create edit update destroy] do
-      resources :opening_periods, only: %i[create destroy]
+      resources :opening_periods, only: %i[create edit update destroy]
     end
 
     resources :bookings, only: %i[index show] do

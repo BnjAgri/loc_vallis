@@ -3,6 +3,14 @@ class OpeningPeriodPolicy < ApplicationPolicy
     owner_for_room?
   end
 
+  def edit?
+    owner_for_room?
+  end
+
+  def update?
+    owner_for_room?
+  end
+
   def destroy?
     owner_for_room?
   end
