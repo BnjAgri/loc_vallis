@@ -99,7 +99,7 @@ module Admin
     private
 
     def room_params
-      params.require(:room).permit(:name, :capacity, :room_url, photos: [])
+      params.require(:room).permit(:name, :description, :capacity, :room_url, photos: [])
     end
   end
 end

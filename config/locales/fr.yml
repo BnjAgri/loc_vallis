@@ -55,6 +55,19 @@ fr:
         nightly_price: "Prix par nuit (€)"
         currency: "Devise"
         add_button: "Ajouter"
+      edit:
+        title: "Modifier la chambre"
+        name_label: "Nom"
+        description_label: "Description"
+        description_hint: "Décrivez la chambre, ses équipements, etc."
+        capacity_label: "Capacité"
+        capacity_hint: "Optionnel"
+        photos_label: "Photos"
+        photos_hint: "Importer une ou plusieurs images"
+        room_url_label: "URL d'images"
+        room_url_hint: "Une URL d'image par ligne"
+        submit_button: "Mettre à jour"
+        back_link: "Retour"
   
   rooms:
     index:

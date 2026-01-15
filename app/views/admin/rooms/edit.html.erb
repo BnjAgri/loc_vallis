@@ -1,12 +1,13 @@
 <div class="container py-4">
-  <h1 class="h3">Modifier la chambre</h1>
+  <h1 class="h3"><%= t('admin.rooms.edit.title') %></h1>
 
   <%= simple_form_for([:admin, @room]) do |f| %>
-    <%= f.input :name %>
-    <%= f.input :capacity, hint: "Optionnel" %>
-    <%= f.input :photos, as: :file, input_html: { multiple: true }, hint: "Importer une ou plusieurs images" %>
-    <%= f.input :room_url, as: :text, hint: "Une URL d'image par ligne" %>
-    <%= f.submit "Mettre à jour", class: "btn btn-primary" %>
-    <%= link_to "Retour", admin_room_path(@room), class: "btn btn-link" %>
+    <%= f.input :name, label: t('admin.rooms.edit.name_label') %>
+    <%= f.input :description, as: :text, label: t('admin.rooms.edit.description_label'), hint: t('admin.rooms.edit.description_hint') %>
+    <%= f.input :capacity, label: t('admin.rooms.edit.capacity_label'), hint: t('admin.rooms.edit.capacity_hint') %>
+    <%= f.input :photos, as: :file, input_html: { multiple: true }, label: t('admin.rooms.edit.photos_label'), hint: t('admin.rooms.edit.photos_hint') %>
+    <%= f.input :room_url, as: :text, label: t('admin.rooms.edit.room_url_label'), hint: t('admin.rooms.edit.room_url_hint') %>
+    <%= f.submit t('admin.rooms.edit.submit_button'), class: "btn btn-primary" %>
+    <%= link_to t('admin.rooms.edit.back_link'), admin_room_path(@room), class: "btn btn-link" %>
   <% end %>
 </div>
