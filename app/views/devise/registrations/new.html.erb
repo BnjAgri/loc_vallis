@@ -9,6 +9,13 @@
             <%= f.error_notification %>
 
             <div class="form-inputs">
+              <% if resource_name == :owner %>
+                <%= f.input :guesthouse_name,
+                            label: "Nom du gîte",
+                            required: false,
+                            input_html: { autocomplete: "organization" } %>
+              <% end %>
+
               <div class="row g-2">
                 <div class="col-12 col-md-6">
                   <%= f.input :first_name,

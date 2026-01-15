@@ -11,6 +11,11 @@ class RoomsController < ApplicationController
       )
       .group("rooms.id")
       .order(:created_at)
+
+    @owner = Owner.order(:created_at).first
+    @guesthouse_name = @owner&.guesthouse_name.presence || ENV.fetch("GUESTHOUSE_NAME", "Chez Claude")
+    @owner_postal_address = @owner&.postal_address.presence || ENV["OWNER_POSTAL_ADDRESS"].presence || ENV.fetch("MAP_ADDRESS", "")
+    @owner_phone = @owner&.phone.presence || ENV["OWNER_PHONE"].presence
   end
 
   def show
