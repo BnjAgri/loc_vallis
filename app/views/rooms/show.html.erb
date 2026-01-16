@@ -1,10 +1,12 @@
-<% main_image_url = if @room.photos.attached?
-  url_for(@room.photos.first)
+<% all_images = if @room.photos.attached?
+  @room.photos.map { |photo| url_for(photo) }
 elsif @room.image_urls.any?
-  @room.image_urls.first
+  @room.image_urls
 else
-  "https://raw.githubusercontent.com/lewagon/fullstack-images/master/uikit/greece.jpg"
+  ["https://raw.githubusercontent.com/lewagon/fullstack-images/master/uikit/greece.jpg"]
 end %>
+
+<% main_image_url = all_images.first %>
 
 <% min_period = @room.opening_periods.order(:nightly_price_cents).first %>
 
@@ -14,7 +16,41 @@ end %>
   <div class="col-12 col-lg">
     <%# Reuse the shared "card-trip" component styles for a prominent hero card. %>
     <div class="card-trip">
-      <%= image_tag main_image_url, alt: @room.name %>
+      <% if all_images.length > 1 %>
+        <div id="roomCarousel" class="carousel slide" data-bs-ride="carousel">
+          <div class="carousel-inner">
+            <% all_images.each_with_index do |img_url, idx| %>
+              <div class="carousel-item <%= 'active' if idx == 0 %>">
+                <%= image_tag img_url, alt: "#{@room.name} #{idx + 1}", class: "d-block w-100", style: "object-fit: cover; height: 400px;" %>
+              </div>
+            <% end %>
+          </div>
+          <button class="carousel-control-prev" type="button" data-bs-target="#roomCarousel" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Précédent</span>
+          </button>
+          <button class="carousel-control-next" type="button" data-bs-target="#roomCarousel" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Suivant</span>
+          </button>
+        </div>
+
+        <div class="d-flex gap-2 mt-3" style="overflow-x: auto;">
+          <% all_images.each_with_index do |img_url, idx| %>
+            <button
+              type="button"
+              class="carousel-thumbnail <%= 'border-primary border-2' if idx == 0 %>"
+              data-bs-target="#roomCarousel"
+              data-bs-slide-to="<%= idx %>"
+              style="flex-shrink: 0; width: 80px; height: 80px; border: 1px solid #ddd; padding: 0; cursor: pointer; background: none;"
+            >
+              <%= image_tag img_url, alt: "Thumbnail #{idx + 1}", class: "d-block w-100 h-100", style: "object-fit: cover;" %>
+            </button>
+          <% end %>
+        </div>
+      <% else %>
+        <%= image_tag main_image_url, alt: @room.name %>
+      <% end %>
 
       <%# Card content area: room name/description + capacity + price, aligned with flex. %>
       <div class="card-trip-infos">
