@@ -72,7 +72,15 @@
                   <%= button_to "Supprimer",
                         admin_room_path(room),
                         method: :delete,
-                        data: { turbo_confirm: "Supprimer cette chambre ?" },
+                        form: {
+                          data: {
+                            controller: "confirm-delete",
+                            action: "submit->confirm-delete#confirm",
+                            "confirm-delete-message-value": "Attention, supprimer cette chambre détruira définitivement toutes les informations et réservations passées et à venir la concernant. Etes-vous sûr ?",
+                            "confirm-delete-cancel-text-value": "Annuler",
+                            "confirm-delete-confirm-text-value": "Supprimer"
+                          }
+                        },
                         class: "btn btn-sm btn-outline-danger" %>
                 </div>
               </div>

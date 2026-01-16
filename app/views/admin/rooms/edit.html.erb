@@ -1,13 +1,27 @@
 <div class="container py-4">
-  <h1 class="h3"><%= t('admin.rooms.edit.title') %></h1>
+  <div class="card mb-4">
+    <div class="card-body">
+      <div class="d-flex justify-content-between align-items-center">
+        <h1 class="h3 mb-0"><%= t('admin.rooms.edit.title') %></h1>
+        <%= link_to t('admin.rooms.edit.back_link'), admin_room_path(@room), class: "btn btn-link" %>
+      </div>
+    </div>
+  </div>
 
-  <%= simple_form_for([:admin, @room]) do |f| %>
-    <%= f.input :name, label: t('admin.rooms.edit.name_label') %>
-    <%= f.input :description, as: :text, label: t('admin.rooms.edit.description_label'), hint: t('admin.rooms.edit.description_hint') %>
-    <%= f.input :capacity, label: t('admin.rooms.edit.capacity_label'), hint: t('admin.rooms.edit.capacity_hint') %>
-    <%= f.input :photos, as: :file, input_html: { multiple: true }, label: t('admin.rooms.edit.photos_label'), hint: t('admin.rooms.edit.photos_hint') %>
-    <%= f.input :room_url, as: :text, label: t('admin.rooms.edit.room_url_label'), hint: t('admin.rooms.edit.room_url_hint') %>
-    <%= f.submit t('admin.rooms.edit.submit_button'), class: "btn btn-primary" %>
-    <%= link_to t('admin.rooms.edit.back_link'), admin_room_path(@room), class: "btn btn-link" %>
-  <% end %>
+  <div class="card">
+    <div class="card-body">
+      <%= simple_form_for([:admin, @room]) do |f| %>
+        <%= f.input :name, label: "Nom" %>
+        <%= f.input :description, as: :text, label: "Description", hint: "Décrivez la chambre, ses équipements, etc." %>
+        <%= f.input :capacity, label: "Capacité", hint: "Optionnel" %>
+        <%= f.input :photos, as: :file, input_html: { multiple: true }, label: "Photos", hint: "Importer une ou plusieurs images" %>
+        <%= f.input :room_url, as: :text, label: "URLs d'images", hint: "Une URL d'image par ligne" %>
+
+        <div class="d-flex align-items-center gap-2">
+          <%= f.submit t('admin.rooms.edit.submit_button'), class: "btn btn-primary" %>
+          <%= link_to t('admin.rooms.edit.back_link'), admin_room_path(@room), class: "btn btn-link" %>
+        </div>
+      <% end %>
+    </div>
+  </div>
 </div>

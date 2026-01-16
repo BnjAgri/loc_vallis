@@ -1,72 +1,88 @@
 <div class="container py-4">
-  <div class="d-flex justify-content-between align-items-center mb-3">
-    <div>
-      <h1 class="h3 mb-0"><%= @room.name %></h1>
-      <% if @room.capacity.present? %>
-        <small class="text-muted">Capacity: <%= @room.capacity %></small>
-      <% end %>
-    </div>
-    <div>
-      <%= link_to "Modifier", edit_admin_room_path(@room), class: "btn btn-outline-primary" %>
-      <%= button_to "Supprimer",
-            admin_room_path(@room),
-            method: :delete,
-        data: { turbo_confirm: "Supprimer cette chambre ?" },
-            class: "btn btn-outline-danger" %>
-      <%= link_to "Retour", admin_rooms_path, class: "btn btn-link" %>
-    </div>
-  </div>
-
-  <hr />
-
-  <h2 class="h5">Calendrier des disponibilités</h2>
-  <div class="lv-calendar-legend text-muted mb-2">
-    <span><span class="lv-calendar-dot lv-calendar-dot--open"></span>Ouvert</span>
-    <span><span class="lv-calendar-dot lv-calendar-dot--pending"></span>Demande (à approuver)</span>
-    <span><span class="lv-calendar-dot lv-calendar-dot--booked"></span>Réservé (en attente/payé)</span>
-  </div>
-
-  <% open_ranges = @opening_periods.map { |p| { from: p.start_date, to: (p.end_date - 1.day) } } %>
-  <% booked_ranges = @room.bookings.select { |b| Booking::RESERVED_STATUSES.include?(b.status) }.sort_by(&:start_date).map { |b| { from: b.start_date, to: (b.end_date - 1.day) } } %>
-    <% pending_ranges = @room.bookings.select { |b| b.status == "requested" }.sort_by(&:start_date).map { |b| { from: b.start_date, to: (b.end_date - 1.day) } } %>
-
-  <div class="mb-4">
-    <input type="text" class="lv-calendar-input" data-controller="admin-room-calendar"
-           data-admin-room-calendar-open-ranges-value="<%= open_ranges.to_json %>"
-           data-admin-room-calendar-booked-ranges-value="<%= booked_ranges.to_json %>"
-           data-admin-room-calendar-pending-ranges-value="<%= pending_ranges.to_json %>" />
-  </div>
-
-  <h2 class="h5"><%= t('admin.rooms.show.opening_periods_title') %></h2>
-
-  <% if @opening_periods.empty? %>
-    <p class="text-muted"><%= t('admin.rooms.show.no_opening_periods') %></p>
-  <% else %>
-    <div class="list-group mb-4">
-      <% @opening_periods.each do |period| %>
-        <div class="list-group-item d-flex justify-content-between align-items-center">
-          <div>
-            <div class="fw-bold"><%= period.start_date %> → <%= period.end_date %></div>
-            <small class="text-muted">
-              <%= format_price_euros(period.nightly_price_cents) %> <%= t('admin.rooms.show.per_night') %>
-            </small>
-          </div>
-
-          <div class="d-inline-flex flex-wrap gap-2">
-            <%= link_to t('admin.rooms.show.edit_period'), edit_admin_room_opening_period_path(@room, period), class: "btn btn-sm btn-outline-secondary" %>
-            <%= button_to t('admin.rooms.show.remove_period'),
-                  admin_room_opening_period_path(@room, period),
-                  method: :delete,
-                  data: { turbo_confirm: t('admin.rooms.show.remove_period_confirm') },
-                  class: "btn btn-sm btn-outline-danger" %>
-          </div>
+  <div class="card mb-4">
+    <div class="card-body">
+      <div class="d-flex justify-content-between align-items-center">
+        <div>
+          <h1 class="h3 mb-0"><%= @room.name %></h1>
+          <% if @room.capacity.present? %>
+            <small class="text-muted">Capacity: <%= @room.capacity %></small>
+          <% end %>
         </div>
-      <% end %>
+        <div>
+          <%= link_to "Modifier", edit_admin_room_path(@room), class: "btn btn-outline-primary" %>
+          <%= button_to "Supprimer",
+                admin_room_path(@room),
+                method: :delete,
+                form: {
+                  data: {
+                    controller: "confirm-delete",
+                    action: "submit->confirm-delete#confirm",
+                    "confirm-delete-message-value": "Attention, supprimer cette chambre détruira définitivement toutes les informations et réservations passées et à venir la concernant. Etes-vous sûr ?",
+                    "confirm-delete-cancel-text-value": "Annuler",
+                    "confirm-delete-confirm-text-value": "Supprimer"
+                  }
+                },
+                class: "btn btn-outline-danger" %>
+          <%= link_to "Retour", admin_rooms_path, class: "btn btn-link" %>
+        </div>
+      </div>
     </div>
-  <% end %>
+  </div>
+
+  <div class="card mb-4">
+    <div class="card-body">
+      <h2 class="h5">Calendrier des disponibilités</h2>
+      <div class="lv-calendar-legend text-muted mb-2">
+        <span><span class="lv-calendar-dot lv-calendar-dot--open"></span>Ouvert</span>
+        <span><span class="lv-calendar-dot lv-calendar-dot--pending"></span>Demande (à approuver)</span>
+        <span><span class="lv-calendar-dot lv-calendar-dot--booked"></span>Réservé (en attente/payé)</span>
+      </div>
+
+      <% open_ranges = @opening_periods.map { |p| { from: p.start_date, to: (p.end_date - 1.day) } } %>
+      <% booked_ranges = @room.bookings.select { |b| Booking::RESERVED_STATUSES.include?(b.status) }.sort_by(&:start_date).map { |b| { from: b.start_date, to: (b.end_date - 1.day) } } %>
+      <% pending_ranges = @room.bookings.select { |b| b.status == "requested" }.sort_by(&:start_date).map { |b| { from: b.start_date, to: (b.end_date - 1.day) } } %>
+
+      <div>
+        <input type="text" class="lv-calendar-input" data-controller="admin-room-calendar"
+               data-admin-room-calendar-open-ranges-value="<%= open_ranges.to_json %>"
+               data-admin-room-calendar-booked-ranges-value="<%= booked_ranges.to_json %>"
+               data-admin-room-calendar-pending-ranges-value="<%= pending_ranges.to_json %>" />
+      </div>
+    </div>
+  </div>
 
   <div class="card">
     <div class="card-body">
+      <h2 class="h5"><%= t('admin.rooms.show.opening_periods_title') %></h2>
+
+      <% if @opening_periods.empty? %>
+        <p class="text-muted"><%= t('admin.rooms.show.no_opening_periods') %></p>
+      <% else %>
+        <div class="list-group mb-4">
+          <% @opening_periods.each do |period| %>
+            <div class="list-group-item d-flex justify-content-between align-items-center">
+              <div>
+                <div class="fw-bold"><%= period.start_date %> → <%= period.end_date %></div>
+                <small class="text-muted">
+                  <%= format_price_euros(period.nightly_price_cents) %> <%= t('admin.rooms.show.per_night') %>
+                </small>
+              </div>
+
+              <div class="d-inline-flex flex-wrap gap-2">
+                <%= link_to t('admin.rooms.show.edit_period'), edit_admin_room_opening_period_path(@room, period), class: "btn btn-sm btn-outline-secondary" %>
+                <%= button_to t('admin.rooms.show.remove_period'),
+                      admin_room_opening_period_path(@room, period),
+                      method: :delete,
+                      data: { turbo_confirm: t('admin.rooms.show.remove_period_confirm') },
+                      class: "btn btn-sm btn-outline-danger" %>
+              </div>
+            </div>
+          <% end %>
+        </div>
+      <% end %>
+
+      <hr class="my-4" />
+
       <h3 class="h6"><%= t('admin.rooms.show.add_period_title') %></h3>
       <%= simple_form_for([:admin, @room, @opening_period]) do |f| %>
         <div class="row">

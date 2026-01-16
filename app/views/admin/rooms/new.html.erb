@@ -1,12 +1,26 @@
 <div class="container py-4">
-  <h1 class="h3">Nouvelle chambre</h1>
+  <div class="card mb-4">
+    <div class="card-body">
+      <div class="d-flex justify-content-between align-items-center">
+        <h1 class="h3 mb-0">Nouvelle chambre</h1>
+        <%= link_to "Retour", admin_rooms_path, class: "btn btn-link" %>
+      </div>
+    </div>
+  </div>
 
-  <%= simple_form_for([:admin, @room]) do |f| %>
-    <%= f.input :name %>
-    <%= f.input :capacity, hint: "Optionnel" %>
-    <%= f.input :photos, as: :file, input_html: { multiple: true }, hint: "Importer une ou plusieurs images" %>
-    <%= f.input :room_url, as: :text, hint: "Une URL d'image par ligne" %>
-    <%= f.submit "Créer la chambre", class: "btn btn-primary" %>
-    <%= link_to "Retour", admin_rooms_path, class: "btn btn-link" %>
-  <% end %>
+  <div class="card">
+    <div class="card-body">
+      <%= simple_form_for([:admin, @room]) do |f| %>
+        <%= f.input :name, label: "Nom" %>
+        <%= f.input :capacity, label: "Capacité", hint: "Optionnel" %>
+        <%= f.input :photos, as: :file, input_html: { multiple: true }, label: "Photos", hint: "Importer une ou plusieurs images" %>
+        <%= f.input :room_url, as: :text, label: "URLs d'images", hint: "Une URL d'image par ligne" %>
+
+        <div class="d-flex align-items-center gap-2">
+          <%= f.submit "Créer la chambre", class: "btn btn-primary" %>
+          <%= link_to "Retour", admin_rooms_path, class: "btn btn-link" %>
+        </div>
+      <% end %>
+    </div>
+  </div>
 </div>

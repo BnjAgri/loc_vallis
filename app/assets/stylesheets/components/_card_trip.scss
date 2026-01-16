@@ -28,6 +28,8 @@
   justify-content: space-between;
   align-items: flex-end;
   position: relative;
+  border-radius: 4px;
+  box-shadow: 0 6px 16px rgba($lv-primary, 0.12);
 }
 
 .card-trip-infos .card-trip-user {
