@@ -25,6 +25,29 @@
             <%= f.text_field :end_date, class: "form-control", data: { controller: "flatpickr" } %>
           </div>
 
+          <% if Array(@room.optional_services).any? %>
+            <div class="mb-3">
+              <div class="fw-semibold mb-2">Services optionnels</div>
+              <div class="d-grid gap-2">
+                <% Array(@room.optional_services).each do |service| %>
+                  <% next unless service.is_a?(Hash) %>
+                  <% name = (service["name"] || service[:name]).to_s.strip %>
+                  <% price_cents = service["price_cents"] || service[:price_cents] %>
+                  <% next if name.blank? || price_cents.blank? %>
+
+                  <div class="form-check d-flex justify-content-between align-items-center">
+                    <div>
+                      <%= check_box_tag "booking[optional_service_names][]", name, false, id: "booking_optional_service_#{name.parameterize}", class: "form-check-input" %>
+                      <%= label_tag "booking_optional_service_#{name.parameterize}", name, class: "form-check-label" %>
+                    </div>
+                    <div class="text-muted"><%= format_price_euros(price_cents) %></div>
+                  </div>
+                <% end %>
+              </div>
+              <div class="form-text">Ces options s'ajoutent au total de la réservation.</div>
+            </div>
+          <% end %>
+
           <%= f.submit "Send request", class: "btn btn-primary" %>
         <% end %>
       </div>

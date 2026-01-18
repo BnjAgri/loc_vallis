@@ -25,6 +25,19 @@ class BookingQuoteTest < ActiveSupport::TestCase
     assert_equal 30_000, result.total_price_cents
   end
 
+  test "includes optional services total in the quote" do
+    result = BookingQuote.call(
+      room: @room,
+      start_date: Date.new(2026, 1, 10),
+      end_date: Date.new(2026, 1, 13),
+      optional_services_total_cents: 1_500
+    )
+
+    assert result.ok?
+    assert_equal 31_500, result.total_price_cents
+    assert_equal 1_500, result.optional_services_total_cents
+  end
+
   test "rejects range outside opening period" do
     result = BookingQuote.call(room: @room, start_date: Date.new(2026, 1, 9), end_date: Date.new(2026, 1, 12))
 

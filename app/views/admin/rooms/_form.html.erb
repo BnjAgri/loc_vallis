@@ -1,0 +1,63 @@
+<%= simple_form_for([:admin, room]) do |f| %>
+  <%= f.input :name, label: "Nom" %>
+  <%= f.input :description, as: :text, label: "Description", hint: "Décrivez la chambre, ses équipements, etc." %>
+  <%= f.input :capacity, label: "Capacité", hint: "Optionnel" %>
+  <%= f.input :photos, as: :file, input_html: { multiple: true }, label: "Photos", hint: "Importer une ou plusieurs images" %>
+  <%= f.input :room_url, as: :text, label: "URLs d'images", hint: "Une URL d'image par ligne" %>
+
+  <div class="mt-4" data-controller="optional-services" data-optional-services-max-value="5">
+    <h2 class="h5 mb-3">Services optionnels</h2>
+
+    <div class="d-grid gap-2" data-optional-services-target="list">
+      <% Array(room.optional_services).each do |service| %>
+        <% name_value = service.is_a?(Hash) ? (service["name"] || service[:name]) : nil %>
+        <% price_cents = service.is_a?(Hash) ? (service["price_cents"] || service[:price_cents]) : nil %>
+        <% price_value = price_cents.present? ? (BigDecimal(price_cents.to_s) / 100).to_s("F") : nil %>
+
+        <div class="row g-2 align-items-end" data-optional-services-target="item">
+          <div class="col-12 col-md-7">
+            <label class="form-label">Service optionnel</label>
+            <%= text_field_tag "room[optional_services][][name]", name_value, class: "form-control", maxlength: 80 %>
+          </div>
+
+          <div class="col-12 col-md-3">
+            <label class="form-label">Prix (€)</label>
+            <%= number_field_tag "room[optional_services][][price_eur]", price_value, class: "form-control", step: 0.01, min: 0 %>
+          </div>
+
+          <div class="col-12 col-md-2 d-flex">
+            <button type="button" class="btn btn-outline-danger w-100" data-action="optional-services#remove">Supprimer</button>
+          </div>
+        </div>
+      <% end %>
+    </div>
+
+    <template data-optional-services-target="template">
+      <div class="row g-2 align-items-end" data-optional-services-target="item">
+        <div class="col-12 col-md-7">
+          <label class="form-label">Service optionnel</label>
+          <input type="text" name="room[optional_services][][name]" class="form-control" maxlength="80" />
+        </div>
+
+        <div class="col-12 col-md-3">
+          <label class="form-label">Prix (€)</label>
+          <input type="number" name="room[optional_services][][price_eur]" class="form-control" step="0.01" min="0" />
+        </div>
+
+        <div class="col-12 col-md-2 d-flex">
+          <button type="button" class="btn btn-outline-danger w-100" data-action="optional-services#remove">Supprimer</button>
+        </div>
+      </div>
+    </template>
+
+    <div class="mt-2">
+      <%= link_to "Ajouter un service optionnel", "#", class: "btn btn-link px-0", data: { action: "optional-services#add", optional_services_target: "addLink" } %>
+      <div class="form-text">Maximum : 5</div>
+    </div>
+  </div>
+
+  <div class="d-flex align-items-center gap-2 mt-4">
+    <%= f.submit submit_label, class: "btn btn-primary" %>
+    <%= link_to back_label, back_path, class: "btn btn-link" %>
+  </div>
+<% end %>

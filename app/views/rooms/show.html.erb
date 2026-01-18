@@ -1,7 +1,21 @@
+<%
+  normalize_image_url = lambda do |raw_url|
+    url = raw_url.to_s.strip
+    next nil if url.blank?
+    next url if url.match?(/\A(data:|https?:\/\/|\/)/)
+    next "https:#{url}" if url.start_with?("//")
+
+    # If the URL looks like a host/path (e.g. "example.com/image.jpg"), treat it as an external URL.
+    next "https://#{url}" if url.match?(/\A[a-z0-9.-]+\.[a-z]{2,}\//i)
+
+    url
+  end
+%>
+
 <% all_images = if @room.photos.attached?
   @room.photos.map { |photo| url_for(photo) }
 elsif @room.image_urls.any?
-  @room.image_urls
+  @room.image_urls.map { |u| normalize_image_url.call(u) }.compact
 else
   ["https://raw.githubusercontent.com/lewagon/fullstack-images/master/uikit/greece.jpg"]
 end %>
@@ -16,6 +30,10 @@ end %>
   <div class="col-12 col-lg">
     <%# Reuse the shared "card-trip" component styles for a prominent hero card. %>
     <div class="card-trip">
+      <div class="px-3">
+        <h1 class="h3 mt-3 mb-3"><%= @room.name %></h1>
+      </div>
+
       <% if all_images.length > 1 %>
         <div id="roomCarousel" class="carousel slide" data-bs-ride="carousel">
           <div class="carousel-inner">
@@ -55,7 +73,6 @@ end %>
       <%# Card content area: room name/description + capacity + price, aligned with flex. %>
       <div class="card-trip-infos">
         <div>
-          <h2><%= @room.name %></h2>
           <% if @room.description.present? %>
             <p><%= truncate(@room.description, length: 120) %></p>
           <% else %>
@@ -129,6 +146,30 @@ end %>
     </div>
   </div>
 </div>
+
+<% if Array(@room.optional_services).any? %>
+  <div class="card-trip mt-4">
+    <div class="card-trip-infos w-100 align-items-start">
+      <div class="w-100">
+        <h2 class="h4 mb-3">Services optionnels</h2>
+        <div class="d-grid gap-2">
+          <% Array(@room.optional_services).each do |service| %>
+            <% next unless service.is_a?(Hash) %>
+            <% name = (service["name"] || service[:name]).to_s.strip %>
+            <% price_cents = service["price_cents"] || service[:price_cents] %>
+            <% next if name.blank? || price_cents.blank? %>
+
+            <div class="d-flex justify-content-between align-items-center">
+              <div><%= name %></div>
+              <div class="text-muted"><%= format_price_euros(price_cents) %></div>
+            </div>
+          <% end %>
+        </div>
+        <p class="text-muted mt-2 mb-0">Vous pourrez choisir ces options lors de la réservation.</p>
+      </div>
+    </div>
+  </div>
+<% end %>
 
 <%# Reviews section: reuse card-trip styling as a container (without image). %>
 <div class="card-trip mt-5">

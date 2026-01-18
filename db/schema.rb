@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2026_01_15_155353) do
+ActiveRecord::Schema[7.1].define(version: 2026_01_18_103000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -60,6 +60,7 @@ ActiveRecord::Schema[7.1].define(version: 2026_01_15_155353) do
     t.datetime "updated_at", null: false
     t.datetime "owner_last_read_at"
     t.datetime "user_last_read_at"
+    t.jsonb "selected_optional_services", default: [], null: false
     t.index ["owner_last_read_at"], name: "index_bookings_on_owner_last_read_at"
     t.index ["room_id", "start_date", "end_date"], name: "index_bookings_on_room_id_and_start_date_and_end_date"
     t.index ["room_id"], name: "index_bookings_on_room_id"
@@ -131,6 +132,7 @@ ActiveRecord::Schema[7.1].define(version: 2026_01_15_155353) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.text "room_url"
+    t.jsonb "optional_services", default: [], null: false
     t.index ["owner_id"], name: "index_rooms_on_owner_id"
   end
 

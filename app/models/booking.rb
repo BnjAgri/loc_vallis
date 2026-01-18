@@ -44,6 +44,8 @@ class Booking < ApplicationRecord
   validates :stripe_payment_intent_id, uniqueness: true, allow_nil: true
   validates :stripe_refund_id, uniqueness: true, allow_nil: true
 
+  validate :validate_selected_optional_services
+
   validate :end_date_after_start_date
   validate :within_opening_period_and_available, on: :create
 
@@ -54,6 +56,15 @@ class Booking < ApplicationRecord
     return 0 if start_date.blank? || end_date.blank?
 
     (end_date - start_date).to_i
+  end
+
+  def selected_optional_services_total_cents
+    Array(selected_optional_services).sum do |entry|
+      next 0 unless entry.is_a?(Hash)
+
+      cents = entry["price_cents"] || entry[:price_cents]
+      cents.is_a?(Integer) ? cents : cents.to_i
+    end
   end
 
   def mark_owner_read!
@@ -159,7 +170,12 @@ class Booking < ApplicationRecord
   def quote
     return nil if room.nil? || start_date.blank? || end_date.blank?
 
-    BookingQuote.call(room:, start_date:, end_date:)
+    BookingQuote.call(
+      room:,
+      start_date:,
+      end_date:,
+      optional_services_total_cents: selected_optional_services_total_cents
+    )
   end
 
   def within_opening_period_and_available
@@ -177,5 +193,61 @@ class Booking < ApplicationRecord
 
     self.currency ||= result.currency
     self.total_price_cents ||= result.total_price_cents
+  end
+
+  def validate_selected_optional_services
+    services = selected_optional_services
+    services = services.values if services.is_a?(Hash)
+    services = Array(services)
+
+    if services.size > 5
+      errors.add(:selected_optional_services, "maximum 5")
+      return
+    end
+
+    # Prevent tampering: selected services must match the room's configured services.
+    allowed = Array(room&.optional_services)
+    allowed_by_name = allowed.each_with_object({}) do |entry, acc|
+      next unless entry.is_a?(Hash)
+
+      name = (entry["name"] || entry[:name]).to_s.strip
+      next if name.blank?
+
+      acc[name] = entry
+    end
+
+    services.each do |entry|
+      next unless entry.is_a?(Hash)
+
+      name = (entry["name"] || entry[:name]).to_s.strip
+      price_cents = entry["price_cents"] || entry[:price_cents]
+      currency = (entry["currency"] || entry[:currency]).to_s.presence || "EUR"
+
+      if name.blank?
+        errors.add(:selected_optional_services, "nom manquant")
+        next
+      end
+
+      unless price_cents.is_a?(Integer) && price_cents >= 0
+        errors.add(:selected_optional_services, "prix invalide")
+        next
+      end
+
+      allowed_entry = allowed_by_name[name]
+      if allowed_entry.nil?
+        errors.add(:selected_optional_services, "service inconnu")
+        next
+      end
+
+      allowed_price = allowed_entry["price_cents"] || allowed_entry[:price_cents]
+      if allowed_price.to_i != price_cents
+        errors.add(:selected_optional_services, "prix invalide")
+      end
+
+      allowed_currency = (allowed_entry["currency"] || allowed_entry[:currency]).to_s.presence || "EUR"
+      if allowed_currency.to_s.upcase != currency.to_s.upcase
+        errors.add(:selected_optional_services, "devise invalide")
+      end
+    end
   end
 end

@@ -15,20 +15,22 @@ class BookingQuote
     :opening_period,
     :nights,
     :nightly_price_cents,
+    :optional_services_total_cents,
     :currency,
     :total_price_cents,
     :error,
     keyword_init: true
   )
 
-  def self.call(room:, start_date:, end_date:)
-    new(room:, start_date:, end_date:).call
+  def self.call(room:, start_date:, end_date:, optional_services_total_cents: 0)
+    new(room:, start_date:, end_date:, optional_services_total_cents:).call
   end
 
-  def initialize(room:, start_date:, end_date:)
+  def initialize(room:, start_date:, end_date:, optional_services_total_cents: 0)
     @room = room
     @start_date = start_date
     @end_date = end_date
+    @optional_services_total_cents = optional_services_total_cents.to_i
   end
 
   def call
@@ -43,13 +45,15 @@ class BookingQuote
     return error_result("Dates overlap an existing booking") if overlaps_reserved_booking?
 
     nights = (end_date - start_date).to_i
-    total = period.nightly_price_cents * nights
+    base_total = period.nightly_price_cents * nights
+    total = base_total + optional_services_total_cents
 
     Result.new(
       ok?: true,
       opening_period: period,
       nights:,
       nightly_price_cents: period.nightly_price_cents,
+      optional_services_total_cents:,
       currency: period.currency,
       total_price_cents: total,
       error: nil
@@ -59,9 +63,19 @@ class BookingQuote
   private
 
   attr_reader :room, :start_date, :end_date
+  attr_reader :optional_services_total_cents
 
   def error_result(message)
-    Result.new(ok?: false, opening_period: nil, nights: 0, nightly_price_cents: nil, currency: nil, total_price_cents: nil, error: message)
+    Result.new(
+      ok?: false,
+      opening_period: nil,
+      nights: 0,
+      nightly_price_cents: nil,
+      optional_services_total_cents: 0,
+      currency: nil,
+      total_price_cents: nil,
+      error: message
+    )
   end
 
   def opening_period_covering_range

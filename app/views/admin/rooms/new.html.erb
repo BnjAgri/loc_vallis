@@ -10,17 +10,11 @@
 
   <div class="card">
     <div class="card-body">
-      <%= simple_form_for([:admin, @room]) do |f| %>
-        <%= f.input :name, label: "Nom" %>
-        <%= f.input :capacity, label: "Capacité", hint: "Optionnel" %>
-        <%= f.input :photos, as: :file, input_html: { multiple: true }, label: "Photos", hint: "Importer une ou plusieurs images" %>
-        <%= f.input :room_url, as: :text, label: "URLs d'images", hint: "Une URL d'image par ligne" %>
-
-        <div class="d-flex align-items-center gap-2">
-          <%= f.submit "Créer la chambre", class: "btn btn-primary" %>
-          <%= link_to "Retour", admin_rooms_path, class: "btn btn-link" %>
-        </div>
-      <% end %>
+      <%= render "form",
+        room: @room,
+        submit_label: "Créer la chambre",
+        back_label: "Retour",
+        back_path: admin_rooms_path %>
     </div>
   </div>
 </div>

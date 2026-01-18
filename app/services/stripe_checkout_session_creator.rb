@@ -8,8 +8,8 @@
 # - appelle l'API Stripe (création de session)
 # - persist `stripe_checkout_session_id` et `stripe_payment_intent_id` sur la booking
 #
-# Note : Stripe nécessite un `unit_amount` (prix unitaire). Ici on convertit le prix total
-# de la booking en prix par nuit (voir `unit_amount_cents`).
+# Note : Stripe nécessite un `unit_amount` (prix unitaire). Comme le total de la booking
+# peut inclure des services optionnels “one-shot”, on facture le total en une seule ligne.
 class StripeCheckoutSessionCreator
   def self.call(booking:)
     new(booking:).call
@@ -30,10 +30,10 @@ class StripeCheckoutSessionCreator
       },
       line_items: [
         {
-          quantity: booking.nights,
+          quantity: 1,
           price_data: {
             currency: booking.currency.downcase,
-            unit_amount: unit_amount_cents,
+            unit_amount: booking.total_price_cents,
             product_data: {
               name: "Stay (#{booking.room.name})"
             }
@@ -55,12 +55,6 @@ class StripeCheckoutSessionCreator
   private
 
   attr_reader :booking
-
-  def unit_amount_cents
-    # Booking total is authoritative; compute per-night for checkout line item.
-    # (Stripe requires unit_amount; we represent it as nightly price.)
-    (booking.total_price_cents / booking.nights)
-  end
 
   def base_url
     ENV.fetch("APP_BASE_URL", "http://localhost:3000")

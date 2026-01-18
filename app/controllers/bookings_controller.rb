@@ -51,6 +51,7 @@ class BookingsController < ApplicationController
     @booking = Booking.new(booking_params)
     @booking.room = @room
     @booking.user = current_user
+    @booking.selected_optional_services = selected_optional_services_from_params(@room)
 
     authorize @booking
 
@@ -78,6 +79,33 @@ class BookingsController < ApplicationController
 
   def booking_params
     params.require(:booking).permit(:start_date, :end_date)
+  end
+
+  def selected_optional_services_from_params(room)
+    names = Array(params.dig(:booking, :optional_service_names)).map { |n| n.to_s.strip }.reject(&:blank?)
+    return [] if names.empty?
+
+    allowed = Array(room.optional_services)
+    allowed_by_name = allowed.each_with_object({}) do |entry, acc|
+      next unless entry.is_a?(Hash)
+
+      name = (entry["name"] || entry[:name]).to_s.strip
+      next if name.blank?
+
+      acc[name] = entry
+    end
+
+    unique_names = names.uniq.first(5)
+    unique_names.filter_map do |name|
+      allowed_entry = allowed_by_name[name]
+      next if allowed_entry.nil?
+
+      {
+        "name" => name,
+        "price_cents" => (allowed_entry["price_cents"] || allowed_entry[:price_cents]).to_i,
+        "currency" => (allowed_entry["currency"] || allowed_entry[:currency]).to_s.presence || "EUR"
+      }
+    end
   end
 
   def expire_overdue_bookings
