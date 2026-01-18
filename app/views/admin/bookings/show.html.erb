@@ -25,7 +25,7 @@
             </div>
           <% end %>
 
-          <p class="mb-3">Total : <%= @booking.total_price_cents %> <%= @booking.currency %></p>
+          <p class="mb-3">Total : <%= format_price_euros(@booking.total_price_cents) %></p>
 
           <div class="d-flex flex-wrap gap-2">
             <% if policy(@booking).approve? %>
