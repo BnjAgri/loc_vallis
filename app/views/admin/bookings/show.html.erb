@@ -7,7 +7,11 @@
 
           <p class="mb-1">Voyageur : <%= @booking.user.email %></p>
           <p class="mb-1">Statut : <strong><%= booking_status_label(@booking.status) %></strong></p>
-          <p class="mb-1">Dates : <%= @booking.start_date.strftime("%d/%m/%Y") %> → <%= @booking.end_date.strftime("%d/%m/%Y") %> (<%= @booking.nights %> nuits)</p>
+          <p class="mb-1">Dates : <%= @booking.start_date.strftime("%d/%m/%Y") %> → <%= @booking.end_date.strftime("%d/%m/%Y") %></p>
+
+          <% nights_total_cents = @booking.total_price_cents.to_i - @booking.selected_optional_services_total_cents.to_i %>
+          <p class="mb-1">Nuits : <%= @booking.nights %></p>
+          <p class="mb-1 text-muted">Sous-total nuits : <%= format_price_euros(nights_total_cents) %></p>
 
           <% if Array(@booking.selected_optional_services).any? %>
             <div class="mt-3">
