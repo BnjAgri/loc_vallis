@@ -134,3 +134,17 @@ fr:
       phone_label: "Téléphone"
       email_label: "E-mail"
       not_provided: "Non renseigné"
+
+  bookings:
+    flash:
+      request_sent: "Demande de réservation envoyée."
+      canceled: "Réservation annulée."
+      unable_to_cancel: "Impossible d'annuler la réservation."
+    new:
+      title: "Demande de réservation pour %{room}"
+      start_date: "Date de début"
+      end_date: "Date de fin"
+      submit: "Envoyer la demande"
+      optional_services:
+        title: "Services optionnels"
+        hint: "Ces options s'ajoutent au total de la réservation."

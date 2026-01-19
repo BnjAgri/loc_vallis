@@ -95,3 +95,17 @@ en:
       phone_label: "Phone"
       email_label: "Email"
       not_provided: "Not provided"
+
+  bookings:
+    flash:
+      request_sent: "Booking request sent."
+      canceled: "Booking canceled."
+      unable_to_cancel: "Unable to cancel booking."
+    new:
+      title: "Booking request for %{room}"
+      start_date: "Start date"
+      end_date: "End date"
+      submit: "Send request"
+      optional_services:
+        title: "Optional services"
+        hint: "These options are added to the booking total."

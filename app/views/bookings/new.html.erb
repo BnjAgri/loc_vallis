@@ -1,4 +1,4 @@
-<h1>Demande de réservation pour <%= @room.name %></h1>
+<h1><%= t(".title", room: @room.name) %></h1>
 
 <div class="container mt-4">
   <div class="row justify-content-center">
@@ -16,18 +16,18 @@
           <% end %>
 
           <div class="mb-3">
-            <%= f.label :start_date %>
+            <%= f.label :start_date, t(".start_date") %>
             <%= f.text_field :start_date, class: "form-control", data: { controller: "flatpickr" } %>
           </div>
 
           <div class="mb-3">
-            <%= f.label :end_date %>
+            <%= f.label :end_date, t(".end_date") %>
             <%= f.text_field :end_date, class: "form-control", data: { controller: "flatpickr" } %>
           </div>
 
           <% if Array(@room.optional_services).any? %>
             <div class="mb-3">
-              <div class="fw-semibold mb-2">Services optionnels</div>
+              <div class="fw-semibold mb-2"><%= t(".optional_services.title") %></div>
               <div class="d-grid gap-2">
                 <% Array(@room.optional_services).each do |service| %>
                   <% next unless service.is_a?(Hash) %>
@@ -44,11 +44,11 @@
                   </div>
                 <% end %>
               </div>
-              <div class="form-text">Ces options s'ajoutent au total de la réservation.</div>
+              <div class="form-text"><%= t(".optional_services.hint") %></div>
             </div>
           <% end %>
 
-          <%= f.submit "Send request", class: "btn btn-primary" %>
+          <%= f.submit t(".submit"), class: "btn btn-primary" %>
         <% end %>
       </div>
     </div>
