@@ -1,4 +1,26 @@
 fr:
+  date:
+    formats:
+      short: "%d/%m/%Y"
+
+  app:
+    title: "LocVallis"
+
+  shared:
+    locale:
+      fr: "FR"
+      en: "EN"
+    nav:
+      rooms: "Chambres"
+      my_bookings: "Mes réservations"
+      inbox: "Messages"
+      logout: "Déconnexion"
+      dashboard: "Tableau de bord"
+      accommodations: "Hébergements"
+      login: "Connexion"
+    authorization:
+      not_authorized: "Vous n'êtes pas autorisé à effectuer cette action."
+
   hello: "Bonjour"
   
   devise:
@@ -70,8 +92,31 @@ fr:
         back_link: "Retour"
   
   rooms:
+    show:
+      carousel_previous: "Précédent"
+      carousel_next: "Suivant"
+      thumbnail_alt: "Miniature %{index}"
+      capacity: "Capacité : %{count} pers."
+      per_night_suffix: "/nuit"
+      select_dates_hint: "Sélectionnez vos dates pour afficher le total et réserver."
+      availability_calendar_aria: "Calendrier de disponibilités"
+      book_button: "Réserver"
+      summary:
+        nightly_rate: "Tarif / nuit"
+        nights: "Nombre de nuits"
+        total: "Total"
+      optional_services:
+        title: "Services optionnels"
+        hint: "Vous pourrez choisir ces options lors de la réservation."
+      reviews:
+        title: "Avis"
+        none: "Aucun avis pour le moment."
+        count:
+          one: "%{count} avis"
+          other: "%{count} avis"
+
     index:
-      welcome: "Bienvenue chez <strong>%{owner}</strong> à <strong>%{location}</strong>!"
+      welcome_html: "Bienvenue chez <strong>%{owner}</strong> à <strong>%{location}</strong>!"
       subtitle: "Maison et chambres d'hôtes sur la route de Saint Jacques de Compostelle"
       accommodations: "Hébergements"
       capacity: "Capacité : %{count} pers."
@@ -82,6 +127,7 @@ fr:
       no_reviews: "Aucun avis"
       address_label: "Adresse :"
       contact_title: "Coordonnées"
+      mapbox_access_token_missing: "MAPBOX_ACCESS_TOKEN manquant"
       guesthouse_name_label: "Nom du gîte"
       owner_label: "Propriétaire"
       postal_address_label: "Adresse postale"

@@ -28,4 +28,70 @@
 #       enabled: "ON"
 
 en:
+  date:
+    formats:
+      short: "%m/%d/%Y"
+
+  app:
+    title: "LocVallis"
+
+  shared:
+    locale:
+      fr: "FR"
+      en: "EN"
+    nav:
+      rooms: "Rooms"
+      my_bookings: "My bookings"
+      inbox: "Inbox"
+      logout: "Log out"
+      dashboard: "Dashboard"
+      accommodations: "Accommodations"
+      login: "Log in"
+    authorization:
+      not_authorized: "You are not authorized to perform this action."
+
   hello: "Hello world"
+
+  rooms:
+    show:
+      carousel_previous: "Previous"
+      carousel_next: "Next"
+      thumbnail_alt: "Thumbnail %{index}"
+      capacity: "Capacity: %{count} people"
+      per_night_suffix: "/night"
+      select_dates_hint: "Select your dates to see the total and book."
+      availability_calendar_aria: "Availability calendar"
+      book_button: "Book"
+      summary:
+        nightly_rate: "Nightly rate"
+        nights: "Nights"
+        total: "Total"
+      optional_services:
+        title: "Optional services"
+        hint: "You can choose these options during booking."
+      reviews:
+        title: "Reviews"
+        none: "No reviews yet."
+        count:
+          one: "%{count} review"
+          other: "%{count} reviews"
+
+    index:
+      welcome_html: "Welcome to <strong>%{owner}</strong> in <strong>%{location}</strong>!"
+      subtitle: "Guesthouse and B&B on the Camino de Santiago route"
+      accommodations: "Accommodations"
+      capacity: "Capacity: %{count} people"
+      from_price: "From"
+      per_night: "per night"
+      reviews_label: "Reviews:"
+      book_button: "Book"
+      no_reviews: "No reviews"
+      address_label: "Address:"
+      contact_title: "Contact"
+      mapbox_access_token_missing: "MAPBOX_ACCESS_TOKEN is missing"
+      guesthouse_name_label: "Guesthouse name"
+      owner_label: "Host"
+      postal_address_label: "Postal address"
+      phone_label: "Phone"
+      email_label: "Email"
+      not_provided: "Not provided"

@@ -1,11 +1,11 @@
 <div class="banner">
   <div class="container">
-    <h1>Bienvenue chez <strong>Claude</strong> à <strong>Anglès</strong>!</h1>
-    <p>Maison et chambres d'hôtes sur la route de Saint Jacques de Compostelle</p>
+    <h1><%= sanitize(t(".welcome_html", owner: @hero_owner_name, location: @hero_location), tags: %w[strong]) %></h1>
+    <p><%= t(".subtitle") %></p>
   </div>
 </div>
 
-<h1>Hébergements</h1>
+<h1><%= t(".accommodations") %></h1>
 
 <div class="container mt-4">
   <div class="row g-3">
@@ -33,14 +33,14 @@
 
           <div class="p-2">
             <% if room.capacity.present? %>
-              <div class="text-muted">Capacité : <%= room.capacity %> pers.</div>
+              <div class="text-muted"><%= t(".capacity", count: room.capacity) %></div>
             <% end %>
 
             <% if min_period.present? %>
               <div>
-                <%= t('rooms.index.from_price') %>
+                <%= t(".from_price") %>
                 <%= format_price_euros(min_period.nightly_price_cents) %>
-                <%= t('rooms.index.per_night') %>
+                <%= t(".per_night") %>
               </div>
             <% end %>
 
@@ -78,55 +78,55 @@
           ></div>
         <% else %>
           <div class="h-100 w-100 d-flex align-items-center justify-content-center bg-white text-muted">
-            MAPBOX_ACCESS_TOKEN manquant
+            <%= t(".mapbox_access_token_missing") %>
           </div>
         <% end %>
       </div>
-      <div class="mt-2 text-muted"><strong>Adresse :</strong> <%= map_address %></div>
+      <div class="mt-2 text-muted"><strong><%= t(".address_label") %></strong> <%= map_address %></div>
     </div>
 
     <div class="col-12 col-lg-4">
       <div class="bg-white p-3 rounded" style="box-shadow: 0 0 18px rgba(0, 0, 0, 0.08);">
-        <h2 class="h5 mb-3">Coordonnées</h2>
+        <h2 class="h5 mb-3"><%= t(".contact_title") %></h2>
 
         <dl class="mb-0">
           <div class="mb-2">
-            <dt class="text-muted small">Nom du gîte</dt>
-            <dd class="mb-0"><%= @guesthouse_name.presence || "Non renseigné" %></dd>
+            <dt class="text-muted small"><%= t(".guesthouse_name_label") %></dt>
+            <dd class="mb-0"><%= @guesthouse_name.presence || t(".not_provided") %></dd>
           </div>
 
           <div class="mb-2">
-            <dt class="text-muted small">Owner</dt>
+            <dt class="text-muted small"><%= t(".owner_label") %></dt>
             <dd class="mb-0">
               <% owner_full_name = [@owner&.first_name, @owner&.last_name].compact.join(" ") %>
-              <%= owner_full_name.presence || "Non renseigné" %>
+              <%= owner_full_name.presence || t(".not_provided") %>
             </dd>
           </div>
 
           <div class="mb-2">
-            <dt class="text-muted small">Adresse postale</dt>
-            <dd class="mb-0"><%= @owner_postal_address.presence || "Non renseigné" %></dd>
+            <dt class="text-muted small"><%= t(".postal_address_label") %></dt>
+            <dd class="mb-0"><%= @owner_postal_address.presence || t(".not_provided") %></dd>
           </div>
 
           <div class="mb-2">
-            <dt class="text-muted small">Téléphone</dt>
+            <dt class="text-muted small"><%= t(".phone_label") %></dt>
             <dd class="mb-0">
               <% if @owner_phone.present? %>
                 <%= link_to @owner_phone, "tel:#{@owner_phone}", class: "text-decoration-none" %>
               <% else %>
-                Non renseigné
+                <%= t(".not_provided") %>
               <% end %>
             </dd>
           </div>
 
           <div>
-            <dt class="text-muted small">E-mail</dt>
+            <dt class="text-muted small"><%= t(".email_label") %></dt>
             <dd class="mb-0">
               <% owner_email = @owner&.email.to_s %>
               <% if owner_email.present? %>
                 <%= mail_to owner_email, owner_email, class: "text-decoration-none" %>
               <% else %>
-                Non renseigné
+                <%= t(".not_provided") %>
               <% end %>
             </dd>
           </div>
