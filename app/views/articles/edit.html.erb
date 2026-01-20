@@ -1,0 +1,12 @@
+<div class="container py-4">
+	<% actions = capture do %>
+		<%= link_to "Retour", article_path(@article), class: "btn btn-soft" %>
+	<% end %>
+
+	<%= render "shared/ui/page_header",
+		title: "Modifier l’article",
+		subtitle: "Mettez à jour le contenu et l’image.",
+		actions: actions %>
+
+	<%= render "form", article: @article %>
+</div>

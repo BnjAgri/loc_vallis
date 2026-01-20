@@ -1,6 +1,20 @@
 <div class="container py-4">
 	<% actions = capture do %>
 		<%= link_to "Retour au blog", articles_path, class: "btn btn-soft" %>
+		<% if owner_signed_in? && @article.owner_id == current_owner.id %>
+			<%= link_to "Modifier", edit_article_path(@article), class: "btn btn-outline-primary" %>
+			<%= button_to "Supprimer",
+				article_path(@article),
+				method: :delete,
+				class: "btn btn-outline-danger",
+				form: {
+					data: {
+						controller: "confirm-delete",
+						action: "submit->confirm-delete#confirm",
+						"confirm-delete-message-value": "Supprimer cet article ?"
+					}
+				} %>
+		<% end %>
 	<% end %>
 
 	<%= render "shared/ui/page_header",
@@ -8,9 +22,13 @@
 		subtitle: [(@article.owner&.guesthouse_name.presence || @article.owner&.email), l(@article.created_at.to_date, format: :short)].compact.join(" · "),
 		actions: actions %>
 
+	<% image_src = @article.image.attached? ? url_for(@article.image) : @article.image_url %>
+
 	<div class="card lv-card overflow-hidden">
 		<div style="height: 360px; overflow: hidden;">
-			<%= image_tag @article.image_url, alt: @article.title, class: "w-100 h-100", style: "object-fit: cover;" %>
+			<% if image_src.present? %>
+				<%= image_tag image_src, alt: @article.title, class: "w-100 h-100", style: "object-fit: cover;" %>
+			<% end %>
 		</div>
 
 		<div class="card-body">

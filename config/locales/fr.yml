@@ -26,6 +26,7 @@ fr:
       login: "Se connecter"
     authorization:
       not_authorized: "Vous n'êtes pas autorisé à effectuer cette action."
+      unauthenticated: "Vous devez vous connecter pour continuer."
 
     actions:
       all: "Tout"
@@ -61,6 +62,14 @@ fr:
       placeholder: "Écrire un message…"
 
   hello: "Bonjour"
+
+  articles:
+    create:
+      success: "Article publié."
+    update:
+      success: "Article mis à jour."
+    destroy:
+      success: "Article supprimé."
 
   devise:
     registrations:
