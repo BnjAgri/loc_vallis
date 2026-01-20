@@ -2,6 +2,14 @@
   justify-content: space-between;
   background: rgba($lv-background, 0.92);
   border-bottom: 1px solid rgba($lv-primary, 0.18);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  transition: box-shadow 180ms ease, background-color 180ms ease;
+}
+
+.navbar-lewagon.lv-navbar--elevated {
+  background: rgba($lv-background, 0.96);
+  box-shadow: $box-shadow-sm;
 }
 
 .navbar-lewagon .navbar-collapse {

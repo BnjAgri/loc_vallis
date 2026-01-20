@@ -1,0 +1,32 @@
+.btn {
+  border-radius: $border-radius-lg;
+}
+
+.btn-primary {
+  box-shadow: 0 .5rem 1rem rgba($lv-primary, 0.14);
+}
+
+.btn-accent {
+  color: #fff;
+  background: $lv-accent;
+  border-color: $lv-accent;
+  box-shadow: 0 .5rem 1rem rgba($lv-accent, 0.18);
+}
+
+.btn-accent:hover {
+  color: #fff;
+  background: darken($lv-accent, 6%);
+  border-color: darken($lv-accent, 6%);
+}
+
+.btn-soft {
+  background: rgba($lv-primary, 0.10);
+  border-color: rgba($lv-primary, 0.16);
+  color: darken($lv-primary, 6%);
+}
+
+.btn-soft:hover {
+  background: rgba($lv-primary, 0.14);
+  border-color: rgba($lv-primary, 0.20);
+  color: darken($lv-primary, 10%);
+}

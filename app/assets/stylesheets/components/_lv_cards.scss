@@ -1,0 +1,34 @@
+.lv-card {
+  border-radius: $card-border-radius;
+  border: 1px solid $card-border-color;
+  box-shadow: $box-shadow-sm;
+}
+
+.lv-card--soft {
+  background: $lv-surface-soft;
+}
+
+.lv-card__kpi {
+  display: flex;
+  gap: .5rem;
+  align-items: baseline;
+}
+
+.lv-card__kpi-value {
+  font-weight: 700;
+}
+
+.lv-card__kpi-label {
+  color: $lv-muted;
+  font-size: .9rem;
+}
+
+.lv-list {
+  margin: 0;
+  padding-left: 1.25rem;
+}
+
+.lv-meta {
+  color: $lv-muted;
+  font-size: .95rem;
+}

@@ -1,0 +1,43 @@
+.lv-app {
+  background: $lv-background;
+}
+
+.lv-surface {
+  background: $lv-surface;
+}
+
+.lv-surface-soft {
+  background: $lv-surface-soft;
+}
+
+.lv-muted {
+  color: $lv-muted;
+}
+
+.lv-divider {
+  border-color: $lv-divider !important;
+}
+
+.lv-rounded {
+  border-radius: 1rem !important;
+}
+
+.lv-shadow-sm {
+  box-shadow: $box-shadow-sm !important;
+}
+
+.lv-shadow {
+  box-shadow: $box-shadow !important;
+}
+
+.lv-shadow-lg {
+  box-shadow: $box-shadow-lg !important;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  letter-spacing: -0.01em;
+}
+
+::selection {
+  background: rgba($lv-accent, 0.20);
+}

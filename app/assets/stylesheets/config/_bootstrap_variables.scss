@@ -13,24 +13,40 @@ $font-size-base:         1rem;
 // Colors
 $body-color: $lv-text;
 $primary:    $lv-primary;
-$success:    $lv-accent;
-$info:       $lv-secondary;
-$danger:     $red;
-$warning:    lighten($lv-primary, 10%);
+$secondary:  $lv-muted;
+$success:    $lv-success;
+$info:       $lv-info;
+$warning:    $lv-warning;
+$danger:     $lv-danger;
 
 // Links
 $link-color: darken($lv-primary, 10%);
 $link-hover-color: darken($lv-primary, 20%);
 
 // Cards
-$card-bg: #fff;
-$card-border-color: rgba($lv-primary, 0.22);
+$card-bg: $lv-surface;
+$card-border-color: rgba($lv-ink, 0.08);
+$card-border-radius: 1rem;
 
 // Buttons & inputs' radius
-$border-radius-sm:            .0625rem;
-$border-radius:               .125rem;
-$border-radius-lg:            .25rem;
-$border-radius-xl:            .5rem;
-$border-radius-xxl:           1rem;
+$border-radius-sm:            .5rem;
+$border-radius:               .75rem;
+$border-radius-lg:            1rem;
+$border-radius-xl:            1.25rem;
+$border-radius-xxl:           1.5rem;
+
+// Focus ring (accessibility)
+$focus-ring-color: rgba($lv-primary, 0.32);
+$focus-ring-width: .25rem;
+
+// Inputs
+$input-bg: $lv-surface;
+$input-border-color: rgba($lv-ink, 0.14);
+$input-focus-border-color: rgba($lv-primary, 0.50);
+
+// Subtle shadows
+$box-shadow-sm: 0 .25rem .75rem rgba($lv-ink, .06);
+$box-shadow:    0 .5rem 1.25rem rgba($lv-ink, .08);
+$box-shadow-lg: 0 1rem 2.25rem rgba($lv-ink, .10);
 
 // Override other variables below!

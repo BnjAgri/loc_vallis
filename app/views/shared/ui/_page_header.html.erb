@@ -1,0 +1,18 @@
+<header class="lv-page-header">
+  <div class="d-flex flex-column flex-md-row align-items-md-end justify-content-between gap-3">
+    <div>
+      <h1 class="lv-page-header__title h3 mb-1"><%= title %></h1>
+      <% if defined?(subtitle) && subtitle.present? %>
+        <div class="lv-page-header__subtitle"><%= subtitle %></div>
+      <% end %>
+    </div>
+
+    <% if defined?(actions) && actions.present? %>
+      <div class="d-flex flex-wrap gap-2">
+        <%= actions %>
+      </div>
+    <% end %>
+  </div>
+
+  <hr class="mt-3 mb-0 lv-divider" />
+</header>

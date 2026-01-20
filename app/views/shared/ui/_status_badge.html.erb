@@ -1,0 +1,7 @@
+<%# locals: status:, label: nil, size: :md %>
+<% badge_size_class = (defined?(size) && size.to_s == "sm") ? "small" : nil %>
+<% badge_label = (defined?(label) && label.present?) ? label : booking_status_label(status) %>
+
+<span class="badge rounded-pill lv-status-badge <%= booking_status_badge_class(status) %> <%= badge_size_class %>">
+  <%= badge_label %>
+</span>

@@ -1,0 +1,62 @@
+<%# locals: booking:, actions: nil %>
+<% nights_total_cents = booking.total_price_cents.to_i - booking.selected_optional_services_total_cents.to_i %>
+
+<div class="card lv-card">
+  <div class="card-body">
+    <div class="d-flex align-items-start justify-content-between gap-3">
+      <div>
+        <div class="text-uppercase lv-muted small">Réservation</div>
+        <div class="h5 mb-1">#<%= booking.id %></div>
+        <div class="lv-meta">Voyageur : <%= booking.user.email %></div>
+      </div>
+      <div class="text-end">
+        <%= render "shared/ui/status_badge", status: booking.status %>
+      </div>
+    </div>
+
+    <hr class="my-3 lv-divider" />
+
+    <div class="row g-3">
+      <div class="col-12 col-md-6">
+        <div class="lv-meta">Dates</div>
+        <div class="fw-semibold">
+          <%= booking.start_date.strftime("%d/%m/%Y") %> → <%= booking.end_date.strftime("%d/%m/%Y") %>
+        </div>
+        <div class="lv-meta mt-1"><%= booking.nights %> nuits</div>
+      </div>
+
+      <div class="col-12 col-md-6">
+        <div class="lv-meta">Total</div>
+        <div class="lv-card__kpi">
+          <div class="lv-card__kpi-value h4 mb-0"><%= format_price_euros(booking.total_price_cents) %></div>
+          <div class="lv-card__kpi-label">TTC</div>
+        </div>
+        <div class="lv-meta">Sous-total nuits : <%= format_price_euros(nights_total_cents) %></div>
+        <% if booking.selected_optional_services_total_cents.to_i.positive? %>
+          <div class="lv-meta">Sous-total services : <%= format_price_euros(booking.selected_optional_services_total_cents) %></div>
+        <% end %>
+      </div>
+    </div>
+
+    <% if Array(booking.selected_optional_services).any? %>
+      <hr class="my-3 lv-divider" />
+      <div class="fw-semibold mb-2">Services optionnels</div>
+      <ul class="lv-list mb-0">
+        <% Array(booking.selected_optional_services).each do |service| %>
+          <% next unless service.is_a?(Hash) %>
+          <% name = (service["name"] || service[:name]).to_s.strip %>
+          <% price_cents = service["price_cents"] || service[:price_cents] %>
+          <% next if name.blank? || price_cents.blank? %>
+          <li><%= name %> — <%= format_price_euros(price_cents) %></li>
+        <% end %>
+      </ul>
+    <% end %>
+
+    <% if defined?(actions) && actions.present? %>
+      <hr class="my-3 lv-divider" />
+      <div class="d-flex flex-wrap gap-2">
+        <%= actions %>
+      </div>
+    <% end %>
+  </div>
+</div>

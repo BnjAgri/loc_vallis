@@ -1,0 +1,9 @@
+<%# locals: amount_cents:, currency: "EUR", style: :inline %>
+<% amount = defined?(amount_cents) ? amount_cents : nil %>
+<% price_label = (currency.to_s == "EUR") ? format_price_euros(amount) : format_price_euros(amount) %>
+
+<% if defined?(style) && style.to_s == "pill" %>
+  <span class="badge rounded-pill text-bg-light border"><%= price_label %></span>
+<% else %>
+  <span><%= price_label %></span>
+<% end %>
