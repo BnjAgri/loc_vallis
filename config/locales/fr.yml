@@ -16,6 +16,7 @@ fr:
       en: "EN"
     nav:
       rooms: "Chambres"
+      blog: "Blog"
       my_bookings: "Mes réservations"
       inbox: "Messages"
       logout: "Déconnexion"

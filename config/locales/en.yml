@@ -45,6 +45,7 @@ en:
       en: "EN"
     nav:
       rooms: "Rooms"
+      blog: "Blog"
       my_bookings: "My bookings"
       inbox: "Inbox"
       logout: "Log out"
