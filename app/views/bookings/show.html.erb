@@ -1,80 +1,85 @@
 <div class="container py-4">
-  <div class="row justify-content-center">
-    <div class="col-12 col-lg-9">
-      <div class="card">
-        <div class="card-body">
-          <h1 class="h4 mb-1">Réservation #<%= @booking.id %></h1>
-          <div class="text-end mb-3">
-            <strong><%= @booking.room.name %></strong>
-          </div>
+  <%= render "shared/ui/page_header",
+    title: "Votre réservation ##{@booking.id}",
+    subtitle: @booking.room.name %>
 
-          <p>Status: <strong><%= booking_status_label(@booking.status) %></strong></p>
-          <p>Dates: <%= @booking.start_date %> → <%= @booking.end_date %> (<%= @booking.nights %> nights)</p>
+  <div class="row g-4 mt-1">
+    <div class="col-12 col-lg-5">
+      <% actions = capture do %>
+        <% if policy(@booking).pay? %>
+          <%= button_to "Payer maintenant", checkout_booking_path(@booking), method: :post, class: "btn btn-accent" %>
+        <% end %>
 
-          <% if Array(@booking.selected_optional_services).any? %>
-            <div class="mb-3">
-              <div class="fw-semibold">Services optionnels</div>
-              <ul class="mb-2">
-                <% Array(@booking.selected_optional_services).each do |service| %>
-                  <% next unless service.is_a?(Hash) %>
-                  <% name = (service["name"] || service[:name]).to_s.strip %>
-                  <% price_cents = service["price_cents"] || service[:price_cents] %>
-                  <% next if name.blank? || price_cents.blank? %>
-                  <li><%= name %> — <%= format_price_euros(price_cents) %></li>
-                <% end %>
-              </ul>
-              <div class="text-muted">Sous-total services : <%= format_price_euros(@booking.selected_optional_services_total_cents) %></div>
+        <% if policy(@booking).cancel? %>
+          <%= button_to t("shared.actions.cancel"), cancel_booking_path(@booking), method: :patch, class: "btn btn-outline-danger" %>
+        <% end %>
+      <% end %>
+
+      <%= render "shared/ui/booking_summary_card", booking: @booking, actions: actions, show_user: false %>
+
+      <% if policy(@booking).pay? && @booking.payment_expires_at.present? %>
+        <div class="card lv-card lv-card--soft mt-4">
+          <div class="card-body">
+            <div class="d-flex align-items-start gap-2">
+              <div class="text-uppercase lv-muted small">Paiement</div>
             </div>
+            <div class="fw-semibold">Fenêtre de paiement ouverte</div>
+            <div class="lv-meta">À régler avant : <%= @booking.payment_expires_at %></div>
+            <div class="lv-meta mt-2">Paiement sécurisé via Stripe.</div>
+          </div>
+        </div>
+      <% end %>
+
+      <div class="card lv-card mt-4">
+        <div class="card-body">
+          <div class="text-uppercase lv-muted small">Après le séjour</div>
+          <div class="h5 mb-0">Votre avis</div>
+
+          <hr class="my-3 lv-divider" />
+
+          <% if @booking.review.present? %>
+            <div class="d-flex align-items-center gap-2">
+              <span class="review-stars"><%= stars_for_rating(@booking.review.rating) %></span>
+              <span class="text-muted"><%= @booking.review.rating %>/5</span>
+            </div>
+            <div class="mt-2">
+              <%= simple_format(@booking.review.comment) %>
+            </div>
+          <% elsif policy(@review).create? %>
+            <%= simple_form_for [@booking, @review] do |f| %>
+              <div class="row g-2">
+                <div class="col-12 col-md-3">
+                  <%= f.input :rating, collection: (1..5).to_a, include_blank: false, label: "Note" %>
+                </div>
+                <div class="col-12 col-md-9">
+                  <%= f.input :comment, as: :text, label: "Commentaire", input_html: { rows: 3 } %>
+                </div>
+              </div>
+              <%= f.button :submit, "Envoyer mon avis", class: "btn btn-primary" %>
+            <% end %>
+          <% else %>
+            <p class="text-muted mb-0">Vous pourrez laisser un avis après votre séjour (et une seule fois par réservation).</p>
           <% end %>
+        </div>
+      </div>
+    </div>
 
-          <p>
-            Total:
-            <%= number_to_currency(@booking.total_price_cents.to_i / 100.0, unit: "#{@booking.currency.to_s.upcase} ", format: "%u%n") %>
-          </p>
-
-          <div class="d-flex flex-wrap gap-2 mb-4">
-            <% if policy(@booking).pay? %>
-              <%= button_to "Pay now", checkout_booking_path(@booking), method: :post, class: "btn btn-primary" %>
-            <% end %>
-
-            <% if policy(@booking).cancel? %>
-              <%= button_to "Cancel", cancel_booking_path(@booking), method: :patch, class: "btn btn-outline-danger" %>
-            <% end %>
+    <div class="col-12 col-lg-7">
+      <div class="card lv-card h-100">
+        <div class="card-body">
+          <div class="d-flex align-items-start justify-content-between gap-2 mb-2">
+            <div>
+              <div class="text-uppercase lv-muted small">Conversation</div>
+              <div class="h5 mb-0">Messages avec l’hôte</div>
+            </div>
+            <div class="text-end">
+              <%= render "shared/ui/status_badge", status: @booking.status %>
+            </div>
           </div>
 
-          <% if policy(@booking).pay? %>
-            <p class="text-muted mb-4">Deadline: <%= @booking.payment_expires_at %></p>
-          <% end %>
+          <hr class="my-3 lv-divider" />
 
           <%= render "shared/messages", booking: @booking, messages: @messages %>
-
-          <div class="mt-4">
-            <h2 class="h4">Votre avis</h2>
-
-            <% if @booking.review.present? %>
-              <div class="d-flex align-items-center gap-2">
-                <span class="review-stars"><%= stars_for_rating(@booking.review.rating) %></span>
-                <span class="text-muted"><%= @booking.review.rating %>/5</span>
-              </div>
-              <div class="mt-2">
-                <%= simple_format(@booking.review.comment) %>
-              </div>
-            <% elsif policy(@review).create? %>
-              <%= simple_form_for [@booking, @review] do |f| %>
-                <div class="row g-2">
-                  <div class="col-12 col-md-3">
-                    <%= f.input :rating, collection: (1..5).to_a, include_blank: false, label: "Note" %>
-                  </div>
-                  <div class="col-12 col-md-9">
-                    <%= f.input :comment, as: :text, label: "Commentaire", input_html: { rows: 3 } %>
-                  </div>
-                </div>
-                <%= f.button :submit, "Envoyer mon avis", class: "btn btn-primary" %>
-              <% end %>
-            <% else %>
-              <p class="text-muted mb-0">Vous pourrez laisser un avis après votre séjour (et une seule fois par réservation).</p>
-            <% end %>
-          </div>
         </div>
       </div>
     </div>

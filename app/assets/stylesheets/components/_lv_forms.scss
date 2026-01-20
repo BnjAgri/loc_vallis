@@ -1,0 +1,19 @@
+.form-label {
+  color: $lv-ink;
+  font-weight: 600;
+  font-size: .95rem;
+}
+
+.form-control,
+.form-select {
+  border-radius: $border-radius-lg;
+  min-height: 44px;
+}
+
+.form-control::placeholder {
+  color: rgba($lv-muted, 0.9);
+}
+
+.input-group-text {
+  border-radius: $border-radius-lg;
+}

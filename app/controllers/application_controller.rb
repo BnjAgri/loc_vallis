@@ -1,6 +1,7 @@
 class ApplicationController < ActionController::Base
   include Pundit::Authorization
 
+  before_action :set_locale
   before_action :configure_permitted_parameters, if: :devise_controller?
   before_action :set_owner_unread_conversations_count, if: :owner_signed_in?
   before_action :set_user_unread_conversations_count, if: :user_signed_in?
@@ -30,6 +31,22 @@ class ApplicationController < ActionController::Base
 
   private
 
+  def set_locale
+    requested_locale = params[:locale]&.to_sym
+
+    I18n.locale =
+      if requested_locale && I18n.available_locales.include?(requested_locale)
+        requested_locale
+      else
+        I18n.default_locale
+      end
+  end
+
+  def default_url_options
+    locale_param = I18n.locale == I18n.default_locale ? nil : I18n.locale
+    super.merge(locale: locale_param)
+  end
+
   def set_owner_unread_conversations_count
     bookings_scope = policy_scope(Booking)
 
@@ -53,7 +70,7 @@ class ApplicationController < ActionController::Base
   end
 
   def user_not_authorized
-    flash[:alert] = "You are not authorized to perform this action."
+    flash[:alert] = t("shared.authorization.not_authorized")
     redirect_back(fallback_location: root_path)
   end
 end

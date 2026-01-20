@@ -17,6 +17,17 @@ module ApplicationHelper
 		number_to_currency(cents.to_i / 100.0, unit: "€", format: "%n %u", precision: 2)
 	end
 
+	def format_price(cents, currency: "EUR")
+		return "—" if cents.nil?
+
+		code = currency.to_s.upcase
+		if code == "EUR"
+			number_to_currency(cents.to_i / 100.0, unit: "€", format: "%n %u", precision: 2)
+		else
+			number_to_currency(cents.to_i / 100.0, unit: "#{code} ", format: "%u%n", precision: 2)
+		end
+	end
+
 	def booking_status_badge_class(status)
 		case status.to_s
 		when "requested"
@@ -35,23 +46,7 @@ module ApplicationHelper
 	end
 
 	def booking_status_label(status)
-		case status.to_s
-		when "requested"
-			"demande"
-		when "approved_pending_payment"
-			"approuvé, paiement en attente"
-		when "confirmed_paid"
-			"paiement confirmé"
-		when "declined"
-			"refusée"
-		when "canceled"
-			"annulée"
-		when "expired"
-			"expirée"
-		when "refunded"
-			"remboursée"
-		else
-			status.to_s
-		end
+		key = "bookings.statuses.#{status}"
+		I18n.t(key, default: status.to_s.tr("_", " "))
 	end
 end

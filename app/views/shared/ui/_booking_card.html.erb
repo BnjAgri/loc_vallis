@@ -1,0 +1,41 @@
+<%# locals: booking:, href: nil %>
+<% booking = local_assigns.fetch(:booking) %>
+<% href = local_assigns[:href] || booking_path(booking) %>
+
+<% date_label = if booking.start_date.present? && booking.end_date.present?
+  "#{booking.start_date.strftime("%d/%m/%Y")} → #{booking.end_date.strftime("%d/%m/%Y")}"
+else
+  "Dates à confirmer"
+end %>
+
+<%= link_to href, class: "text-decoration-none" do %>
+  <div class="card lv-card h-100">
+    <div class="card-body">
+      <div class="d-flex align-items-start justify-content-between gap-3">
+        <div>
+          <div class="text-uppercase lv-muted small">Réservation</div>
+          <div class="h5 mb-1">#<%= booking.id %></div>
+          <div class="lv-meta"><%= booking.room&.name %></div>
+        </div>
+        <div class="text-end">
+          <%= render "shared/ui/status_badge", status: booking.status, size: :sm %>
+        </div>
+      </div>
+
+      <hr class="my-3 lv-divider" />
+
+      <div class="row g-2">
+        <div class="col-12 col-md-7">
+          <div class="lv-meta">Dates</div>
+          <div class="fw-semibold"><%= date_label %></div>
+          <div class="lv-meta"><%= booking.nights %> nuits</div>
+        </div>
+
+        <div class="col-12 col-md-5">
+          <div class="lv-meta">Total</div>
+          <div class="fw-bold"><%= format_price(booking.total_price_cents, currency: booking.currency) %></div>
+        </div>
+      </div>
+    </div>
+  </div>
+<% end %>

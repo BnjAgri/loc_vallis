@@ -1,0 +1,13 @@
+.lv-inbox-item {
+  border-left: 4px solid transparent;
+}
+
+.lv-inbox-item--unread {
+  background-color: rgba($lv-accent, 0.08) !important;
+  border-left-color: rgba($lv-accent, 0.55);
+}
+
+.lv-inbox-item--unread:hover,
+.lv-inbox-item--unread:focus {
+  background-color: rgba($lv-accent, 0.12) !important;
+}

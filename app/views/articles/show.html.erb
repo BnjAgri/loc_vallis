@@ -1,0 +1,22 @@
+<div class="container py-4">
+	<% actions = capture do %>
+		<%= link_to "Retour au blog", articles_path, class: "btn btn-soft" %>
+	<% end %>
+
+	<%= render "shared/ui/page_header",
+		title: @article.title,
+		subtitle: [(@article.owner&.guesthouse_name.presence || @article.owner&.email), l(@article.created_at.to_date, format: :short)].compact.join(" · "),
+		actions: actions %>
+
+	<div class="card lv-card overflow-hidden">
+		<div style="height: 360px; overflow: hidden;">
+			<%= image_tag @article.image_url, alt: @article.title, class: "w-100 h-100", style: "object-fit: cover;" %>
+		</div>
+
+		<div class="card-body">
+			<div class="prose">
+				<%= simple_format(@article.content.to_s) %>
+			</div>
+		</div>
+	</div>
+</div>

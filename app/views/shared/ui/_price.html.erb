@@ -1,0 +1,11 @@
+<%# locals: amount_cents:, currency: "EUR", style: :inline %>
+<% amount = local_assigns[:amount_cents] %>
+<% currency_code = local_assigns.fetch(:currency, "EUR") %>
+<% style = local_assigns.fetch(:style, :inline) %>
+<% price_label = format_price(amount, currency: currency_code) %>
+
+<% if style.to_s == "pill" %>
+  <span class="badge rounded-pill text-bg-light border"><%= price_label %></span>
+<% else %>
+  <span><%= price_label %></span>
+<% end %>

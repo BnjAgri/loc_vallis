@@ -13,6 +13,10 @@ class RoomsController < ApplicationController
       .order(:created_at)
 
     @owner = Owner.order(:created_at).first
+
+    @hero_owner_name = @owner&.first_name.presence || ENV.fetch("GUESTHOUSE_OWNER_NAME", "Claude")
+    @hero_location = ENV.fetch("GUESTHOUSE_LOCATION", ENV.fetch("MAP_LOCATION", "Anglès"))
+
     @guesthouse_name = @owner&.guesthouse_name.presence || ENV.fetch("GUESTHOUSE_NAME", "Chez Claude")
     @owner_postal_address = @owner&.postal_address.presence || ENV["OWNER_POSTAL_ADDRESS"].presence || ENV.fetch("MAP_ADDRESS", "")
     @owner_phone = @owner&.phone.presence || ENV["OWNER_PHONE"].presence

@@ -1,6 +1,67 @@
 fr:
+  date:
+    formats:
+      short: "%d/%m/%Y"
+
+  time:
+    formats:
+      short: "%d/%m %H:%M"
+
+  app:
+    title: "LocVallis"
+
+  shared:
+    locale:
+      fr: "FR"
+      en: "EN"
+    nav:
+      rooms: "Chambres"
+      blog: "Blog"
+      my_bookings: "Mes réservations"
+      inbox: "Messages"
+      logout: "Déconnexion"
+      dashboard: "Tableau de bord"
+      accommodations: "Hébergements"
+      planning: "Planning"
+      login: "Se connecter"
+    authorization:
+      not_authorized: "Vous n'êtes pas autorisé à effectuer cette action."
+
+    actions:
+      all: "Tout"
+      unread: "Non lus"
+      send: "Envoyer"
+      cancel: "Annuler"
+
+  inbox:
+    title: "Inbox"
+    subtitle: "Conversations par réservation"
+    empty: "Aucune conversation pour le moment."
+    no_messages: "Aucun message pour le moment."
+    booking_ref: "Réservation #%{id}"
+    last_message_prefix: "%{sender} :"
+    counts:
+      unread_conversations:
+        one: "%{count} conversation non lue"
+        other: "%{count} conversations non lues"
+      unread_messages:
+        one: "%{count} message non lu"
+        other: "%{count} messages non lus"
+      unread_badge:
+        one: "%{count} non lu"
+        other: "%{count} non lus"
+
+  messages:
+    sender:
+      me: "Vous"
+      host: "Hôte"
+      traveler: "Voyageur"
+    composer:
+      label: "Votre message"
+      placeholder: "Écrire un message…"
+
   hello: "Bonjour"
-  
+
   devise:
     registrations:
       new:
@@ -15,7 +76,7 @@ fr:
         password_confirmation: "Confirmation du mot de passe"
         minimum_password_length: "%{count} caractères minimum"
         sign_up_button: "S'inscrire"
-  
+
   admin:
     bookings:
       index:
@@ -68,10 +129,33 @@ fr:
         room_url_hint: "Une URL d'image par ligne"
         submit_button: "Mettre à jour"
         back_link: "Retour"
-  
+
   rooms:
+    show:
+      carousel_previous: "Précédent"
+      carousel_next: "Suivant"
+      thumbnail_alt: "Miniature %{index}"
+      capacity: "Capacité : %{count} pers."
+      per_night_suffix: "/nuit"
+      select_dates_hint: "Sélectionnez vos dates pour afficher le total et réserver."
+      availability_calendar_aria: "Calendrier de disponibilités"
+      book_button: "Réserver"
+      summary:
+        nightly_rate: "Tarif / nuit"
+        nights: "Nombre de nuits"
+        total: "Total"
+      optional_services:
+        title: "Services optionnels"
+        hint: "Vous pourrez choisir ces options lors de la réservation."
+      reviews:
+        title: "Avis"
+        none: "Aucun avis pour le moment."
+        count:
+          one: "%{count} avis"
+          other: "%{count} avis"
+
     index:
-      welcome: "Bienvenue chez <strong>%{owner}</strong> à <strong>%{location}</strong>!"
+      welcome_html: "Bienvenue chez <strong>%{owner}</strong> à <strong>%{location}</strong>!"
       subtitle: "Maison et chambres d'hôtes sur la route de Saint Jacques de Compostelle"
       accommodations: "Hébergements"
       capacity: "Capacité : %{count} pers."
@@ -82,9 +166,32 @@ fr:
       no_reviews: "Aucun avis"
       address_label: "Adresse :"
       contact_title: "Coordonnées"
+      mapbox_access_token_missing: "MAPBOX_ACCESS_TOKEN manquant"
       guesthouse_name_label: "Nom du gîte"
       owner_label: "Propriétaire"
       postal_address_label: "Adresse postale"
       phone_label: "Téléphone"
       email_label: "E-mail"
       not_provided: "Non renseigné"
+
+  bookings:
+    statuses:
+      requested: "Demande"
+      approved_pending_payment: "En attente de paiement"
+      confirmed_paid: "Payée"
+      declined: "Refusée"
+      canceled: "Annulée"
+      expired: "Expirée"
+      refunded: "Remboursée"
+    flash:
+      request_sent: "Demande de réservation envoyée."
+      canceled: "Réservation annulée."
+      unable_to_cancel: "Impossible d'annuler la réservation."
+    new:
+      title: "Demande de réservation pour %{room}"
+      start_date: "Date de début"
+      end_date: "Date de fin"
+      submit: "Envoyer la demande"
+      optional_services:
+        title: "Services optionnels"
+        hint: "Ces options s'ajoutent au total de la réservation."

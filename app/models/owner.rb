@@ -5,4 +5,6 @@ class Owner < ApplicationRecord
          :recoverable, :rememberable, :validatable
 
   has_many :rooms, dependent: :destroy
+
+  has_many :articles, dependent: :destroy
 end

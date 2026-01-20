@@ -28,4 +28,131 @@
 #       enabled: "ON"
 
 en:
+  date:
+    formats:
+      short: "%m/%d/%Y"
+
+  time:
+    formats:
+      short: "%m/%d %H:%M"
+
+  app:
+    title: "LocVallis"
+
+  shared:
+    locale:
+      fr: "FR"
+      en: "EN"
+    nav:
+      rooms: "Rooms"
+      blog: "Blog"
+      my_bookings: "My bookings"
+      inbox: "Inbox"
+      logout: "Log out"
+      dashboard: "Dashboard"
+      accommodations: "Accommodations"
+      planning: "Planning"
+      login: "Log in"
+    authorization:
+      not_authorized: "You are not authorized to perform this action."
+
+    actions:
+      all: "All"
+      unread: "Unread"
+      send: "Send"
+      cancel: "Cancel"
+
+  inbox:
+    title: "Inbox"
+    subtitle: "Conversations by booking"
+    empty: "No conversations yet."
+    no_messages: "No messages yet."
+    booking_ref: "Booking #%{id}"
+    last_message_prefix: "%{sender}:"
+    counts:
+      unread_conversations:
+        one: "%{count} unread conversation"
+        other: "%{count} unread conversations"
+      unread_messages:
+        one: "%{count} unread message"
+        other: "%{count} unread messages"
+      unread_badge:
+        one: "%{count} unread"
+        other: "%{count} unread"
+
+  messages:
+    sender:
+      me: "You"
+      host: "Host"
+      traveler: "Traveler"
+    composer:
+      label: "Your message"
+      placeholder: "Write a message…"
+
   hello: "Hello world"
+
+  rooms:
+    show:
+      carousel_previous: "Previous"
+      carousel_next: "Next"
+      thumbnail_alt: "Thumbnail %{index}"
+      capacity: "Capacity: %{count} people"
+      per_night_suffix: "/night"
+      select_dates_hint: "Select your dates to see the total and book."
+      availability_calendar_aria: "Availability calendar"
+      book_button: "Book"
+      summary:
+        nightly_rate: "Nightly rate"
+        nights: "Nights"
+        total: "Total"
+      optional_services:
+        title: "Optional services"
+        hint: "You can choose these options during booking."
+      reviews:
+        title: "Reviews"
+        none: "No reviews yet."
+        count:
+          one: "%{count} review"
+          other: "%{count} reviews"
+
+    index:
+      welcome_html: "Welcome to <strong>%{owner}</strong> in <strong>%{location}</strong>!"
+      subtitle: "Guesthouse and B&B on the Camino de Santiago route"
+      accommodations: "Accommodations"
+      capacity: "Capacity: %{count} people"
+      from_price: "From"
+      per_night: "per night"
+      reviews_label: "Reviews:"
+      book_button: "Book"
+      no_reviews: "No reviews"
+      address_label: "Address:"
+      contact_title: "Contact"
+      mapbox_access_token_missing: "MAPBOX_ACCESS_TOKEN is missing"
+      guesthouse_name_label: "Guesthouse name"
+      owner_label: "Host"
+      postal_address_label: "Postal address"
+      phone_label: "Phone"
+      email_label: "Email"
+      not_provided: "Not provided"
+
+  bookings:
+    statuses:
+      requested: "Requested"
+      approved_pending_payment: "Pending payment"
+      confirmed_paid: "Paid"
+      declined: "Declined"
+      canceled: "Canceled"
+      expired: "Expired"
+      refunded: "Refunded"
+    flash:
+      request_sent: "Booking request sent."
+      canceled: "Booking canceled."
+      unable_to_cancel: "Unable to cancel booking."
+    new:
+      title: "Booking request for %{room}"
+      start_date: "Start date"
+      end_date: "End date"
+      submit: "Send request"
+      optional_services:
+        title: "Optional services"
+        hint: "These options are added to the booking total."

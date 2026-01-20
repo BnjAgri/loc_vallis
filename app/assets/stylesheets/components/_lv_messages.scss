@@ -1,0 +1,74 @@
+.lv-thread {
+  display: flex;
+  flex-direction: column;
+  gap: .75rem;
+}
+
+.lv-thread__scroll {
+  max-height: 52vh;
+  overflow: auto;
+  padding: .25rem;
+}
+
+@media (min-width: 992px) {
+  .lv-thread__scroll {
+    max-height: 60vh;
+  }
+}
+
+.lv-message {
+  display: flex;
+  flex-direction: column;
+  max-width: 92%;
+}
+
+.lv-message--me {
+  align-self: flex-end;
+}
+
+.lv-message--other {
+  align-self: flex-start;
+}
+
+.lv-message__meta {
+  display: flex;
+  gap: .5rem;
+  align-items: baseline;
+  margin-bottom: .25rem;
+  font-size: .85rem;
+  color: $lv-muted;
+}
+
+.lv-message__sender {
+  font-weight: 700;
+  color: $lv-ink;
+}
+
+.lv-bubble {
+  border: 1px solid rgba($lv-ink, 0.10);
+  border-radius: 1rem;
+  padding: .75rem .9rem;
+  box-shadow: $box-shadow-sm;
+  background: $lv-surface;
+}
+
+.lv-message--me .lv-bubble {
+  background: rgba($lv-primary, 0.10);
+  border-color: rgba($lv-primary, 0.20);
+}
+
+.lv-message__body {
+  margin: 0;
+  white-space: pre-wrap;
+}
+
+.lv-thread__composer {
+  border-top: 1px solid $lv-divider;
+  padding-top: 1rem;
+  margin-top: 1rem;
+}
+
+.lv-composer__textarea {
+  resize: vertical;
+  min-height: 96px;
+}

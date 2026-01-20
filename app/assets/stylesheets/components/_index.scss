@@ -2,8 +2,16 @@
 @import "alert";
 @import "avatar";
 @import "banner";
-@import "card_category";
 @import "card_trip";
 @import "reviews";
 @import "form_legend_clear";
 @import "navbar";
+
+// Loc Vallis design system (new)
+@import "lv_base";
+@import "lv_page_header";
+@import "lv_buttons";
+@import "lv_cards";
+@import "lv_forms";
+@import "lv_badges";
+@import "lv_messages";

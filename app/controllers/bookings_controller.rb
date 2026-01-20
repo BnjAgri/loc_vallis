@@ -57,7 +57,7 @@ class BookingsController < ApplicationController
 
     if @booking.save
       BookingMailer.with(booking: @booking).requested.deliver_later
-      redirect_to @booking, notice: "Booking request sent."
+      redirect_to @booking, notice: t("bookings.flash.request_sent")
     else
       render :new, status: :unprocessable_entity
     end
@@ -69,9 +69,9 @@ class BookingsController < ApplicationController
 
     if @booking.cancel!(by: current_user)
       BookingMailer.with(booking: @booking, canceled_by: "user").canceled.deliver_later
-      redirect_to @booking, notice: "Booking canceled."
+      redirect_to @booking, notice: t("bookings.flash.canceled")
     else
-      redirect_to @booking, alert: "Unable to cancel booking."
+      redirect_to @booking, alert: t("bookings.flash.unable_to_cancel")
     end
   end
 
