@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  # (generated routes removed; use resources below within locale scope)
   post "stripe/webhook", to: "stripe_webhooks#create"
 
   # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.
@@ -29,6 +30,8 @@ Rails.application.routes.draw do
     end
 
     get "inbox", to: "inbox#index"
+
+    resources :articles, only: %i[index show]
 
     namespace :admin do
       get "inbox", to: "inbox#index"

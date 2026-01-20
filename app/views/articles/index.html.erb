@@ -1,0 +1,42 @@
+<div class="container py-4">
+	<%= render "shared/ui/page_header",
+		title: "Blog",
+		subtitle: "Idées de balades et de découvertes autour du gîte." %>
+
+	<% if @articles.any? %>
+		<div class="row g-3 mt-1">
+			<% @articles.each do |article| %>
+				<div class="col-12 col-md-6 col-lg-4">
+					<%= link_to article_path(article), class: "text-decoration-none" do %>
+						<div class="card lv-card lv-card--hover h-100 overflow-hidden">
+							<div style="height: 190px; overflow: hidden;">
+								<%= image_tag article.image_url, alt: article.title, class: "w-100 h-100", style: "object-fit: cover;" %>
+							</div>
+
+							<div class="card-body">
+								<div class="h5 mb-2"><%= article.title %></div>
+
+								<p class="text-muted mb-3">
+									<%= truncate(strip_tags(article.content.to_s), length: 120) %>
+								</p>
+
+								<div class="d-flex justify-content-between align-items-center">
+									<div class="lv-meta">
+										<%= article.owner&.guesthouse_name.presence || article.owner&.email %>
+									</div>
+									<div class="lv-meta"><%= l(article.created_at.to_date, format: :short) %></div>
+								</div>
+							</div>
+						</div>
+					<% end %>
+				</div>
+			<% end %>
+		</div>
+	<% else %>
+		<div class="mt-4">
+			<%= render "shared/ui/empty_state",
+				title: "Pas encore d’articles",
+				body: "Revenez bientôt pour des idées de découverte !" %>
+		</div>
+	<% end %>
+</div>
