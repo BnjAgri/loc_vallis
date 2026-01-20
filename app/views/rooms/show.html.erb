@@ -100,7 +100,7 @@ end %>
             data-action="availability-calendar:range-selected->booking-summary#update"
           >
         <%# Datepicker column: inline range picker (Stimulus + Flatpickr). %>
-            <div class="col-12 col-lg-8">
+            <div class="col-12">
               <input
                 type="text"
                 data-controller="availability-calendar"
@@ -111,7 +111,7 @@ end %>
             </div>
 
         <%# Summary column: hidden until a date range is selected; shows nightly/nights/total + CTA. %>
-            <div class="col-12 col-lg-4 mt-3 mt-lg-0">
+            <div class="col-12 mt-3">
               <div class="card lv-card p-3 d-none" data-booking-summary-target="panel">
             <div class="mb-2">
               <div class="text-muted"><%= t(".summary.nightly_rate") %></div>
