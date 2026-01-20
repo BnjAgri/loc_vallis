@@ -3,7 +3,7 @@
 <% href = local_assigns[:href] || booking_path(booking) %>
 
 <% date_label = if booking.start_date.present? && booking.end_date.present?
-  "#{booking.start_date.strftime("%d/%m/%Y")} → #{booking.end_date.strftime("%d/%m/%Y")}" 
+  "#{booking.start_date.strftime("%d/%m/%Y")} → #{booking.end_date.strftime("%d/%m/%Y")}"
 else
   "Dates à confirmer"
 end %>

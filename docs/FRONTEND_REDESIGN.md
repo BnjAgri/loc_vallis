@@ -161,4 +161,3 @@ Contrôleurs proposés (optionnels, sans dépendre du backend)
   - `auto_dismiss_controller.js`
   - `form_submit_controller.js`
   - `sticky_header_controller.js`
-
