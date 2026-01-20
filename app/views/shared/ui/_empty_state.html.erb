@@ -1,0 +1,19 @@
+<%# locals: title:, body: nil, cta: nil %>
+<% title = local_assigns.fetch(:title) %>
+<% body = local_assigns[:body] %>
+<% cta = local_assigns[:cta] %>
+
+<div class="card lv-card lv-card--soft">
+  <div class="card-body text-center py-5">
+    <div class="h5 mb-2"><%= title %></div>
+    <% if body.present? %>
+      <div class="lv-meta mb-3"><%= body %></div>
+    <% end %>
+
+    <% if cta.present? %>
+      <div class="d-flex justify-content-center">
+        <%= cta %>
+      </div>
+    <% end %>
+  </div>
+</div>

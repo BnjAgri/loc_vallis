@@ -1,14 +1,23 @@
-<div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-3">
-  <h1 class="h3 mb-0">Mes demandes de réservation</h1>
-  <%= link_to "Inbox", inbox_path, class: "btn btn-outline-primary" %>
-</div>
+<div class="container py-4">
+  <%= render "shared/ui/page_header",
+    title: "Mes réservations",
+    subtitle: "Suivez l’état de vos demandes, paiements et échanges avec l’hôte.",
+    actions: link_to("Inbox", inbox_path, class: "btn btn-soft") %>
 
-<ul>
-  <% @bookings.each do |booking| %>
-    <li>
-      <%= link_to "Réservation ##{booking.id}", booking_path(booking) %>
-      — <%= booking_status_label(booking.status) %>
-      — <%= booking.start_date %> → <%= booking.end_date %>
-    </li>
+  <% if @bookings.any? %>
+    <div class="row g-3 mt-1">
+      <% @bookings.each do |booking| %>
+        <div class="col-12 col-md-6 col-lg-4">
+          <%= render "shared/ui/booking_card", booking: booking %>
+        </div>
+      <% end %>
+    </div>
+  <% else %>
+    <div class="mt-4">
+      <%= render "shared/ui/empty_state",
+        title: "Aucune réservation pour le moment",
+        body: "Explorez nos hébergements et envoyez une première demande.",
+        cta: link_to("Voir les hébergements", rooms_path, class: "btn btn-accent") %>
+    </div>
   <% end %>
-</ul>
+</div>

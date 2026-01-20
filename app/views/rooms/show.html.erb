@@ -24,15 +24,15 @@ end %>
 
 <% min_period = @room.opening_periods.order(:nightly_price_cents).first %>
 
+<%= render "shared/ui/page_header",
+  title: @room.name,
+  subtitle: [(@room.capacity.present? ? t(".capacity", count: @room.capacity) : nil), (min_period.present? ? "À partir de #{format_price(min_period.nightly_price_cents, currency: min_period.currency)}#{t(".per_night_suffix")}" : nil)].compact.join(" · ") %>
+
 <%# Layout header: 2-column grid (left = room card, right = réservation/date picker sidebar). %>
 <div class="row g-4 align-items-start room-show-header">
   <%# Left column: main room presentation card (image + title + meta + starting price). %>
   <div class="col-12 col-lg">
-    <%# Reuse the shared "card-trip" component styles for a prominent hero card. %>
-    <div class="card-trip">
-      <div class="px-3">
-        <h1 class="h3 mt-3 mb-3"><%= @room.name %></h1>
-      </div>
+    <div class="card lv-card overflow-hidden">
 
       <% if all_images.length > 1 %>
         <div id="roomCarousel" class="carousel slide" data-bs-ride="carousel">
@@ -67,25 +67,14 @@ end %>
           <% end %>
         </div>
       <% else %>
-        <%= image_tag main_image_url, alt: @room.name %>
+        <%= image_tag main_image_url, alt: @room.name, class: "w-100", style: "object-fit: cover; height: 400px;" %>
       <% end %>
 
-      <%# Card content area: room name/description + capacity + price, aligned with flex. %>
-      <div class="card-trip-infos">
-        <div>
-          <% if @room.description.present? %>
-            <p><%= truncate(@room.description, length: 120) %></p>
-          <% else %>
-            <p>&nbsp;</p>
-          <% end %>
-        </div>
-
-        <% if @room.capacity.present? %>
-          <small class="text-muted"><%= t(".capacity", count: @room.capacity) %></small>
-        <% end %>
-
-        <% if min_period.present? %>
-          <h2 class="card-trip-pricing"><%= number_to_currency(min_period.nightly_price_cents / 100.0, unit: "€", format: "%n %u") %><%= t(".per_night_suffix") %></h2>
+      <div class="card-body">
+        <% if @room.description.present? %>
+          <p class="mb-0"><%= @room.description %></p>
+        <% else %>
+          <p class="mb-0 lv-meta">&nbsp;</p>
         <% end %>
       </div>
     </div>
@@ -95,31 +84,35 @@ end %>
   <div class="col-12 col-lg-auto ms-lg-auto pe-lg-0 room-show-datepicker-col">
     <%# Wrapper used to control the sidebar width and flush it to the right edge. %>
     <div class="room-show-datepicker">
-      <%# Short instruction text for the user. %>
-      <p class="text-muted mb-2"><%= t(".select_dates_hint") %></p>
+      <div class="card lv-card">
+        <div class="card-body">
+          <div class="text-uppercase lv-muted small"><%= t(".select_dates_hint") %></div>
+          <div class="h5 mb-0">Disponibilités</div>
+
+          <hr class="my-3 lv-divider" />
 
       <%# Réservation summary container: listens to calendar events and updates the right panel. %>
-      <div
-        class="row"
-        data-controller="booking-summary"
-        data-booking-summary-nightly-price-cents-value="<%= min_period&.nightly_price_cents.to_i %>"
-        data-booking-summary-currency-value="<%= min_period&.currency.to_s.presence || "EUR" %>"
-        data-action="availability-calendar:range-selected->booking-summary#update"
-      >
+          <div
+            class="row"
+            data-controller="booking-summary"
+            data-booking-summary-nightly-price-cents-value="<%= min_period&.nightly_price_cents.to_i %>"
+            data-booking-summary-currency-value="<%= min_period&.currency.to_s.presence || "EUR" %>"
+            data-action="availability-calendar:range-selected->booking-summary#update"
+          >
         <%# Datepicker column: inline range picker (Stimulus + Flatpickr). %>
-        <div class="col-12 col-lg-8">
-          <input
-            type="text"
-            data-controller="availability-calendar"
-            data-availability-calendar-enabled-ranges-value='<%= (@enabled_ranges || []).to_json %>'
-            data-availability-calendar-disabled-ranges-value='<%= (@disabled_ranges || []).to_json %>'
-            aria-label="<%= t(".availability_calendar_aria") %>"
-          />
-        </div>
+            <div class="col-12 col-lg-8">
+              <input
+                type="text"
+                data-controller="availability-calendar"
+                data-availability-calendar-enabled-ranges-value='<%= (@enabled_ranges || []).to_json %>'
+                data-availability-calendar-disabled-ranges-value='<%= (@disabled_ranges || []).to_json %>'
+                aria-label="<%= t(".availability_calendar_aria") %>"
+              />
+            </div>
 
         <%# Summary column: hidden until a date range is selected; shows nightly/nights/total + CTA. %>
-        <div class="col-12 col-lg-4 mt-3 mt-lg-0">
-          <div class="card p-3 d-none" data-booking-summary-target="panel">
+            <div class="col-12 col-lg-4 mt-3 mt-lg-0">
+              <div class="card lv-card p-3 d-none" data-booking-summary-target="panel">
             <div class="mb-2">
               <div class="text-muted"><%= t(".summary.nightly_rate") %></div>
               <div data-booking-summary-target="nightly"></div>
@@ -136,10 +129,12 @@ end %>
             </div>
 
             <% if user_signed_in? %>
-              <%= link_to t(".book_button"), new_room_booking_path(@room), class: "btn btn-primary w-100", data: { "booking-summary-target": "cta" } %>
+              <%= link_to t(".book_button"), new_room_booking_path(@room), class: "btn btn-accent w-100", data: { "booking-summary-target": "cta" } %>
             <% else %>
-              <%= link_to t(".book_button"), login_path(return_to: new_room_booking_path(@room)), class: "btn btn-primary w-100", data: { turbo: false, "booking-summary-target": "cta" } %>
+              <%= link_to t(".book_button"), login_path(return_to: new_room_booking_path(@room)), class: "btn btn-accent w-100", data: { turbo: false, "booking-summary-target": "cta" } %>
             <% end %>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -148,11 +143,10 @@ end %>
 </div>
 
 <% if Array(@room.optional_services).any? %>
-  <div class="card-trip mt-4">
-    <div class="card-trip-infos w-100 align-items-start">
-      <div class="w-100">
-        <h2 class="h4 mb-3"><%= t(".optional_services.title") %></h2>
-        <div class="d-grid gap-2">
+  <div class="card lv-card mt-4">
+    <div class="card-body">
+      <h2 class="h5 mb-3"><%= t(".optional_services.title") %></h2>
+      <div class="d-grid gap-2">
           <% Array(@room.optional_services).each do |service| %>
             <% next unless service.is_a?(Hash) %>
             <% name = (service["name"] || service[:name]).to_s.strip %>
@@ -161,22 +155,19 @@ end %>
 
             <div class="d-flex justify-content-between align-items-center">
               <div><%= name %></div>
-              <div class="text-muted"><%= format_price_euros(price_cents) %></div>
+              <div class="text-muted"><%= format_price(price_cents, currency: "EUR") %></div>
             </div>
           <% end %>
         </div>
-        <p class="text-muted mt-2 mb-0"><%= t(".optional_services.hint") %></p>
-      </div>
+      <p class="text-muted mt-2 mb-0"><%= t(".optional_services.hint") %></p>
     </div>
   </div>
 <% end %>
 
 <%# Reviews section: reuse card-trip styling as a container (without image). %>
-<div class="card-trip mt-5">
-  <%# Card content area: title + average rating + latest reviews list. %>
-  <div class="card-trip-infos w-100 align-items-start">
-    <div class="w-100">
-      <h2 class="h4 mb-3"><%= t(".reviews.title") %></h2>
+<div class="card lv-card mt-5">
+  <div class="card-body">
+    <h2 class="h5 mb-3"><%= t(".reviews.title") %></h2>
 
       <% if @reviews_count.to_i.positive? %>
         <div class="d-flex align-items-center gap-2">
@@ -190,7 +181,7 @@ end %>
         <div class="mt-3">
           <% @latest_reviews.each do |review| %>
             <%# Single review card: author + date + stars + comment. %>
-            <div class="card p-3 mb-2">
+            <div class="card lv-card p-3 mb-2">
               <div class="d-flex justify-content-between align-items-center">
                 <div>
                   <strong><%= review.user.display_name %></strong>
@@ -205,6 +196,5 @@ end %>
       <% else %>
         <p class="text-muted mb-0"><%= t(".reviews.none") %></p>
       <% end %>
-    </div>
   </div>
 </div>
