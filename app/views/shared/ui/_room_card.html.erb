@@ -14,7 +14,7 @@ end %>
 <% min_period = local_assigns[:min_period] || room.opening_periods.min_by(&:nightly_price_cents) %>
 
 <%= link_to href, class: "text-decoration-none" do %>
-  <div class="card lv-card h-100 overflow-hidden">
+  <div class="card lv-card lv-card--hover h-100 overflow-hidden">
     <div style="height: 190px; overflow: hidden;">
       <%= image_tag image_url, alt: room.name, class: "w-100 h-100", style: "object-fit: cover;" %>
     </div>

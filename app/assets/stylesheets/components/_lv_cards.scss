@@ -4,6 +4,34 @@
   box-shadow: $box-shadow-sm;
 }
 
+.lv-card--hover {
+  transition: transform 260ms ease, box-shadow 260ms ease;
+  will-change: transform;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .lv-card--hover:hover {
+    transform: translateY(-2px) scale(1.01);
+    box-shadow: $box-shadow-lg;
+  }
+}
+
+.lv-card--hover:focus-within {
+  transform: translateY(-2px);
+  box-shadow: $box-shadow-lg;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lv-card--hover {
+    transition: none;
+  }
+
+  .lv-card--hover:hover,
+  .lv-card--hover:focus-within {
+    transform: none;
+  }
+}
+
 .lv-card--soft {
   background: $lv-surface-soft;
 }
