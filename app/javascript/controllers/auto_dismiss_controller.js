@@ -1,4 +1,5 @@
 import { Controller } from "@hotwired/stimulus"
+import Alert from "bootstrap/js/dist/alert"
 
 // Auto-dismiss alerts after a delay (progressive enhancement).
 // Usage:
@@ -18,9 +19,8 @@ export default class extends Controller {
   }
 
   dismiss() {
-    // Prefer Bootstrap's JS API if present, else fallback to removal.
     try {
-      const alert = bootstrap.Alert.getOrCreateInstance(this.element)
+      const alert = Alert.getOrCreateInstance(this.element)
       alert.close()
     } catch (e) {
       this.element.remove()

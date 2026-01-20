@@ -1,9 +1,15 @@
-<h2>Messages</h2>
+<% is_me_for = lambda do |message|
+  if current_owner.present?
+    message.sender_type == "Owner" && message.sender_id == current_owner.id
+  elsif current_user.present?
+    message.sender_type == "User" && message.sender_id == current_user.id
+  else
+    false
+  end
+end %>
 
 <% sender_label_for = lambda do |message|
-  if current_owner.present? && message.sender_type == "Owner" && message.sender_id == current_owner.id
-    "Vous"
-  elsif current_user.present? && message.sender_type == "User" && message.sender_id == current_user.id
+  if is_me_for.call(message)
     "Vous"
   elsif message.sender_type == "Owner"
     "Hôte"
@@ -16,42 +22,63 @@ end %>
   {
     sender: sender_label_for.call(m),
     body: m.body,
-    created_at: m.created_at.in_time_zone.strftime("%d/%m/%Y %H:%M")
+    created_at: m.created_at.in_time_zone.strftime("%d/%m/%Y %H:%M"),
+    css_class: (is_me_for.call(m) ? "lv-message--me" : "lv-message--other")
   }
 end %>
 
-<div
-  data-controller="mustache-messages"
-  data-mustache-messages-messages-value="<%= ERB::Util.json_escape(rendered_messages.to_json) %>">
-  <script type="text/template" data-mustache-messages-target="template">
-    <ul>
-      {{#messages}}
-        <li>
-          <strong>{{sender}}:</strong>
-          {{body}}
-          <small>({{created_at}})</small>
-        </li>
-      {{/messages}}
-    </ul>
-  </script>
+<div class="lv-thread">
+  <div class="lv-thread__scroll" data-controller="scroll-to-bottom">
+    <div
+      data-controller="mustache-messages"
+      data-mustache-messages-messages-value="<%= ERB::Util.json_escape(rendered_messages.to_json) %>">
+      <script type="text/template" data-mustache-messages-target="template">
+        <div class="d-flex flex-column gap-3">
+          {{#messages}}
+            <div class="lv-message {{css_class}}">
+              <div class="lv-message__meta">
+                <span class="lv-message__sender">{{sender}}</span>
+                <span>·</span>
+                <span>{{created_at}}</span>
+              </div>
+              <div class="lv-bubble">
+                <p class="lv-message__body">{{body}}</p>
+              </div>
+            </div>
+          {{/messages}}
+        </div>
+      </script>
 
-  <div data-mustache-messages-target="list">
-    <ul>
-      <% messages.each do |message| %>
-        <li>
-          <strong><%= sender_label_for.call(message) %>:</strong>
-          <%= message.body %>
-          <small>(<%= message.created_at.in_time_zone.strftime("%d/%m/%Y %H:%M") %>)</small>
-        </li>
-      <% end %>
-    </ul>
+      <div data-mustache-messages-target="list">
+        <div class="d-flex flex-column gap-3">
+          <% messages.each do |message| %>
+            <% css_class = is_me_for.call(message) ? "lv-message--me" : "lv-message--other" %>
+            <div class="lv-message <%= css_class %>">
+              <div class="lv-message__meta">
+                <span class="lv-message__sender"><%= sender_label_for.call(message) %></span>
+                <span>·</span>
+                <span><%= message.created_at.in_time_zone.strftime("%d/%m/%Y %H:%M") %></span>
+              </div>
+              <div class="lv-bubble">
+                <p class="lv-message__body"><%= message.body %></p>
+              </div>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="lv-thread__composer">
+    <%= form_with model: [booking, Message.new], url: booking_messages_path(booking), method: :post,
+      data: { controller: "form-submit", action: "submit->form-submit#lock" } do |f| %>
+      <div class="mb-2">
+        <%= f.label :body, "Votre message", class: "form-label" %>
+        <%= f.text_area :body, class: "form-control lv-composer__textarea", placeholder: "Écrire un message…" %>
+      </div>
+      <div class="d-flex justify-content-end">
+        <%= f.submit "Envoyer", class: "btn btn-primary", data: { "form-submit-target": "button" } %>
+      </div>
+    <% end %>
   </div>
 </div>
-
-<%= form_with model: [booking, Message.new], url: booking_messages_path(booking), method: :post do |f| %>
-  <div class="mb-3">
-    <%= f.label :body, "New message" %>
-    <%= f.text_area :body, class: "form-control" %>
-  </div>
-  <%= f.submit "Send", class: "btn btn-primary" %>
-<% end %>
