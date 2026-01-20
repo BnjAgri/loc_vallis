@@ -9,8 +9,9 @@
   font-size: 24px;
   font-weight: bold;
   text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
-  border-radius: 5px;
-  box-shadow: 0 0 18px rgba($lv-primary, 0.22);
+  border-radius: $card-border-radius;
+  box-shadow: $box-shadow-sm;
+  border: 1px solid rgba($lv-ink, 0.10);
   overflow: hidden;
 }
 
