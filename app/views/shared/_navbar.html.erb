@@ -9,17 +9,18 @@
     </button>
 
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <% current_path = request.path %>
       <ul class="navbar-nav me-auto">
         <li class="nav-item">
-          <%= link_to t("shared.nav.rooms"), rooms_path, class: "nav-link" %>
+          <%= link_to t("shared.nav.rooms"), rooms_path, class: ["nav-link", (current_path == rooms_path ? "active" : nil)].compact.join(" ") %>
         </li>
 
         <% if user_signed_in? %>
           <li class="nav-item">
-            <%= link_to t("shared.nav.my_bookings"), bookings_path, class: "nav-link" %>
+            <%= link_to t("shared.nav.my_bookings"), bookings_path, class: ["nav-link", (current_path.start_with?(bookings_path) ? "active" : nil)].compact.join(" ") %>
           </li>
           <li class="nav-item">
-            <%= link_to inbox_path, class: "nav-link" do %>
+            <%= link_to inbox_path, class: ["nav-link", (current_path == inbox_path ? "active" : nil)].compact.join(" ") do %>
               <%= t("shared.nav.inbox") %>
               <% if @user_unread_conversations_count.to_i.positive? %>
                 <span class="badge text-bg-warning"><%= @user_unread_conversations_count %></span>
@@ -31,10 +32,10 @@
           </li>
         <% elsif owner_signed_in? %>
           <li class="nav-item">
-            <%= link_to t("shared.nav.dashboard"), admin_bookings_path, class: "nav-link" %>
+            <%= link_to t("shared.nav.dashboard"), admin_bookings_path, class: ["nav-link", (current_path.start_with?(admin_bookings_path) ? "active" : nil)].compact.join(" ") %>
           </li>
           <li class="nav-item">
-            <%= link_to admin_inbox_path, class: "nav-link" do %>
+            <%= link_to admin_inbox_path, class: ["nav-link", (current_path == admin_inbox_path ? "active" : nil)].compact.join(" ") do %>
               <%= t("shared.nav.inbox") %>
               <% if @owner_unread_conversations_count.to_i.positive? %>
                 <span class="badge text-bg-warning"><%= @owner_unread_conversations_count %></span>
@@ -42,7 +43,7 @@
             <% end %>
           </li>
           <li class="nav-item">
-            <%= link_to t("shared.nav.accommodations"), admin_rooms_path, class: "nav-link" %>
+            <%= link_to t("shared.nav.accommodations"), admin_rooms_path, class: ["nav-link", (current_path.start_with?(admin_rooms_path) ? "active" : nil)].compact.join(" ") %>
           </li>
           <li class="nav-item">
             <%= link_to t("shared.nav.logout"), logout_path, data: { turbo_method: :delete }, class: "nav-link" %>
@@ -51,6 +52,7 @@
           <li class="nav-item">
             <%= link_to login_path(return_to: request.fullpath), class: "nav-link", data: { turbo: false }, aria: { label: t("shared.nav.login") } do %>
               <i class="fa fa-user-plus" aria-hidden="true"></i>
+              <span class="ms-1 d-none d-sm-inline"><%= t("shared.nav.login") %></span>
             <% end %>
           </li>
         <% end %>
