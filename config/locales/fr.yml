@@ -22,7 +22,7 @@ fr:
       not_authorized: "Vous n'êtes pas autorisé à effectuer cette action."
 
   hello: "Bonjour"
-  
+
   devise:
     registrations:
       new:
@@ -37,7 +37,7 @@ fr:
         password_confirmation: "Confirmation du mot de passe"
         minimum_password_length: "%{count} caractères minimum"
         sign_up_button: "S'inscrire"
-  
+
   admin:
     bookings:
       index:
@@ -90,7 +90,7 @@ fr:
         room_url_hint: "Une URL d'image par ligne"
         submit_button: "Mettre à jour"
         back_link: "Retour"
-  
+
   rooms:
     show:
       carousel_previous: "Précédent"
