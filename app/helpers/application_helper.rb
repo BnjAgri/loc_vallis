@@ -17,6 +17,17 @@ module ApplicationHelper
 		number_to_currency(cents.to_i / 100.0, unit: "€", format: "%n %u", precision: 2)
 	end
 
+	def format_price(cents, currency: "EUR")
+		return "—" if cents.nil?
+
+		code = currency.to_s.upcase
+		if code == "EUR"
+			number_to_currency(cents.to_i / 100.0, unit: "€", format: "%n %u", precision: 2)
+		else
+			number_to_currency(cents.to_i / 100.0, unit: "#{code} ", format: "%u%n", precision: 2)
+		end
+	end
+
 	def booking_status_badge_class(status)
 		case status.to_s
 		when "requested"

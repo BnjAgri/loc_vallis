@@ -1,4 +1,5 @@
 <%# locals: booking:, actions: nil %>
+<% show_user = local_assigns.fetch(:show_user, true) %>
 <% nights_total_cents = booking.total_price_cents.to_i - booking.selected_optional_services_total_cents.to_i %>
 
 <div class="card lv-card">
@@ -7,7 +8,9 @@
       <div>
         <div class="text-uppercase lv-muted small">Réservation</div>
         <div class="h5 mb-1">#<%= booking.id %></div>
-        <div class="lv-meta">Voyageur : <%= booking.user.email %></div>
+        <% if show_user %>
+          <div class="lv-meta">Voyageur : <%= booking.user.email %></div>
+        <% end %>
       </div>
       <div class="text-end">
         <%= render "shared/ui/status_badge", status: booking.status %>
@@ -28,12 +31,12 @@
       <div class="col-12 col-md-6">
         <div class="lv-meta">Total</div>
         <div class="lv-card__kpi">
-          <div class="lv-card__kpi-value h4 mb-0"><%= format_price_euros(booking.total_price_cents) %></div>
+          <div class="lv-card__kpi-value h4 mb-0"><%= format_price(booking.total_price_cents, currency: booking.currency) %></div>
           <div class="lv-card__kpi-label">TTC</div>
         </div>
-        <div class="lv-meta">Sous-total nuits : <%= format_price_euros(nights_total_cents) %></div>
+        <div class="lv-meta">Sous-total nuits : <%= format_price(nights_total_cents, currency: booking.currency) %></div>
         <% if booking.selected_optional_services_total_cents.to_i.positive? %>
-          <div class="lv-meta">Sous-total services : <%= format_price_euros(booking.selected_optional_services_total_cents) %></div>
+          <div class="lv-meta">Sous-total services : <%= format_price(booking.selected_optional_services_total_cents, currency: booking.currency) %></div>
         <% end %>
       </div>
     </div>
@@ -47,7 +50,7 @@
           <% name = (service["name"] || service[:name]).to_s.strip %>
           <% price_cents = service["price_cents"] || service[:price_cents] %>
           <% next if name.blank? || price_cents.blank? %>
-          <li><%= name %> — <%= format_price_euros(price_cents) %></li>
+          <li><%= name %> — <%= format_price(price_cents, currency: booking.currency) %></li>
         <% end %>
       </ul>
     <% end %>
