@@ -1,16 +1,25 @@
 <div class="container py-4">
+	<% actions = nil %>
+	<% if owner_signed_in? %>
+		<% actions = capture do %>
+			<%= link_to "Nouvel article", new_article_path, class: "btn btn-primary" %>
+		<% end %>
+	<% end %>
+
 	<%= render "shared/ui/page_header",
 		title: "Blog",
-		subtitle: "Idées de balades et de découvertes autour du gîte." %>
+		subtitle: "Idées de balades et de découvertes autour du gîte.",
+		actions: actions %>
 
 	<% if @articles.any? %>
 		<div class="row g-3 mt-1">
 			<% @articles.each do |article| %>
+				<% image_src = article.image.attached? ? url_for(article.image) : article.image_url %>
 				<div class="col-12 col-md-6 col-lg-4">
 					<%= link_to article_path(article), class: "text-decoration-none" do %>
 						<div class="card lv-card lv-card--hover h-100 overflow-hidden">
 							<div style="height: 190px; overflow: hidden;">
-								<%= image_tag article.image_url, alt: article.title, class: "w-100 h-100", style: "object-fit: cover;" %>
+								<%= image_tag image_src, alt: article.title, class: "w-100 h-100", style: "object-fit: cover;" %>
 							</div>
 
 							<div class="card-body">

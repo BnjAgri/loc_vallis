@@ -31,7 +31,7 @@ Rails.application.routes.draw do
 
     get "inbox", to: "inbox#index"
 
-    resources :articles, only: %i[index show]
+    resources :articles, only: %i[index show new create edit update destroy]
 
     namespace :admin do
       get "inbox", to: "inbox#index"

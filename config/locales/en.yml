@@ -55,6 +55,7 @@ en:
       login: "Log in"
     authorization:
       not_authorized: "You are not authorized to perform this action."
+      unauthenticated: "You need to log in to continue."
 
     actions:
       all: "All"
@@ -90,6 +91,14 @@ en:
       placeholder: "Write a message…"
 
   hello: "Hello world"
+
+  articles:
+    create:
+      success: "Article published."
+    update:
+      success: "Article updated."
+    destroy:
+      success: "Article deleted."
 
   rooms:
     show:
