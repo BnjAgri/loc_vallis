@@ -1,29 +1,29 @@
 <div class="container py-4">
   <div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-4">
     <div>
-      <h1 class="h3 mb-0">Inbox</h1>
+      <h1 class="h3 mb-0"><%= t("inbox.title") %></h1>
       <div class="text-muted">
-        Conversations par réservation
+        <%= t("inbox.subtitle") %>
         <% if @unread_conversations_count.to_i.positive? %>
-          · <span class="badge text-bg-warning"><%= @unread_conversations_count %> convo(s) non lue(s)</span>
-          · <span class="text-muted"><%= @unread_messages_count %> message(s) non lu(s)</span>
+          · <span class="badge text-bg-warning"><%= t("inbox.counts.unread_conversations", count: @unread_conversations_count) %></span>
+          · <span class="text-muted"><%= t("inbox.counts.unread_messages", count: @unread_messages_count) %></span>
         <% end %>
       </div>
     </div>
 
     <div class="d-flex flex-wrap gap-2">
       <div class="btn-group" role="group" aria-label="Inbox filters">
-        <%= link_to "Tout", inbox_path, class: "btn btn-outline-primary #{@filter.blank? ? "active" : ""}" %>
-        <%= link_to "Non lus", inbox_path(filter: "unread"), class: "btn btn-outline-primary #{@filter == "unread" ? "active" : ""}" %>
+        <%= link_to t("shared.actions.all"), inbox_path, class: "btn btn-outline-primary #{@filter.blank? ? "active" : ""}" %>
+        <%= link_to t("shared.actions.unread"), inbox_path(filter: "unread"), class: "btn btn-outline-primary #{@filter == "unread" ? "active" : ""}" %>
       </div>
-      <%= link_to "Mes réservations", bookings_path, class: "btn btn-outline-primary" %>
+      <%= link_to t("shared.nav.my_bookings"), bookings_path, class: "btn btn-outline-primary" %>
     </div>
   </div>
 
   <% if @bookings.blank? %>
     <div class="card">
       <div class="card-body">
-        <p class="text-muted mb-0">Aucune conversation pour le moment.</p>
+        <p class="text-muted mb-0"><%= t("inbox.empty") %></p>
       </div>
     </div>
   <% else %>
@@ -50,10 +50,10 @@
                     <% end %>
 
                     <span class="text-muted">·</span>
-                    <span class="text-muted">Réservation #<%= booking.id %></span>
+                    <span class="text-muted"><%= t("inbox.booking_ref", id: booking.id) %></span>
 
                     <% if unread_count.positive? %>
-                      <span class="badge text-bg-warning"><%= unread_count %> non lu(s)</span>
+                      <span class="badge text-bg-warning"><%= t("inbox.counts.unread_badge", count: unread_count) %></span>
                     <% end %>
                   </div>
 
@@ -65,19 +65,20 @@
 
                   <div class="mt-2">
                     <% if last_message.present? %>
-                      <span class="text-muted"><%= last_message.sender_type == "User" ? "Vous" : "Hôte" %> :</span>
+                      <% sender = last_message.sender_type == "User" ? t("messages.sender.me") : t("messages.sender.host") %>
+                      <span class="text-muted"><%= t("inbox.last_message_prefix", sender: sender) %></span>
                       <%= truncate(last_message.body.to_s, length: 140) %>
                     <% else %>
-                      <span class="text-muted">Aucun message pour le moment.</span>
+                      <span class="text-muted"><%= t("inbox.no_messages") %></span>
                     <% end %>
                   </div>
                 </div>
 
                 <div class="text-muted small text-end" style="white-space: nowrap;">
                   <% if last_message.present? %>
-                    <%= last_message.created_at.in_time_zone.strftime("%d/%m %H:%M") %>
+                    <%= l(last_message.created_at.in_time_zone, format: :short) %>
                   <% else %>
-                    <%= booking.created_at.in_time_zone.strftime("%d/%m %H:%M") %>
+                    <%= l(booking.created_at.in_time_zone, format: :short) %>
                   <% end %>
                 </div>
               </div>

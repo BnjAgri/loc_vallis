@@ -10,11 +10,11 @@ end %>
 
 <% sender_label_for = lambda do |message|
   if is_me_for.call(message)
-    "Vous"
+    t("messages.sender.me")
   elsif message.sender_type == "Owner"
-    "Hôte"
+    t("messages.sender.host")
   else
-    "Voyageur"
+    t("messages.sender.traveler")
   end
 end %>
 
@@ -22,7 +22,7 @@ end %>
   {
     sender: sender_label_for.call(m),
     body: m.body,
-    created_at: m.created_at.in_time_zone.strftime("%d/%m/%Y %H:%M"),
+    created_at: l(m.created_at.in_time_zone, format: :short),
     css_class: (is_me_for.call(m) ? "lv-message--me" : "lv-message--other")
   }
 end %>
@@ -57,7 +57,7 @@ end %>
               <div class="lv-message__meta">
                 <span class="lv-message__sender"><%= sender_label_for.call(message) %></span>
                 <span>·</span>
-                <span><%= message.created_at.in_time_zone.strftime("%d/%m/%Y %H:%M") %></span>
+                <span><%= l(message.created_at.in_time_zone, format: :short) %></span>
               </div>
               <div class="lv-bubble">
                 <p class="lv-message__body"><%= message.body %></p>
@@ -73,11 +73,11 @@ end %>
     <%= form_with model: [booking, Message.new], url: booking_messages_path(booking), method: :post,
       data: { controller: "form-submit", action: "submit->form-submit#lock" } do |f| %>
       <div class="mb-2">
-        <%= f.label :body, "Votre message", class: "form-label" %>
-        <%= f.text_area :body, class: "form-control lv-composer__textarea", placeholder: "Écrire un message…" %>
+        <%= f.label :body, t("messages.composer.label"), class: "form-label" %>
+        <%= f.text_area :body, class: "form-control lv-composer__textarea", placeholder: t("messages.composer.placeholder") %>
       </div>
       <div class="d-flex justify-content-end">
-        <%= f.submit "Envoyer", class: "btn btn-primary", data: { "form-submit-target": "button" } %>
+        <%= f.submit t("shared.actions.send"), class: "btn btn-primary", data: { "form-submit-target": "button" } %>
       </div>
     <% end %>
   </div>

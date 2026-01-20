@@ -46,23 +46,7 @@ module ApplicationHelper
 	end
 
 	def booking_status_label(status)
-		case status.to_s
-		when "requested"
-			"demande"
-		when "approved_pending_payment"
-			"approuvé, paiement en attente"
-		when "confirmed_paid"
-			"paiement confirmé"
-		when "declined"
-			"refusée"
-		when "canceled"
-			"annulée"
-		when "expired"
-			"expirée"
-		when "refunded"
-			"remboursée"
-		else
-			status.to_s
-		end
+		key = "bookings.statuses.#{status}"
+		I18n.t(key, default: status.to_s.tr("_", " "))
 	end
 end

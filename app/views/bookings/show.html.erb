@@ -11,7 +11,7 @@
         <% end %>
 
         <% if policy(@booking).cancel? %>
-          <%= button_to "Annuler", cancel_booking_path(@booking), method: :patch, class: "btn btn-outline-danger" %>
+          <%= button_to t("shared.actions.cancel"), cancel_booking_path(@booking), method: :patch, class: "btn btn-outline-danger" %>
         <% end %>
       <% end %>
 

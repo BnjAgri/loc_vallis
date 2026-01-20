@@ -32,6 +32,10 @@ en:
     formats:
       short: "%m/%d/%Y"
 
+  time:
+    formats:
+      short: "%m/%d %H:%M"
+
   app:
     title: "LocVallis"
 
@@ -49,6 +53,39 @@ en:
       login: "Log in"
     authorization:
       not_authorized: "You are not authorized to perform this action."
+
+    actions:
+      all: "All"
+      unread: "Unread"
+      send: "Send"
+      cancel: "Cancel"
+
+  inbox:
+    title: "Inbox"
+    subtitle: "Conversations by booking"
+    empty: "No conversations yet."
+    no_messages: "No messages yet."
+    booking_ref: "Booking #%{id}"
+    last_message_prefix: "%{sender}:"
+    counts:
+      unread_conversations:
+        one: "%{count} unread conversation"
+        other: "%{count} unread conversations"
+      unread_messages:
+        one: "%{count} unread message"
+        other: "%{count} unread messages"
+      unread_badge:
+        one: "%{count} unread"
+        other: "%{count} unread"
+
+  messages:
+    sender:
+      me: "You"
+      host: "Host"
+      traveler: "Traveler"
+    composer:
+      label: "Your message"
+      placeholder: "Write a message…"
 
   hello: "Hello world"
 
@@ -97,6 +134,14 @@ en:
       not_provided: "Not provided"
 
   bookings:
+    statuses:
+      requested: "Requested"
+      approved_pending_payment: "Pending payment"
+      confirmed_paid: "Paid"
+      declined: "Declined"
+      canceled: "Canceled"
+      expired: "Expired"
+      refunded: "Refunded"
     flash:
       request_sent: "Booking request sent."
       canceled: "Booking canceled."

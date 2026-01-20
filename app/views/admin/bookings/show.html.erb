@@ -12,7 +12,7 @@
         <% end %>
 
         <% if policy(@booking).cancel? %>
-          <%= button_to "Annuler", cancel_admin_booking_path(@booking), method: :patch, class: "btn btn-outline-danger" %>
+          <%= button_to t("shared.actions.cancel"), cancel_admin_booking_path(@booking), method: :patch, class: "btn btn-outline-danger" %>
         <% end %>
 
         <% if policy(@booking).refund? %>

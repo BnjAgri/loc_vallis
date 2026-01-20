@@ -3,6 +3,10 @@ fr:
     formats:
       short: "%d/%m/%Y"
 
+  time:
+    formats:
+      short: "%d/%m %H:%M"
+
   app:
     title: "LocVallis"
 
@@ -20,6 +24,39 @@ fr:
       login: "Connexion"
     authorization:
       not_authorized: "Vous n'êtes pas autorisé à effectuer cette action."
+
+    actions:
+      all: "Tout"
+      unread: "Non lus"
+      send: "Envoyer"
+      cancel: "Annuler"
+
+  inbox:
+    title: "Inbox"
+    subtitle: "Conversations par réservation"
+    empty: "Aucune conversation pour le moment."
+    no_messages: "Aucun message pour le moment."
+    booking_ref: "Réservation #%{id}"
+    last_message_prefix: "%{sender} :"
+    counts:
+      unread_conversations:
+        one: "%{count} conversation non lue"
+        other: "%{count} conversations non lues"
+      unread_messages:
+        one: "%{count} message non lu"
+        other: "%{count} messages non lus"
+      unread_badge:
+        one: "%{count} non lu"
+        other: "%{count} non lus"
+
+  messages:
+    sender:
+      me: "Vous"
+      host: "Hôte"
+      traveler: "Voyageur"
+    composer:
+      label: "Votre message"
+      placeholder: "Écrire un message…"
 
   hello: "Bonjour"
 
@@ -136,6 +173,14 @@ fr:
       not_provided: "Non renseigné"
 
   bookings:
+    statuses:
+      requested: "Demande"
+      approved_pending_payment: "En attente de paiement"
+      confirmed_paid: "Payée"
+      declined: "Refusée"
+      canceled: "Annulée"
+      expired: "Expirée"
+      refunded: "Remboursée"
     flash:
       request_sent: "Demande de réservation envoyée."
       canceled: "Réservation annulée."
