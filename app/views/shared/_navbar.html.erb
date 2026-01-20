@@ -58,10 +58,16 @@
         <% end %>
 
         <li class="nav-item">
-          <%= link_to t("shared.locale.fr"), url_for(locale: nil), class: ["nav-link", (I18n.locale == :fr ? "active" : nil)].compact.join(" ") %>
+          <%= link_to url_for(locale: nil), class: ["nav-link", "d-inline-flex", "align-items-center", "gap-1", (I18n.locale == :fr ? "active" : nil)].compact.join(" "), aria: { label: "Français" } do %>
+            <span aria-hidden="true">🇫🇷</span>
+            <span class="text-uppercase" style="font-size: .7rem; letter-spacing: .04em;">FR</span>
+          <% end %>
         </li>
         <li class="nav-item">
-          <%= link_to t("shared.locale.en"), url_for(locale: :en), class: ["nav-link", (I18n.locale == :en ? "active" : nil)].compact.join(" ") %>
+          <%= link_to url_for(locale: :en), class: ["nav-link", "d-inline-flex", "align-items-center", "gap-1", (I18n.locale == :en ? "active" : nil)].compact.join(" "), aria: { label: "English" } do %>
+            <span aria-hidden="true">🇬🇧</span>
+            <span class="text-uppercase" style="font-size: .7rem; letter-spacing: .04em;">EN</span>
+          <% end %>
         </li>
       </ul>
     </div>
