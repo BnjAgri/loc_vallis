@@ -50,6 +50,7 @@ en:
       logout: "Log out"
       dashboard: "Dashboard"
       accommodations: "Accommodations"
+      planning: "Planning"
       login: "Log in"
     authorization:
       not_authorized: "You are not authorized to perform this action."
