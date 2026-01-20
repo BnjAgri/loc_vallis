@@ -5,7 +5,7 @@
 
   <div class="row g-4 mt-1">
     <div class="col-12 col-lg-5">
-      <%= render "shared/ui/booking_summary_card", booking: @booking, actions: capture do %>
+      <% actions = capture do %>
         <% if policy(@booking).approve? %>
           <%= button_to "Approuver", approve_admin_booking_path(@booking), method: :patch, class: "btn btn-primary" %>
           <%= button_to "Refuser", decline_admin_booking_path(@booking), method: :patch, class: "btn btn-outline-danger" %>
@@ -19,6 +19,8 @@
           <%= button_to "Rembourser", refund_admin_booking_path(@booking), method: :post, class: "btn btn-warning", data: { turbo_confirm: "Effectuer un remboursement pour cette réservation ?" } %>
         <% end %>
       <% end %>
+
+      <%= render "shared/ui/booking_summary_card", booking: @booking, actions: actions %>
     </div>
 
     <div class="col-12 col-lg-7">
