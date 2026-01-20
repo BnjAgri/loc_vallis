@@ -34,8 +34,14 @@
           <% @bookings.each do |booking| %>
             <% last_message = @last_message_by_booking_id[booking.id] %>
             <% unread_count = @unread_count_by_booking_id[booking.id].to_i %>
+            <% item_classes = [
+              "list-group-item",
+              "list-group-item-action",
+              "lv-inbox-item",
+              (unread_count.positive? ? "lv-inbox-item--unread" : nil)
+            ].compact.join(" ") %>
 
-            <%= link_to admin_booking_path(booking), class: "list-group-item list-group-item-action" do %>
+            <%= link_to admin_booking_path(booking), class: item_classes do %>
               <div class="d-flex justify-content-between align-items-start gap-2">
                 <div class="flex-grow-1" style="min-width: 0;">
                   <div class="d-flex align-items-center gap-2 flex-wrap">
