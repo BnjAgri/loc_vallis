@@ -6,6 +6,10 @@
 - Lancer : `bin/rails s`
 
 ## Variables d’environnement
+### Rails (sessions)
+- `SECRET_KEY_BASE` : obligatoire en production pour signer/chiffrer les cookies de session.
+  Sur Heroku, s'il manque, tu peux observer des déconnexions “aléatoires” et des éléments UI (owner-only) qui disparaissent.
+
 ### Accès restreint (optionnel)
 - `BASIC_AUTH_USER` + `BASIC_AUTH_PASSWORD` : active un HTTP Basic Auth sur toute l’app.
 	Exceptions : `/stripe/webhook` (Stripe) et `/up` (health check) restent accessibles.

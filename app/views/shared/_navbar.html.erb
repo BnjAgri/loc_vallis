@@ -63,13 +63,13 @@
 
         <li class="nav-item">
           <%= link_to url_for(locale: nil), class: ["nav-link", "d-inline-flex", "align-items-center", "gap-1", (I18n.locale == :fr ? "active" : nil)].compact.join(" "), aria: { label: "Français" } do %>
-            <span aria-hidden="true">🇫🇷</span>
+            <%= image_tag "flags/fr.svg", class: "lv-locale-flag", alt: "FR", width: 18, height: 12, loading: "lazy" %>
             <span class="text-uppercase" style="font-size: .7rem; letter-spacing: .04em;">FR</span>
           <% end %>
         </li>
         <li class="nav-item">
           <%= link_to url_for(locale: :en), class: ["nav-link", "d-inline-flex", "align-items-center", "gap-1", (I18n.locale == :en ? "active" : nil)].compact.join(" "), aria: { label: "English" } do %>
-            <span aria-hidden="true">🇬🇧</span>
+            <%= image_tag "flags/en.svg", class: "lv-locale-flag", alt: "EN", width: 18, height: 12, loading: "lazy" %>
             <span class="text-uppercase" style="font-size: .7rem; letter-spacing: .04em;">EN</span>
           <% end %>
         </li>
