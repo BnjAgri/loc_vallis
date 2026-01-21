@@ -19,6 +19,11 @@
 - `APP_HOST` : ex. `loc-vallis-demo.herokuapp.com` (pour ActionMailer)
 - `APP_PROTOCOL` : `https` (par défaut)
 
+### Seeds (Heroku / démo)
+- Par défaut, `db:seed` n'insère rien en production.
+- Pour charger des données de démo sur Heroku : exécuter `db:seed` avec `SEED_DEMO=1`.
+- Identifiants (optionnels) : `SEED_OWNER_EMAIL`, `SEED_OWNER_PASSWORD`, `SEED_USER_EMAIL`, `SEED_USER_PASSWORD`.
+
 ### Cloudinary (Active Storage)
 - `CLOUDINARY_CLOUD_NAME`
 - `CLOUDINARY_API_KEY`
