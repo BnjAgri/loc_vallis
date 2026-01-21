@@ -1,0 +1,10 @@
+# Additional translations at https://github.com/heartcombo/devise/wiki/I18n
+
+fr:
+  devise:
+    failure:
+      unauthenticated: "Vous devez vous connecter ou vous inscrire pour continuer."
+      user:
+        unauthenticated: "Vous devez vous connecter ou vous inscrire pour continuer."
+      owner:
+        unauthenticated: "Vous devez vous connecter ou vous inscrire pour continuer."
