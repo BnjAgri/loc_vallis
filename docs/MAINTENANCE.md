@@ -6,10 +6,18 @@
 - Lancer : `bin/rails s`
 
 ## Variables d’environnement
+### Accès restreint (optionnel)
+- `BASIC_AUTH_USER` + `BASIC_AUTH_PASSWORD` : active un HTTP Basic Auth sur toute l’app.
+	Exceptions : `/stripe/webhook` (Stripe) et `/up` (health check) restent accessibles.
+
 ### Stripe
 - `STRIPE_SECRET_KEY` (si utilisé dans l’app)
 - `STRIPE_WEBHOOK_SECRET` (obligatoire pour valider les webhooks)
 - `APP_BASE_URL` (utilisé pour construire les URLs de retour Checkout)
+
+### Heroku / URLs
+- `APP_HOST` : ex. `loc-vallis-demo.herokuapp.com` (pour ActionMailer)
+- `APP_PROTOCOL` : `https` (par défaut)
 
 ### Cloudinary (Active Storage)
 - `CLOUDINARY_CLOUD_NAME`
