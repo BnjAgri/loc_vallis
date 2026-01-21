@@ -24,6 +24,11 @@
 - Pour charger des données de démo sur Heroku : exécuter `db:seed` avec `SEED_DEMO=1`.
 - Identifiants (optionnels) : `SEED_OWNER_EMAIL`, `SEED_OWNER_PASSWORD`, `SEED_USER_EMAIL`, `SEED_USER_PASSWORD`.
 
+Notes :
+- Devise impose une longueur minimale de mot de passe (souvent 6). Si tu passes un mot de passe trop court (ex. `toto`), le seed échoue.
+- Exemple :
+	- `heroku run env SEED_DEMO=1 SEED_OWNER_EMAIL=owner@locvallis.demo SEED_OWNER_PASSWORD=toto123 SEED_USER_EMAIL=user@locvallis.demo SEED_USER_PASSWORD=toto123 rails db:seed -a loc-vallis-demo`
+
 ### Cloudinary (Active Storage)
 - `CLOUDINARY_CLOUD_NAME`
 - `CLOUDINARY_API_KEY`

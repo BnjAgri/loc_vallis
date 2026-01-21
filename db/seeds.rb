@@ -42,6 +42,16 @@ def seed_password(name:, fallback:)
   ENV.fetch(name, fallback).to_s
 end
 
+def assert_seed_password!(env_name, password)
+  min_length = Devise.password_length.min
+  return password if password.length >= min_length
+
+  raise <<~MSG
+    Seed password too short for #{env_name}: #{password.length} chars (min #{min_length}).
+    Set #{env_name} with at least #{min_length} characters and re-run `rails db:seed`.
+  MSG
+end
+
 today = Date.current
 
 if Rails.env.development?
@@ -57,7 +67,10 @@ if Rails.env.development?
 end
 
 owner_email = ENV.fetch("SEED_OWNER_EMAIL", "owner@locvallis.demo")
-owner_password = seed_password(name: "SEED_OWNER_PASSWORD", fallback: "toto")
+owner_password = assert_seed_password!(
+  "SEED_OWNER_PASSWORD",
+  seed_password(name: "SEED_OWNER_PASSWORD", fallback: "toto123")
+)
 
 owner = Owner.find_or_create_by!(email: owner_email) do |o|
   o.password = owner_password
@@ -65,7 +78,10 @@ owner = Owner.find_or_create_by!(email: owner_email) do |o|
 end
 
 user_email = ENV.fetch("SEED_USER_EMAIL", "user@locvallis.demo")
-user_password = seed_password(name: "SEED_USER_PASSWORD", fallback: "toto")
+user_password = assert_seed_password!(
+  "SEED_USER_PASSWORD",
+  seed_password(name: "SEED_USER_PASSWORD", fallback: "toto123")
+)
 
 user = User.find_or_create_by!(email: user_email) do |u|
   u.password = user_password
@@ -74,7 +90,7 @@ end
 
 puts "Owner: #{owner.email}"
 puts "User: #{user.email}"
-puts "Passwords: set SEED_OWNER_PASSWORD / SEED_USER_PASSWORD (defaults to 'toto' in demo mode)"
+puts "Passwords: set SEED_OWNER_PASSWORD / SEED_USER_PASSWORD (defaults to 'toto123' in demo mode)"
 
 # Create up to 2 rooms (the app has an MVP hard limit at 2).
 room_specs = [
