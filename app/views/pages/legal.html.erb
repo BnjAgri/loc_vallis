@@ -1,0 +1,39 @@
+<div class="container py-4">
+  <%= render "shared/ui/page_header", title: t("pages.legal.title") %>
+
+  <div class="card lv-card">
+    <div class="card-body prose">
+      <h2><%= t("pages.legal.publisher.title") %></h2>
+      <ul>
+        <li><strong><%= t("pages.legal.publisher.name") %></strong> <%= @publisher_name.presence || t("pages.legal.not_provided") %></li>
+        <li><strong><%= t("pages.legal.publisher.address") %></strong> <%= @publisher_address.presence || t("pages.legal.not_provided") %></li>
+        <li><strong><%= t("pages.legal.publisher.email") %></strong> <%= @publisher_email.presence || t("pages.legal.not_provided") %></li>
+        <li><strong><%= t("pages.legal.publisher.phone") %></strong> <%= @publisher_phone.presence || t("pages.legal.not_provided") %></li>
+        <li><strong><%= t("pages.legal.publisher.siret") %></strong> <%= @publisher_siret.presence || t("pages.legal.not_provided") %></li>
+      </ul>
+
+      <h2><%= t("pages.legal.host.title") %></h2>
+      <ul>
+        <li><strong><%= t("pages.legal.host.name") %></strong> <%= @host_name.presence || t("pages.legal.not_provided") %></li>
+        <li><strong><%= t("pages.legal.host.address") %></strong> <%= @host_address.presence || t("pages.legal.not_provided") %></li>
+        <li><strong><%= t("pages.legal.host.phone") %></strong> <%= @host_phone.presence || t("pages.legal.not_provided") %></li>
+      </ul>
+
+      <h2><%= t("pages.legal.ip.title") %></h2>
+      <p><%= t("pages.legal.ip.body") %></p>
+
+      <h2><%= t("pages.legal.data.title") %></h2>
+      <p><%= t("pages.legal.data.body") %></p>
+
+      <h2><%= t("pages.legal.cookies.title") %></h2>
+      <p><%= t("pages.legal.cookies.body") %></p>
+
+      <h2><%= t("pages.legal.contact.title") %></h2>
+      <p><%= t("pages.legal.contact.body") %></p>
+    </div>
+  </div>
+
+  <div class="mt-3">
+    <%= link_to t("pages.legal.back"), root_path, class: "btn btn-soft" %>
+  </div>
+</div>

@@ -5,6 +5,7 @@ export default class extends Controller {
   static values = {
     accessToken: String,
     address: String,
+    style: { type: String, default: "mapbox://styles/mapbox/streets-v12" },
     lat: Number,
     lng: Number,
     zoom: { type: Number, default: 12 },
@@ -25,7 +26,7 @@ export default class extends Controller {
 
     this.map = new mapboxgl.Map({
       container: this.element,
-      style: "mapbox://styles/mapbox/streets-v12",
+      style: this.styleValue,
       center: [this.lngValue, this.latValue],
       zoom: initialZoom,
       interactive: true,

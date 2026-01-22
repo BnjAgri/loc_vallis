@@ -66,6 +66,39 @@ en:
       send: "Send"
       cancel: "Cancel"
 
+    footer:
+      legal: "Legal notice"
+
+  pages:
+    legal:
+      title: "Legal notice"
+      not_provided: "Not provided"
+      back: "Back"
+      publisher:
+        title: "Website publisher"
+        name: "Name:"
+        address: "Address:"
+        email: "Email:"
+        phone: "Phone:"
+        siret: "Company ID (SIRET):"
+      host:
+        title: "Hosting"
+        name: "Name:"
+        address: "Address:"
+        phone: "Phone:"
+      ip:
+        title: "Intellectual property"
+        body: "This website content (texts, images, logos, graphic elements) is protected. Any reproduction, representation or distribution, in whole or in part, without prior authorization is prohibited."
+      data:
+        title: "Personal data"
+        body: "Data collected through this website is used only to process booking requests and messages. You can request access, correction, or deletion of your data by contacting the website publisher."
+      cookies:
+        title: "Cookies"
+        body: "This website may use technical cookies necessary for its operation and, where applicable, audience measurement cookies. You can configure your browser to refuse some or all cookies."
+      contact:
+        title: "Contact"
+        body: "For any questions, you can contact the website publisher using the details above."
+
   inbox:
     title: "Inbox"
     subtitle: "Conversations by booking"

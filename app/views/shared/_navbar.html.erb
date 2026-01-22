@@ -4,34 +4,33 @@
       <i class="fa fa-home" aria-hidden="true"></i>
     <% end %>
 
+    <% if owner_signed_in? %>
+      <ul class="navbar-nav d-none d-sm-flex flex-row align-items-center gap-1 ms-2">
+        <li class="nav-item">
+          <%= link_to t("shared.nav.dashboard"), admin_bookings_path, class: ["nav-link", (request.path.start_with?(admin_bookings_path) ? "active" : nil)].compact.join(" ") %>
+        </li>
+        <li class="nav-item">
+          <%= link_to admin_inbox_path, class: ["nav-link", (request.path == admin_inbox_path ? "active" : nil)].compact.join(" ") do %>
+            <%= t("shared.nav.inbox") %>
+            <% if @owner_unread_conversations_count.to_i.positive? %>
+              <span class="badge text-bg-warning"><%= @owner_unread_conversations_count %></span>
+            <% end %>
+          <% end %>
+        </li>
+        <li class="nav-item">
+          <%= link_to t("shared.nav.planning"), admin_rooms_path, class: ["nav-link", (request.path.start_with?(admin_rooms_path) ? "active" : nil)].compact.join(" ") %>
+        </li>
+      </ul>
+    <% end %>
+
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
 
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <% current_path = request.path %>
-      <ul class="navbar-nav me-auto">
-        <li class="nav-item">
-          <%= link_to t("shared.nav.rooms"), rooms_path, class: ["nav-link", (current_path == rooms_path ? "active" : nil)].compact.join(" ") %>
-        </li>
-
-        <li class="nav-item">
-          <%= link_to t("shared.nav.blog"), articles_path, class: ["nav-link", (current_path.start_with?(articles_path) ? "active" : nil)].compact.join(" ") %>
-        </li>
-
-        <% if user_signed_in? %>
-          <li class="nav-item">
-            <%= link_to t("shared.nav.my_bookings"), bookings_path, class: ["nav-link", (current_path.start_with?(bookings_path) ? "active" : nil)].compact.join(" ") %>
-          </li>
-          <li class="nav-item">
-            <%= link_to inbox_path, class: ["nav-link", (current_path == inbox_path ? "active" : nil)].compact.join(" ") do %>
-              <%= t("shared.nav.inbox") %>
-              <% if @user_unread_conversations_count.to_i.positive? %>
-                <span class="badge text-bg-warning"><%= @user_unread_conversations_count %></span>
-              <% end %>
-            <% end %>
-          </li>
-        <% elsif owner_signed_in? %>
+      <% if owner_signed_in? %>
+        <ul class="navbar-nav d-sm-none">
           <li class="nav-item">
             <%= link_to t("shared.nav.dashboard"), admin_bookings_path, class: ["nav-link", (current_path.start_with?(admin_bookings_path) ? "active" : nil)].compact.join(" ") %>
           </li>
@@ -46,8 +45,42 @@
           <li class="nav-item">
             <%= link_to t("shared.nav.planning"), admin_rooms_path, class: ["nav-link", (current_path.start_with?(admin_rooms_path) ? "active" : nil)].compact.join(" ") %>
           </li>
-        <% end %>
-      </ul>
+        </ul>
+
+        <ul class="navbar-nav me-auto">
+          <li class="nav-item">
+            <%= link_to t("shared.nav.rooms"), rooms_path, class: ["nav-link", (current_path == rooms_path ? "active" : nil)].compact.join(" ") %>
+          </li>
+
+          <li class="nav-item">
+            <%= link_to t("shared.nav.blog"), articles_path, class: ["nav-link", (current_path.start_with?(articles_path) ? "active" : nil)].compact.join(" ") %>
+          </li>
+        </ul>
+      <% else %>
+        <ul class="navbar-nav me-auto">
+          <li class="nav-item">
+            <%= link_to t("shared.nav.rooms"), rooms_path, class: ["nav-link", (current_path == rooms_path ? "active" : nil)].compact.join(" ") %>
+          </li>
+
+          <li class="nav-item">
+            <%= link_to t("shared.nav.blog"), articles_path, class: ["nav-link", (current_path.start_with?(articles_path) ? "active" : nil)].compact.join(" ") %>
+          </li>
+
+          <% if user_signed_in? %>
+            <li class="nav-item">
+              <%= link_to t("shared.nav.my_bookings"), bookings_path, class: ["nav-link", (current_path.start_with?(bookings_path) ? "active" : nil)].compact.join(" ") %>
+            </li>
+            <li class="nav-item">
+              <%= link_to inbox_path, class: ["nav-link", (current_path == inbox_path ? "active" : nil)].compact.join(" ") do %>
+                <%= t("shared.nav.inbox") %>
+                <% if @user_unread_conversations_count.to_i.positive? %>
+                  <span class="badge text-bg-warning"><%= @user_unread_conversations_count %></span>
+                <% end %>
+              <% end %>
+            </li>
+          <% end %>
+        </ul>
+      <% end %>
 
       <ul class="navbar-nav ms-auto">
         <li class="nav-item d-flex flex-column">

@@ -37,6 +37,39 @@ fr:
       send: "Envoyer"
       cancel: "Annuler"
 
+    footer:
+      legal: "Mentions légales"
+
+  pages:
+    legal:
+      title: "Mentions légales"
+      not_provided: "Non renseigné"
+      back: "Retour"
+      publisher:
+        title: "Éditeur du site"
+        name: "Nom :"
+        address: "Adresse :"
+        email: "Email :"
+        phone: "Téléphone :"
+        siret: "SIRET :"
+      host:
+        title: "Hébergeur"
+        name: "Nom :"
+        address: "Adresse :"
+        phone: "Téléphone :"
+      ip:
+        title: "Propriété intellectuelle"
+        body: "Le contenu de ce site (textes, images, logos, éléments graphiques) est protégé. Toute reproduction, représentation ou diffusion, totale ou partielle, sans autorisation préalable est interdite."
+      data:
+        title: "Données personnelles"
+        body: "Les données collectées via ce site sont utilisées uniquement pour le traitement des demandes de réservation et des messages. Vous pouvez demander l’accès, la rectification ou la suppression de vos données en contactant l’éditeur du site."
+      cookies:
+        title: "Cookies"
+        body: "Ce site peut utiliser des cookies techniques nécessaires à son fonctionnement et, le cas échéant, des cookies de mesure d’audience. Vous pouvez configurer votre navigateur pour refuser tout ou partie des cookies."
+      contact:
+        title: "Contact"
+        body: "Pour toute question, vous pouvez contacter l’éditeur du site via les coordonnées indiquées ci-dessus."
+
   inbox:
     title: "Inbox"
     subtitle: "Conversations par réservation"
