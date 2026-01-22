@@ -18,6 +18,9 @@ fr:
       rooms: "Chambres"
       blog: "Blog"
       my_bookings: "Mes réservations"
+      profile: "Mon profil"
+      account: "Compte"
+      edit_profile: "Modifier mon profil"
       inbox: "Messages"
       logout: "Déconnexion"
       dashboard: "Tableau de bord"
@@ -204,3 +207,28 @@ fr:
       optional_services:
         title: "Services optionnels"
         hint: "Ces options s'ajoutent au total de la réservation."
+
+  profiles:
+    flash:
+      updated: "Profil mis à jour."
+      deleted: "Compte supprimé."
+    edit:
+      title: "Mon profil"
+      first_name: "Prénom"
+      last_name: "Nom"
+      guesthouse_name: "Nom du gîte"
+      postal_address: "Adresse postale"
+      phone: "Téléphone"
+      security_title: "Sécurité"
+      email: "E-mail"
+      password: "Nouveau mot de passe"
+      password_hint: "Laissez vide pour ne pas changer votre mot de passe."
+      password_confirmation: "Confirmation du mot de passe"
+      current_password: "Mot de passe actuel"
+      current_password_hint: "Requis uniquement pour modifier l'e-mail ou le mot de passe."
+      save: "Enregistrer"
+      cancel: "Annuler"
+      danger_title: "Zone dangereuse"
+      delete_hint: "La suppression de votre compte est définitive."
+      delete_account: "Supprimer mon compte"
+      delete_confirm: "Supprimer votre compte ? Cette action est définitive."

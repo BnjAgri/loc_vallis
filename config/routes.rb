@@ -16,6 +16,8 @@ Rails.application.routes.draw do
 
     root to: "rooms#index"
 
+    resource :profile, only: %i[edit update destroy]
+
     resources :rooms, only: %i[index show] do
       resources :bookings, only: %i[new create]
     end
