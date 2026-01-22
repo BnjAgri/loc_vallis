@@ -16,7 +16,7 @@ fr:
       en: "EN"
     nav:
       rooms: "Chambres"
-      blog: "Blog"
+      blog: "Anglès et ses environs"
       my_bookings: "Mes réservations"
       profile: "Mon profil"
       account: "Compte"
@@ -36,6 +36,39 @@ fr:
       unread: "Non lus"
       send: "Envoyer"
       cancel: "Annuler"
+
+    footer:
+      legal: "Mentions légales"
+
+  pages:
+    legal:
+      title: "Mentions légales"
+      not_provided: "Non renseigné"
+      back: "Retour"
+      publisher:
+        title: "Éditeur du site"
+        name: "Nom :"
+        address: "Adresse :"
+        email: "Email :"
+        phone: "Téléphone :"
+        siret: "SIRET :"
+      host:
+        title: "Hébergeur"
+        name: "Nom :"
+        address: "Adresse :"
+        phone: "Téléphone :"
+      ip:
+        title: "Propriété intellectuelle"
+        body: "Le contenu de ce site (textes, images, logos, éléments graphiques) est protégé. Toute reproduction, représentation ou diffusion, totale ou partielle, sans autorisation préalable est interdite."
+      data:
+        title: "Données personnelles"
+        body: "Les données collectées via ce site sont utilisées uniquement pour le traitement des demandes de réservation et des messages. Vous pouvez demander l’accès, la rectification ou la suppression de vos données en contactant l’éditeur du site."
+      cookies:
+        title: "Cookies"
+        body: "Ce site peut utiliser des cookies techniques nécessaires à son fonctionnement et, le cas échéant, des cookies de mesure d’audience. Vous pouvez configurer votre navigateur pour refuser tout ou partie des cookies."
+      contact:
+        title: "Contact"
+        body: "Pour toute question, vous pouvez contacter l’éditeur du site via les coordonnées indiquées ci-dessus."
 
   inbox:
     title: "Inbox"
@@ -73,6 +106,56 @@ fr:
       success: "Article mis à jour."
     destroy:
       success: "Article supprimé."
+    index:
+      title: "Anglès et ses environs"
+      subtitle: "Idées de balades et de découvertes autour du gîte."
+      new_article: "Nouvel article"
+    show:
+      back_to_index: "Retour à Anglès et ses environs"
+    new:
+      title: "Nouvel article"
+      subtitle: "Publiez une idée de balade ou de découverte."
+      back_to_index: "Retour à Anglès et ses environs"
+    edit:
+      title: "Modifier l’article"
+      subtitle: "Mettez à jour le contenu et l’image."
+      back: "Retour"
+
+  sessions:
+    flash:
+      missing_credentials: "Email et mot de passe requis"
+      invalid_credentials: "Email ou mot de passe invalide"
+      logged_out: "Déconnecté"
+
+  messages:
+    flash:
+      not_sent: "Impossible d'envoyer le message."
+
+  reviews:
+    flash:
+      already_left: "Vous avez déjà laissé un avis pour cette réservation."
+      thanks: "Merci pour votre avis !"
+
+  admin:
+    shared:
+      flash:
+        deletion_blocked_upcoming_bookings: "Réservations à venir, suppression impossible"
+    rooms:
+      flash:
+        created: "Chambre créée."
+        updated: "Chambre mise à jour."
+        deleted: "Chambre supprimée."
+    opening_periods:
+      flash:
+        added: "Période d'ouverture ajoutée."
+        removed: "Période d'ouverture supprimée."
+        updated: "Période d'ouverture mise à jour."
+    bookings:
+      flash:
+        approved: "Réservation approuvée."
+        declined: "Réservation refusée."
+        canceled: "Réservation annulée."
+        refund_initiated: "Remboursement lancé."
 
   devise:
     registrations:
@@ -169,7 +252,7 @@ fr:
     index:
       welcome_html: "Bienvenue chez <strong>%{owner}</strong> à <strong>%{location}</strong>!"
       subtitle: "Maison et chambres d'hôtes sur la route de Saint Jacques de Compostelle"
-      accommodations: "Hébergements"
+      accommodations: "Nos hébergements"
       capacity: "Capacité : %{count} pers."
       from_price: "À partir de"
       per_night: "par nuit"

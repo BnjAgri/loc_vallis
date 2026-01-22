@@ -45,7 +45,7 @@ en:
       en: "EN"
     nav:
       rooms: "Rooms"
-      blog: "Blog"
+      blog: "Anglès & surroundings"
       my_bookings: "My bookings"
       profile: "My profile"
       account: "Account"
@@ -65,6 +65,39 @@ en:
       unread: "Unread"
       send: "Send"
       cancel: "Cancel"
+
+    footer:
+      legal: "Legal notice"
+
+  pages:
+    legal:
+      title: "Legal notice"
+      not_provided: "Not provided"
+      back: "Back"
+      publisher:
+        title: "Website publisher"
+        name: "Name:"
+        address: "Address:"
+        email: "Email:"
+        phone: "Phone:"
+        siret: "Company ID (SIRET):"
+      host:
+        title: "Hosting"
+        name: "Name:"
+        address: "Address:"
+        phone: "Phone:"
+      ip:
+        title: "Intellectual property"
+        body: "This website content (texts, images, logos, graphic elements) is protected. Any reproduction, representation or distribution, in whole or in part, without prior authorization is prohibited."
+      data:
+        title: "Personal data"
+        body: "Data collected through this website is used only to process booking requests and messages. You can request access, correction, or deletion of your data by contacting the website publisher."
+      cookies:
+        title: "Cookies"
+        body: "This website may use technical cookies necessary for its operation and, where applicable, audience measurement cookies. You can configure your browser to refuse some or all cookies."
+      contact:
+        title: "Contact"
+        body: "For any questions, you can contact the website publisher using the details above."
 
   inbox:
     title: "Inbox"
@@ -102,6 +135,56 @@ en:
       success: "Article updated."
     destroy:
       success: "Article deleted."
+    index:
+      title: "Anglès & surroundings"
+      subtitle: "Walk ideas and discoveries around the guesthouse."
+      new_article: "New article"
+    show:
+      back_to_index: "Back to Anglès & surroundings"
+    new:
+      title: "New article"
+      subtitle: "Share a walk idea or a discovery."
+      back_to_index: "Back to Anglès & surroundings"
+    edit:
+      title: "Edit article"
+      subtitle: "Update the content and image."
+      back: "Back"
+
+  sessions:
+    flash:
+      missing_credentials: "Email and password are required"
+      invalid_credentials: "Invalid email or password"
+      logged_out: "Logged out"
+
+  messages:
+    flash:
+      not_sent: "Message could not be sent."
+
+  reviews:
+    flash:
+      already_left: "You already left a review for this booking."
+      thanks: "Thanks for your review!"
+
+  admin:
+    shared:
+      flash:
+        deletion_blocked_upcoming_bookings: "Upcoming bookings, deletion not allowed"
+    rooms:
+      flash:
+        created: "Room created."
+        updated: "Room updated."
+        deleted: "Room deleted."
+    opening_periods:
+      flash:
+        added: "Opening period added."
+        removed: "Opening period removed."
+        updated: "Opening period updated."
+    bookings:
+      flash:
+        approved: "Booking approved."
+        declined: "Booking declined."
+        canceled: "Booking canceled."
+        refund_initiated: "Refund initiated."
 
   rooms:
     show:
@@ -130,7 +213,7 @@ en:
     index:
       welcome_html: "Welcome to <strong>%{owner}</strong> in <strong>%{location}</strong>!"
       subtitle: "Guesthouse and B&B on the Camino de Santiago route"
-      accommodations: "Accommodations"
+      accommodations: "Our accommodations"
       capacity: "Capacity: %{count} people"
       from_price: "From"
       per_night: "per night"

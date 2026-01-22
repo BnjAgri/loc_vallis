@@ -16,6 +16,8 @@ Rails.application.routes.draw do
 
     root to: "rooms#index"
 
+    get "legal", to: "pages#legal"
+
     resource :profile, only: %i[edit update destroy]
 
     resources :rooms, only: %i[index show] do

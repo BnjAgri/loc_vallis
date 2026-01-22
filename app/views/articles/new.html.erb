@@ -1,11 +1,11 @@
 <div class="container py-4">
 	<% actions = capture do %>
-		<%= link_to "Retour au blog", articles_path, class: "btn btn-soft" %>
+		<%= link_to t(".back_to_index"), articles_path, class: "btn btn-soft" %>
 	<% end %>
 
 	<%= render "shared/ui/page_header",
-		title: "Nouvel article",
-		subtitle: "Publiez une idée de balade ou de découverte.",
+		title: t(".title"),
+		subtitle: t(".subtitle"),
 		actions: actions %>
 
 	<%= render "form", article: @article %>

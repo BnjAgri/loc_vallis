@@ -11,7 +11,7 @@ module Admin
       authorize opening_period
 
       if opening_period.save
-        redirect_to admin_room_path(room), notice: "Opening period added."
+        redirect_to admin_room_path(room), notice: t("admin.opening_periods.flash.added")
       else
         redirect_to admin_room_path(room), alert: opening_period.errors.full_messages.to_sentence
       end
@@ -32,12 +32,12 @@ module Admin
         .exists?
 
       if has_upcoming_blocking_bookings
-        redirect_to admin_room_path(room), alert: "Réservations à venir, suppression impossible"
+        redirect_to admin_room_path(room), alert: t("admin.shared.flash.deletion_blocked_upcoming_bookings")
         return
       end
 
       opening_period.destroy
-      redirect_to admin_room_path(room), notice: "Opening period removed."
+      redirect_to admin_room_path(room), notice: t("admin.opening_periods.flash.removed")
     end
 
     def edit
@@ -64,7 +64,7 @@ module Admin
       authorize opening_period
 
       if opening_period.update(opening_period_params)
-        redirect_to admin_room_path(room), notice: "Période d'ouverture mise à jour."
+        redirect_to admin_room_path(room), notice: t("admin.opening_periods.flash.updated")
       else
         redirect_to edit_admin_room_opening_period_path(room, opening_period), alert: opening_period.errors.full_messages.to_sentence
       end

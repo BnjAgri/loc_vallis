@@ -1,6 +1,6 @@
 <div class="container py-4">
 	<% actions = capture do %>
-		<%= link_to "Retour au blog", articles_path, class: "btn btn-soft" %>
+		<%= link_to t(".back_to_index"), articles_path, class: "btn btn-soft" %>
 		<% if owner_signed_in? && @article.owner_id == current_owner.id %>
 			<%= link_to "Modifier", edit_article_path(@article), class: "btn btn-outline-primary" %>
 			<%= button_to "Supprimer",

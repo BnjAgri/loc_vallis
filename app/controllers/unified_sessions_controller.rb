@@ -10,7 +10,7 @@ class UnifiedSessionsController < ApplicationController
     return_to = safe_return_to(params[:return_to]) || session[:return_to]
 
     if email.blank? || password.blank?
-      flash.now[:alert] = "Email et mot de passe requis"
+      flash.now[:alert] = t("sessions.flash.missing_credentials")
       render :new, status: :unprocessable_entity
       return
     end
@@ -23,7 +23,7 @@ class UnifiedSessionsController < ApplicationController
         session.delete(:return_to)
         redirect_to(return_to || after_sign_in_path_for(owner))
       else
-        flash.now[:alert] = "Email ou mot de passe invalide"
+        flash.now[:alert] = t("sessions.flash.invalid_credentials")
         render :new, status: :unprocessable_entity
       end
       return
@@ -36,7 +36,7 @@ class UnifiedSessionsController < ApplicationController
       session.delete(:return_to)
       redirect_to(return_to || after_sign_in_path_for(user))
     else
-      flash.now[:alert] = "Email ou mot de passe invalide"
+      flash.now[:alert] = t("sessions.flash.invalid_credentials")
       render :new, status: :unprocessable_entity
     end
   end
@@ -44,7 +44,7 @@ class UnifiedSessionsController < ApplicationController
   def destroy
     sign_out(:owner) if owner_signed_in?
     sign_out(:user) if user_signed_in?
-    redirect_to root_path, notice: "Déconnecté"
+    redirect_to root_path, notice: t("sessions.flash.logged_out")
   end
 
   private
