@@ -6,7 +6,7 @@ class ReviewsController < ApplicationController
     authorize @booking, :show?
 
     if @booking.review&.persisted?
-      redirect_to @booking, alert: "Vous avez déjà laissé un avis pour cette réservation."
+      redirect_to @booking, alert: t("reviews.flash.already_left")
       return
     end
 
@@ -14,7 +14,7 @@ class ReviewsController < ApplicationController
     authorize @review
 
     if @review.save
-      redirect_to @booking, notice: "Merci pour votre avis !"
+      redirect_to @booking, notice: t("reviews.flash.thanks")
     else
       @messages = @booking.messages.includes(:sender).order(:created_at)
       @message = Message.new

@@ -41,7 +41,7 @@ module Admin
 
       @booking.approve!(by: current_owner)
       BookingMailer.with(booking: @booking).approved.deliver_later
-      redirect_to admin_booking_path(@booking), notice: "Booking approved."
+      redirect_to admin_booking_path(@booking), notice: t("admin.bookings.flash.approved")
     end
 
     def decline
@@ -50,7 +50,7 @@ module Admin
 
       @booking.decline!(by: current_owner)
       BookingMailer.with(booking: @booking).declined.deliver_later
-      redirect_to admin_booking_path(@booking), notice: "Booking declined."
+      redirect_to admin_booking_path(@booking), notice: t("admin.bookings.flash.declined")
     end
 
     def cancel
@@ -59,7 +59,7 @@ module Admin
 
       @booking.cancel!(by: current_owner)
       BookingMailer.with(booking: @booking, canceled_by: "owner").canceled.deliver_later
-      redirect_to admin_booking_path(@booking), notice: "Booking canceled."
+      redirect_to admin_booking_path(@booking), notice: t("admin.bookings.flash.canceled")
     end
 
     def refund
@@ -68,7 +68,7 @@ module Admin
 
       StripeRefundCreator.call(booking: @booking)
       BookingMailer.with(booking: @booking).refunded.deliver_later
-      redirect_to admin_booking_path(@booking), notice: "Refund initiated."
+      redirect_to admin_booking_path(@booking), notice: t("admin.bookings.flash.refund_initiated")
     rescue StandardError => e
       redirect_to admin_booking_path(@booking), alert: e.message
     end

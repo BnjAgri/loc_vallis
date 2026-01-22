@@ -74,6 +74,42 @@ fr:
     destroy:
       success: "Article supprimé."
 
+  sessions:
+    flash:
+      missing_credentials: "Email et mot de passe requis"
+      invalid_credentials: "Email ou mot de passe invalide"
+      logged_out: "Déconnecté"
+
+  messages:
+    flash:
+      not_sent: "Impossible d'envoyer le message."
+
+  reviews:
+    flash:
+      already_left: "Vous avez déjà laissé un avis pour cette réservation."
+      thanks: "Merci pour votre avis !"
+
+  admin:
+    shared:
+      flash:
+        deletion_blocked_upcoming_bookings: "Réservations à venir, suppression impossible"
+    rooms:
+      flash:
+        created: "Chambre créée."
+        updated: "Chambre mise à jour."
+        deleted: "Chambre supprimée."
+    opening_periods:
+      flash:
+        added: "Période d'ouverture ajoutée."
+        removed: "Période d'ouverture supprimée."
+        updated: "Période d'ouverture mise à jour."
+    bookings:
+      flash:
+        approved: "Réservation approuvée."
+        declined: "Réservation refusée."
+        canceled: "Réservation annulée."
+        refund_initiated: "Remboursement lancé."
+
   devise:
     registrations:
       new:

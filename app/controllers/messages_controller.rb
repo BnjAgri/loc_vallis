@@ -13,7 +13,7 @@ class MessagesController < ApplicationController
       MessageMailer.with(message:).new_message.deliver_later
       redirect_to(current_owner.present? ? admin_booking_path(booking) : booking_path(booking))
     else
-      redirect_to(current_owner.present? ? admin_booking_path(booking) : booking_path(booking), alert: "Message could not be sent.")
+      redirect_to(current_owner.present? ? admin_booking_path(booking) : booking_path(booking), alert: t("messages.flash.not_sent"))
     end
   end
 
@@ -22,7 +22,7 @@ class MessagesController < ApplicationController
   def authenticate_actor!
     return if current_owner.present? || current_user.present?
 
-    redirect_to root_path, alert: "Please sign in first."
+    redirect_to root_path, alert: t("shared.authorization.unauthenticated")
   end
 
   def message_params

@@ -103,6 +103,42 @@ en:
     destroy:
       success: "Article deleted."
 
+  sessions:
+    flash:
+      missing_credentials: "Email and password are required"
+      invalid_credentials: "Invalid email or password"
+      logged_out: "Logged out"
+
+  messages:
+    flash:
+      not_sent: "Message could not be sent."
+
+  reviews:
+    flash:
+      already_left: "You already left a review for this booking."
+      thanks: "Thanks for your review!"
+
+  admin:
+    shared:
+      flash:
+        deletion_blocked_upcoming_bookings: "Upcoming bookings, deletion not allowed"
+    rooms:
+      flash:
+        created: "Room created."
+        updated: "Room updated."
+        deleted: "Room deleted."
+    opening_periods:
+      flash:
+        added: "Opening period added."
+        removed: "Opening period removed."
+        updated: "Opening period updated."
+    bookings:
+      flash:
+        approved: "Booking approved."
+        declined: "Booking declined."
+        canceled: "Booking canceled."
+        refund_initiated: "Refund initiated."
+
   rooms:
     show:
       carousel_previous: "Previous"
