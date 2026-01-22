@@ -47,6 +47,9 @@ en:
       rooms: "Rooms"
       blog: "Blog"
       my_bookings: "My bookings"
+      profile: "My profile"
+      account: "Account"
+      edit_profile: "Edit my profile"
       inbox: "Inbox"
       logout: "Log out"
       dashboard: "Dashboard"
@@ -165,3 +168,28 @@ en:
       optional_services:
         title: "Optional services"
         hint: "These options are added to the booking total."
+
+  profiles:
+    flash:
+      updated: "Profile updated."
+      deleted: "Account deleted."
+    edit:
+      title: "My profile"
+      first_name: "First name"
+      last_name: "Last name"
+      guesthouse_name: "Guesthouse name"
+      postal_address: "Postal address"
+      phone: "Phone"
+      security_title: "Security"
+      email: "Email"
+      password: "New password"
+      password_hint: "Leave blank to keep your current password."
+      password_confirmation: "Password confirmation"
+      current_password: "Current password"
+      current_password_hint: "Required only to change email or password."
+      save: "Save"
+      cancel: "Cancel"
+      danger_title: "Danger zone"
+      delete_hint: "Deleting your account is permanent."
+      delete_account: "Delete my account"
+      delete_confirm: "Delete your account? This action is permanent."

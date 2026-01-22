@@ -19,3 +19,12 @@
 .navbar-lewagon .navbar-brand img {
   width: 40px;
 }
+
+.navbar-lewagon .lv-locale-flag {
+  width: 18px;
+  height: 12px;
+  border-radius: 2px;
+  box-shadow: 0 0 0 1px rgba($lv-primary, 0.18);
+  display: inline-block;
+  flex: 0 0 auto;
+}

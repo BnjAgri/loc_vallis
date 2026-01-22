@@ -1,0 +1,62 @@
+<div class="row justify-content-center">
+  <div class="col-12 col-md-8 col-lg-6">
+    <h1 class="mb-4"><%= t("profiles.edit.title") %></h1>
+
+    <%= simple_form_for @profile, url: profile_path, method: :patch do |f| %>
+      <%= f.error_notification %>
+      <div class="card mb-4">
+        <div class="card-body">
+          <div class="row">
+            <div class="col-12 col-md-6">
+              <%= f.input :first_name, label: t("profiles.edit.first_name") %>
+            </div>
+            <div class="col-12 col-md-6">
+              <%= f.input :last_name, label: t("profiles.edit.last_name") %>
+            </div>
+          </div>
+
+          <% if @profile.is_a?(Owner) %>
+            <%= f.input :guesthouse_name, label: t("profiles.edit.guesthouse_name") %>
+          <% end %>
+
+          <%= f.input :postal_address, label: t("profiles.edit.postal_address") %>
+          <%= f.input :phone, label: t("profiles.edit.phone") %>
+
+          <hr>
+
+          <h2 class="h5 mb-3"><%= t("profiles.edit.security_title") %></h2>
+
+          <%= f.input :email, label: t("profiles.edit.email") %>
+
+          <div class="row">
+            <div class="col-12 col-md-6">
+              <%= f.input :password, label: t("profiles.edit.password"), hint: t("profiles.edit.password_hint"), required: false, input_html: { autocomplete: "new-password" } %>
+            </div>
+            <div class="col-12 col-md-6">
+              <%= f.input :password_confirmation, label: t("profiles.edit.password_confirmation"), required: false, input_html: { autocomplete: "new-password" } %>
+            </div>
+          </div>
+
+          <%= f.input :current_password, label: t("profiles.edit.current_password"), hint: t("profiles.edit.current_password_hint"), required: false, input_html: { autocomplete: "current-password" } %>
+
+          <div class="d-flex gap-2">
+            <%= f.button :submit, t("profiles.edit.save"), class: "btn btn-primary" %>
+            <%= link_to t("profiles.edit.cancel"), root_path, class: "btn btn-outline-secondary" %>
+          </div>
+        </div>
+      </div>
+    <% end %>
+
+    <% if @profile.is_a?(User) %>
+      <div class="card border-danger">
+        <div class="card-body">
+          <h2 class="h5 text-danger mb-2"><%= t("profiles.edit.danger_title") %></h2>
+          <p class="mb-3"><%= t("profiles.edit.delete_hint") %></p>
+          <%= link_to t("profiles.edit.delete_account"), profile_path,
+                      data: { turbo_method: :delete, turbo_confirm: t("profiles.edit.delete_confirm") },
+                      class: "btn btn-outline-danger" %>
+        </div>
+      </div>
+    <% end %>
+  </div>
+</div>

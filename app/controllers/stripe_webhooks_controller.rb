@@ -7,6 +7,7 @@
 # Vérification : la signature est validée via `STRIPE_WEBHOOK_SECRET`.
 class StripeWebhooksController < ApplicationController
   skip_before_action :verify_authenticity_token
+  skip_before_action :http_basic_authenticate
 
   def create
     payload = request.raw_post

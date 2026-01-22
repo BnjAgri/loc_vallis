@@ -6,10 +6,32 @@
 - Lancer : `bin/rails s`
 
 ## Variables d’environnement
+### Rails (sessions)
+- `SECRET_KEY_BASE` : obligatoire en production pour signer/chiffrer les cookies de session.
+  Sur Heroku, s'il manque, tu peux observer des déconnexions “aléatoires” et des éléments UI (owner-only) qui disparaissent.
+
+### Accès restreint (optionnel)
+- `BASIC_AUTH_USER` + `BASIC_AUTH_PASSWORD` : active un HTTP Basic Auth sur toute l’app.
+	Exceptions : `/stripe/webhook` (Stripe) et `/up` (health check) restent accessibles.
+
 ### Stripe
 - `STRIPE_SECRET_KEY` (si utilisé dans l’app)
 - `STRIPE_WEBHOOK_SECRET` (obligatoire pour valider les webhooks)
 - `APP_BASE_URL` (utilisé pour construire les URLs de retour Checkout)
+
+### Heroku / URLs
+- `APP_HOST` : ex. `loc-vallis-demo.herokuapp.com` (pour ActionMailer)
+- `APP_PROTOCOL` : `https` (par défaut)
+
+### Seeds (Heroku / démo)
+- Par défaut, `db:seed` n'insère rien en production.
+- Pour charger des données de démo sur Heroku : exécuter `db:seed` avec `SEED_DEMO=1`.
+- Identifiants (optionnels) : `SEED_OWNER_EMAIL`, `SEED_OWNER_PASSWORD`, `SEED_USER_EMAIL`, `SEED_USER_PASSWORD`.
+
+Notes :
+- Devise impose une longueur minimale de mot de passe (souvent 6). Si tu passes un mot de passe trop court (ex. `toto`), le seed échoue.
+- Exemple :
+	- `heroku run env SEED_DEMO=1 SEED_OWNER_EMAIL=owner@locvallis.demo SEED_OWNER_PASSWORD=toto123 SEED_USER_EMAIL=user@locvallis.demo SEED_USER_PASSWORD=toto123 rails db:seed -a loc-vallis-demo`
 
 ### Cloudinary (Active Storage)
 - `CLOUDINARY_CLOUD_NAME`
