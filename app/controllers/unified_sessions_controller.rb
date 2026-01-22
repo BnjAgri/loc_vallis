@@ -1,13 +1,13 @@
 class UnifiedSessionsController < ApplicationController
   def new
-    session[:return_to] = safe_return_to(params[:return_to])
+    session[:return_to] = safe_return_to(params[:return_to]) || safe_return_to_from_referer || session[:return_to]
   end
 
   def create
     email = params.dig(:session, :email).to_s.strip
     password = params.dig(:session, :password).to_s
 
-    return_to = safe_return_to(params[:return_to]) || session.delete(:return_to)
+    return_to = safe_return_to(params[:return_to]) || session[:return_to]
 
     if email.blank? || password.blank?
       flash.now[:alert] = "Email et mot de passe requis"
@@ -20,6 +20,7 @@ class UnifiedSessionsController < ApplicationController
       if owner.valid_password?(password)
         sign_out(:user) if user_signed_in?
         sign_in(:owner, owner)
+        session.delete(:return_to)
         redirect_to(return_to || after_sign_in_path_for(owner))
       else
         flash.now[:alert] = "Email ou mot de passe invalide"
@@ -32,6 +33,7 @@ class UnifiedSessionsController < ApplicationController
     if user&.valid_password?(password)
       sign_out(:owner) if owner_signed_in?
       sign_in(:user, user)
+      session.delete(:return_to)
       redirect_to(return_to || after_sign_in_path_for(user))
     else
       flash.now[:alert] = "Email ou mot de passe invalide"
@@ -55,5 +57,24 @@ class UnifiedSessionsController < ApplicationController
     return nil if path.start_with?("//")
 
     path
+  end
+
+  def safe_return_to_from_referer
+    referer = request.referer.to_s
+    return nil if referer.blank?
+
+    uri = URI.parse(referer)
+    return nil if uri.host.present? && uri.host != request.host
+
+    path = uri.path.to_s
+    return nil if path.blank?
+    return nil if path == login_path
+
+    full_path = path
+    full_path += "?#{uri.query}" if uri.query.present?
+
+    safe_return_to(full_path)
+  rescue URI::InvalidURIError
+    nil
   end
 end
