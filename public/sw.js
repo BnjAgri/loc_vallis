@@ -1,6 +1,6 @@
 /* Minimal PWA service worker (cache-first for same-origin GET). */
 
-const CACHE_NAME = "loc-vallis-v1";
+const CACHE_NAME = "loc-vallis-v2";
 const PRECACHE_URLS = [
   "/",
   "/manifest.json",
@@ -61,6 +61,19 @@ self.addEventListener("fetch", (event) => {
   // Cache-first for other same-origin GET requests.
   event.respondWith(
     (async () => {
+      // Avoid stale JS/CSS during development and after deployments.
+      const isScriptOrStyle = request.destination === "script" || request.destination === "style";
+      if (isScriptOrStyle) {
+        try {
+          const networkResponse = await fetch(request);
+          const cache = await caches.open(CACHE_NAME);
+          cache.put(request, networkResponse.clone());
+          return networkResponse;
+        } catch {
+          return (await caches.match(request)) || Response.error();
+        }
+      }
+
       const cachedResponse = await caches.match(request);
       if (cachedResponse) return cachedResponse;
 
