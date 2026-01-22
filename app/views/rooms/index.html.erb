@@ -19,7 +19,7 @@
 </div>
 
 <% mapbox_access_token = ENV["MAPBOX_ACCESS_TOKEN"].to_s %>
-<% map_address = ENV.fetch("MAP_ADDRESS", "Anglès, France") %>
+<% map_address = (@owner_postal_address.presence || ENV.fetch("MAP_ADDRESS", "Anglès, France")) %>
 <% map_lat = ENV.fetch("MAP_LAT", "43.5644").to_f %>
 <% map_lng = ENV.fetch("MAP_LNG", "2.5617").to_f %>
 
@@ -31,10 +31,12 @@
           <div
             data-controller="mapbox"
             data-mapbox-access-token-value="<%= mapbox_access_token %>"
+            data-mapbox-address-value="<%= map_address %>"
             data-mapbox-lat-value="<%= map_lat %>"
             data-mapbox-lng-value="<%= map_lng %>"
             data-mapbox-zoom-value="13"
             data-mapbox-interactive-value="true"
+            data-mapbox-require-alt-value="true"
             data-mapbox-animate-zoom-value="true"
             data-mapbox-animate-duration-ms-value="2000"
             style="height: 100%; width: 100%;"
@@ -45,7 +47,6 @@
           </div>
         <% end %>
       </div>
-      <div class="mt-2 text-muted"><strong><%= t(".address_label") %></strong> <%= map_address %></div>
     </div>
 
     <div class="col-12 col-lg-4">

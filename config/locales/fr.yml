@@ -16,7 +16,7 @@ fr:
       en: "EN"
     nav:
       rooms: "Chambres"
-      blog: "Blog"
+      blog: "Anglès et ses environs"
       my_bookings: "Mes réservations"
       profile: "Mon profil"
       account: "Compte"
@@ -73,6 +73,20 @@ fr:
       success: "Article mis à jour."
     destroy:
       success: "Article supprimé."
+    index:
+      title: "Anglès et ses environs"
+      subtitle: "Idées de balades et de découvertes autour du gîte."
+      new_article: "Nouvel article"
+    show:
+      back_to_index: "Retour à Anglès et ses environs"
+    new:
+      title: "Nouvel article"
+      subtitle: "Publiez une idée de balade ou de découverte."
+      back_to_index: "Retour à Anglès et ses environs"
+    edit:
+      title: "Modifier l’article"
+      subtitle: "Mettez à jour le contenu et l’image."
+      back: "Retour"
 
   sessions:
     flash:
@@ -205,7 +219,7 @@ fr:
     index:
       welcome_html: "Bienvenue chez <strong>%{owner}</strong> à <strong>%{location}</strong>!"
       subtitle: "Maison et chambres d'hôtes sur la route de Saint Jacques de Compostelle"
-      accommodations: "Hébergements"
+      accommodations: "Nos hébergements"
       capacity: "Capacité : %{count} pers."
       from_price: "À partir de"
       per_night: "par nuit"

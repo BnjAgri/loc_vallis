@@ -45,7 +45,7 @@ en:
       en: "EN"
     nav:
       rooms: "Rooms"
-      blog: "Blog"
+      blog: "Anglès & surroundings"
       my_bookings: "My bookings"
       profile: "My profile"
       account: "Account"
@@ -102,6 +102,20 @@ en:
       success: "Article updated."
     destroy:
       success: "Article deleted."
+    index:
+      title: "Anglès & surroundings"
+      subtitle: "Walk ideas and discoveries around the guesthouse."
+      new_article: "New article"
+    show:
+      back_to_index: "Back to Anglès & surroundings"
+    new:
+      title: "New article"
+      subtitle: "Share a walk idea or a discovery."
+      back_to_index: "Back to Anglès & surroundings"
+    edit:
+      title: "Edit article"
+      subtitle: "Update the content and image."
+      back: "Back"
 
   sessions:
     flash:
@@ -166,7 +180,7 @@ en:
     index:
       welcome_html: "Welcome to <strong>%{owner}</strong> in <strong>%{location}</strong>!"
       subtitle: "Guesthouse and B&B on the Camino de Santiago route"
-      accommodations: "Accommodations"
+      accommodations: "Our accommodations"
       capacity: "Capacity: %{count} people"
       from_price: "From"
       per_night: "per night"

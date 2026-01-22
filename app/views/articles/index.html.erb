@@ -2,13 +2,13 @@
 	<% actions = nil %>
 	<% if owner_signed_in? %>
 		<% actions = capture do %>
-			<%= link_to "Nouvel article", new_article_path, class: "btn btn-primary" %>
+			<%= link_to t(".new_article"), new_article_path, class: "btn btn-primary" %>
 		<% end %>
 	<% end %>
 
 	<%= render "shared/ui/page_header",
-		title: "Blog",
-		subtitle: "Idées de balades et de découvertes autour du gîte.",
+		title: t(".title"),
+		subtitle: t(".subtitle"),
 		actions: actions %>
 
 	<% if @articles.any? %>
