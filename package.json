@@ -1,0 +1,7 @@
+{
+  "name": "loc-vallis",
+  "private": true,
+  "engines": {
+    "node": "22.11.0"
+  }
+}
