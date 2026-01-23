@@ -11,7 +11,7 @@ class UnifiedSessionsController < ApplicationController
 
     if email.blank? || password.blank?
       flash.now[:alert] = t("sessions.flash.missing_credentials")
-      render :new, status: :unprocessable_entity
+      render :new, status: :unprocessable_content
       return
     end
 
@@ -24,7 +24,7 @@ class UnifiedSessionsController < ApplicationController
         redirect_to(return_to || after_sign_in_path_for(owner))
       else
         flash.now[:alert] = t("sessions.flash.invalid_credentials")
-        render :new, status: :unprocessable_entity
+        render :new, status: :unprocessable_content
       end
       return
     end
@@ -37,7 +37,7 @@ class UnifiedSessionsController < ApplicationController
       redirect_to(return_to || after_sign_in_path_for(user))
     else
       flash.now[:alert] = t("sessions.flash.invalid_credentials")
-      render :new, status: :unprocessable_entity
+      render :new, status: :unprocessable_content
     end
   end
 

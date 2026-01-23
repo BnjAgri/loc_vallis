@@ -27,7 +27,7 @@ class ProfilesControllerTest < ActionDispatch::IntegrationTest
     sign_in user
 
     patch profile_path, params: { user: { email: "new_email@test.local", current_password: "" } }
-    assert_response :unprocessable_entity
+    assert_response :unprocessable_content
 
     user.reload
     assert_equal "profile_email_user@test.local", user.email

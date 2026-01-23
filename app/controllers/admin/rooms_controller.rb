@@ -57,7 +57,7 @@ module Admin
       if @room.save
         redirect_to admin_room_path(id: @room), notice: t("admin.rooms.flash.created")
       else
-        render :new, status: :unprocessable_entity
+        render :new, status: :unprocessable_content
       end
     end
 
@@ -73,7 +73,7 @@ module Admin
       if @room.update(room_params)
         redirect_to admin_room_path(id: @room), notice: t("admin.rooms.flash.updated")
       else
-        render :edit, status: :unprocessable_entity
+        render :edit, status: :unprocessable_content
       end
     end
 

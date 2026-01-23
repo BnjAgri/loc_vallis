@@ -19,7 +19,7 @@ class ReviewsController < ApplicationController
       @messages = @booking.messages.includes(:sender).order(:created_at)
       @message = Message.new
       flash.now[:alert] = @review.errors.full_messages.to_sentence
-      render "bookings/show", status: :unprocessable_entity
+      render "bookings/show", status: :unprocessable_content
     end
   end
 
