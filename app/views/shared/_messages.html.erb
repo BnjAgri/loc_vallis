@@ -70,7 +70,7 @@ end %>
   </div>
 
   <div class="lv-thread__composer">
-    <%= form_with model: [booking, Message.new], url: booking_messages_path(booking), method: :post,
+    <%= form_with model: [booking, Message.new], url: booking_messages_path(booking_id: booking), method: :post,
       data: { controller: "form-submit", action: "submit->form-submit#lock" } do |f| %>
       <div class="mb-2">
         <%= f.label :body, t("messages.composer.label"), class: "form-label" %>

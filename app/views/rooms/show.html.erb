@@ -129,9 +129,9 @@ end %>
             </div>
 
             <% if user_signed_in? %>
-              <%= link_to t(".book_button"), new_room_booking_path(@room), class: "btn btn-accent w-100", data: { "booking-summary-target": "cta" } %>
+              <%= link_to t(".book_button"), new_room_booking_path(room_id: @room), class: "btn btn-accent w-100", data: { "booking-summary-target": "cta" } %>
             <% else %>
-              <%= link_to t(".book_button"), login_path(return_to: new_room_booking_path(@room)), class: "btn btn-accent w-100", data: { turbo: false, "booking-summary-target": "cta" } %>
+              <%= link_to t(".book_button"), login_path(return_to: new_room_booking_path(room_id: @room)), class: "btn btn-accent w-100", data: { turbo: false, "booking-summary-target": "cta" } %>
             <% end %>
               </div>
             </div>

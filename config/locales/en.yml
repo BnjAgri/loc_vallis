@@ -125,6 +125,8 @@ en:
     composer:
       label: "Your message"
       placeholder: "Write a message…"
+    flash:
+      not_sent: "Message could not be sent."
 
   hello: "Hello world"
 
@@ -155,10 +157,6 @@ en:
       missing_credentials: "Email and password are required"
       invalid_credentials: "Invalid email or password"
       logged_out: "Logged out"
-
-  messages:
-    flash:
-      not_sent: "Message could not be sent."
 
   reviews:
     flash:

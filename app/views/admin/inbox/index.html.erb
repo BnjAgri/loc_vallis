@@ -41,7 +41,7 @@
               (unread_count.positive? ? "lv-inbox-item--unread" : nil)
             ].compact.join(" ") %>
 
-            <%= link_to admin_booking_path(booking), class: item_classes do %>
+            <%= link_to admin_booking_path(id: booking), class: item_classes do %>
               <div class="d-flex justify-content-between align-items-start gap-2">
                 <div class="flex-grow-1" style="min-width: 0;">
                   <div class="d-flex align-items-center gap-2 flex-wrap">

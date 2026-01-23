@@ -38,10 +38,10 @@ module Admin
       sign_in owner
 
       assert_no_difference("Room.count") do
-        delete admin_room_path(room)
+        delete admin_room_path(id: room)
       end
 
-      assert_redirected_to admin_room_path(room)
+      assert_redirected_to admin_room_path(id: room)
       assert_equal "Réservations à venir, suppression impossible", flash[:alert]
     end
 
@@ -81,7 +81,7 @@ module Admin
       sign_in owner
 
       assert_difference("Room.count", -1) do
-        delete admin_room_path(room)
+        delete admin_room_path(id: room)
       end
 
       assert_redirected_to admin_rooms_path

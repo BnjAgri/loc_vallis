@@ -33,7 +33,7 @@ class Admin::BookingsRefundControllerTest < ActionDispatch::IntegrationTest
     original = Stripe::Refund.method(:create)
     Stripe::Refund.define_singleton_method(:create) { |_args| refund }
 
-    post refund_admin_booking_path(@booking)
+    post refund_admin_booking_path(id: @booking)
     assert_response :redirect
 
     @booking.reload

@@ -3,7 +3,7 @@
     <div class="card-body">
       <div class="d-flex justify-content-between align-items-center">
         <h1 class="h3 mb-0"><%= t('admin.rooms.edit.title') %></h1>
-        <%= link_to t('admin.rooms.edit.back_link'), admin_room_path(@room), class: "btn btn-link" %>
+        <%= link_to t('admin.rooms.edit.back_link'), admin_room_path(id: @room), class: "btn btn-link" %>
       </div>
     </div>
   </div>
@@ -14,7 +14,7 @@
         room: @room,
         submit_label: t('admin.rooms.edit.submit_button'),
         back_label: t('admin.rooms.edit.back_link'),
-        back_path: admin_room_path(@room) %>
+        back_path: admin_room_path(id: @room) %>
     </div>
   </div>
 </div>

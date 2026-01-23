@@ -96,6 +96,8 @@ fr:
     composer:
       label: "Votre message"
       placeholder: "Écrire un message…"
+    flash:
+      not_sent: "Impossible d'envoyer le message."
 
   hello: "Bonjour"
 
@@ -127,35 +129,10 @@ fr:
       invalid_credentials: "Email ou mot de passe invalide"
       logged_out: "Déconnecté"
 
-  messages:
-    flash:
-      not_sent: "Impossible d'envoyer le message."
-
   reviews:
     flash:
       already_left: "Vous avez déjà laissé un avis pour cette réservation."
       thanks: "Merci pour votre avis !"
-
-  admin:
-    shared:
-      flash:
-        deletion_blocked_upcoming_bookings: "Réservations à venir, suppression impossible"
-    rooms:
-      flash:
-        created: "Chambre créée."
-        updated: "Chambre mise à jour."
-        deleted: "Chambre supprimée."
-    opening_periods:
-      flash:
-        added: "Période d'ouverture ajoutée."
-        removed: "Période d'ouverture supprimée."
-        updated: "Période d'ouverture mise à jour."
-    bookings:
-      flash:
-        approved: "Réservation approuvée."
-        declined: "Réservation refusée."
-        canceled: "Réservation annulée."
-        refund_initiated: "Remboursement lancé."
 
   devise:
     registrations:
@@ -173,7 +150,15 @@ fr:
         sign_up_button: "S'inscrire"
 
   admin:
+    shared:
+      flash:
+        deletion_blocked_upcoming_bookings: "Réservations à venir, suppression impossible"
     bookings:
+      flash:
+        approved: "Réservation approuvée."
+        declined: "Réservation refusée."
+        canceled: "Réservation annulée."
+        refund_initiated: "Remboursement lancé."
       index:
         title: "Tableau de bord"
         subtitle: "Messages, réservations et gestion des chambres"
@@ -194,6 +179,10 @@ fr:
         delete_button: "Supprimer"
         delete_confirm: "Supprimer cette chambre ?"
     rooms:
+      flash:
+        created: "Chambre créée."
+        updated: "Chambre mise à jour."
+        deleted: "Chambre supprimée."
       show:
         calendar_title: "Calendrier des disponibilités"
         legend_open: "Ouvert"
@@ -224,6 +213,11 @@ fr:
         room_url_hint: "Une URL d'image par ligne"
         submit_button: "Mettre à jour"
         back_link: "Retour"
+    opening_periods:
+      flash:
+        added: "Période d'ouverture ajoutée."
+        removed: "Période d'ouverture supprimée."
+        updated: "Période d'ouverture mise à jour."
 
   rooms:
     show:

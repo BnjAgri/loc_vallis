@@ -7,11 +7,11 @@
     <div class="col-12 col-lg-5">
       <% actions = capture do %>
         <% if policy(@booking).pay? %>
-          <%= button_to "Payer maintenant", checkout_booking_path(@booking), method: :post, class: "btn btn-accent" %>
+          <%= button_to "Payer maintenant", checkout_booking_path(id: @booking), method: :post, class: "btn btn-accent" %>
         <% end %>
 
         <% if policy(@booking).cancel? %>
-          <%= button_to t("shared.actions.cancel"), cancel_booking_path(@booking), method: :patch, class: "btn btn-outline-danger" %>
+          <%= button_to t("shared.actions.cancel"), cancel_booking_path(id: @booking), method: :patch, class: "btn btn-outline-danger" %>
         <% end %>
       <% end %>
 

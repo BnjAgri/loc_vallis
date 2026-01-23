@@ -55,7 +55,7 @@ module Admin
       authorize @room
 
       if @room.save
-        redirect_to admin_room_path(@room), notice: t("admin.rooms.flash.created")
+        redirect_to admin_room_path(id: @room), notice: t("admin.rooms.flash.created")
       else
         render :new, status: :unprocessable_entity
       end
@@ -71,7 +71,7 @@ module Admin
       authorize @room
 
       if @room.update(room_params)
-        redirect_to admin_room_path(@room), notice: t("admin.rooms.flash.updated")
+        redirect_to admin_room_path(id: @room), notice: t("admin.rooms.flash.updated")
       else
         render :edit, status: :unprocessable_entity
       end
@@ -88,7 +88,7 @@ module Admin
         .exists?
 
       if has_upcoming_blocking_bookings
-        redirect_to admin_room_path(@room), alert: t("admin.shared.flash.deletion_blocked_upcoming_bookings")
+        redirect_to admin_room_path(id: @room), alert: t("admin.shared.flash.deletion_blocked_upcoming_bookings")
         return
       end
 

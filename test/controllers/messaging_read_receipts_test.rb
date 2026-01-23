@@ -27,7 +27,7 @@ class MessagingReadReceiptsTest < ActionDispatch::IntegrationTest
 
     travel_to Time.zone.parse("2026-01-13 10:00:00") do
       sign_in @owner
-      get admin_booking_path(@booking)
+      get admin_booking_path(id: @booking)
       assert_response :success
 
       @booking.reload
@@ -40,7 +40,7 @@ class MessagingReadReceiptsTest < ActionDispatch::IntegrationTest
 
     travel_to Time.zone.parse("2026-01-13 11:00:00") do
       sign_in @user
-      get booking_path(@booking)
+      get booking_path(id: @booking)
       assert_response :success
 
       @booking.reload

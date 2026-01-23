@@ -6,7 +6,7 @@
     </div>
 
     <div>
-      <%= link_to "Retour", admin_room_path(@room), class: "btn btn-link" %>
+      <%= link_to "Retour", admin_room_path(id: @room), class: "btn btn-link" %>
     </div>
   </div>
 
@@ -47,7 +47,7 @@
 
         <div class="d-flex gap-2">
           <%= f.submit "Enregistrer", class: "btn btn-primary" %>
-          <%= link_to "Annuler", admin_room_path(@room), class: "btn btn-outline-secondary" %>
+          <%= link_to "Annuler", admin_room_path(id: @room), class: "btn btn-outline-secondary" %>
         </div>
       <% end %>
     </div>

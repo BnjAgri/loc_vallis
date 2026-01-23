@@ -11,9 +11,9 @@ class MessagesController < ApplicationController
 
     if message.save
       MessageMailer.with(message:).new_message.deliver_later
-      redirect_to(current_owner.present? ? admin_booking_path(booking) : booking_path(booking))
+      redirect_to(current_owner.present? ? admin_booking_path(id: booking) : booking_path(id: booking))
     else
-      redirect_to(current_owner.present? ? admin_booking_path(booking) : booking_path(booking), alert: t("messages.flash.not_sent"))
+      redirect_to(current_owner.present? ? admin_booking_path(id: booking) : booking_path(id: booking), alert: t("messages.flash.not_sent"))
     end
   end
 

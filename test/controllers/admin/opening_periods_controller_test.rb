@@ -15,7 +15,7 @@ module Admin
       sign_in owner
 
       assert_difference("OpeningPeriod.count", 1) do
-        post admin_room_opening_periods_path(room), params: {
+        post admin_room_opening_periods_path(room_id: room), params: {
           opening_period: {
             start_date: (Date.current + 10).to_s,
             end_date: (Date.current + 12).to_s,
@@ -50,10 +50,10 @@ module Admin
 
       sign_in owner
 
-      get edit_admin_room_opening_period_path(room, opening_period)
+      get edit_admin_room_opening_period_path(room_id: room, id: opening_period)
       assert_response :success
 
-      patch admin_room_opening_period_path(room, opening_period), params: {
+      patch admin_room_opening_period_path(room_id: room, id: opening_period), params: {
         opening_period: {
           start_date: (Date.current + 11).to_s,
           end_date: (Date.current + 21).to_s,
@@ -62,7 +62,7 @@ module Admin
         }
       }
 
-      assert_redirected_to admin_room_path(room)
+      assert_redirected_to admin_room_path(id: room)
       opening_period.reload
       assert_equal 2200, opening_period.nightly_price_cents
     end
@@ -103,10 +103,10 @@ module Admin
       sign_in owner
 
       assert_no_difference("OpeningPeriod.count") do
-        delete admin_room_opening_period_path(room, opening_period)
+        delete admin_room_opening_period_path(room_id: room, id: opening_period)
       end
 
-      assert_redirected_to admin_room_path(room)
+      assert_redirected_to admin_room_path(id: room)
       assert_equal "Réservations à venir, suppression impossible", flash[:alert]
     end
 
@@ -146,10 +146,10 @@ module Admin
       sign_in owner
 
       assert_difference("OpeningPeriod.count", -1) do
-        delete admin_room_opening_period_path(room, opening_period)
+        delete admin_room_opening_period_path(room_id: room, id: opening_period)
       end
 
-      assert_redirected_to admin_room_path(room)
+      assert_redirected_to admin_room_path(id: room)
     end
   end
 end
