@@ -1,6 +1,6 @@
 <%# locals: room:, href: nil, image_url: nil, min_period: nil %>
 <% room = local_assigns.fetch(:room) %>
-<% href = local_assigns[:href] || room_path(room) %>
+<% href = local_assigns[:href] || room_path(id: room) %>
 
 <% image_url = local_assigns[:image_url] %>
 <% image_url ||= if room.photos.attached?

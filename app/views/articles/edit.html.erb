@@ -1,6 +1,6 @@
 <div class="container py-4">
 	<% actions = capture do %>
-		<%= link_to t(".back"), article_path(@article), class: "btn btn-soft" %>
+		<%= link_to t(".back"), article_path(id: @article), class: "btn btn-soft" %>
 	<% end %>
 
 	<%= render "shared/ui/page_header",

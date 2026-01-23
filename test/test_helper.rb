@@ -18,4 +18,8 @@ end
 
 class ActionDispatch::IntegrationTest
   include Devise::Test::IntegrationHelpers
+
+  def default_url_options
+    { locale: I18n.default_locale }
+  end
 end

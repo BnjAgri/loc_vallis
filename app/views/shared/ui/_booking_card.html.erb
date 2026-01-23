@@ -1,6 +1,6 @@
 <%# locals: booking:, href: nil %>
 <% booking = local_assigns.fetch(:booking) %>
-<% href = local_assigns[:href] || booking_path(booking) %>
+<% href = local_assigns[:href] || booking_path(id: booking) %>
 
 <% date_label = if booking.start_date.present? && booking.end_date.present?
   "#{booking.start_date.strftime("%d/%m/%Y")} → #{booking.end_date.strftime("%d/%m/%Y")}"

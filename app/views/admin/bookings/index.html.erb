@@ -28,7 +28,7 @@
               <% @recent_messages.each do |message| %>
                 <% booking = message.booking %>
                 <% unread = message.sender_type == "User" && (booking.owner_last_read_at.nil? || message.created_at > booking.owner_last_read_at) %>
-                <%= link_to admin_booking_path(booking), class: "list-group-item list-group-item-action" do %>
+                <%= link_to admin_booking_path(id: booking), class: "list-group-item list-group-item-action" do %>
                   <div class="d-flex justify-content-between align-items-baseline gap-2">
                     <div class="d-flex align-items-center gap-2 text-truncate">
                       <strong class="text-truncate"><%= message.sender&.respond_to?(:email) ? message.sender.email : "—" %></strong>
@@ -76,10 +76,10 @@
                   <div class="fw-semibold"><%= room.name %></div>
 
                   <div class="d-inline-flex flex-wrap gap-2">
-                    <%= link_to t('admin.bookings.index.planning_button'), admin_room_path(room), class: "btn btn-outline-primary btn-sm" %>
-                    <%= link_to t('admin.bookings.index.edit_button'), edit_admin_room_path(room), class: "btn btn-outline-secondary btn-sm" %>
+                    <%= link_to t('admin.bookings.index.planning_button'), admin_room_path(id: room), class: "btn btn-outline-primary btn-sm" %>
+                    <%= link_to t('admin.bookings.index.edit_button'), edit_admin_room_path(id: room), class: "btn btn-outline-secondary btn-sm" %>
                     <%= button_to t('admin.bookings.index.delete_button'),
-                          admin_room_path(room),
+                          admin_room_path(id: room),
                           method: :delete,
                           data: { turbo_confirm: t('admin.bookings.index.delete_confirm') },
                           class: "btn btn-warning btn-sm" %>
@@ -115,7 +115,7 @@
                 <tbody>
                   <% @bookings.each do |booking| %>
                     <tr>
-                      <td><%= link_to "##{booking.id}", admin_booking_path(booking) %></td>
+                      <td><%= link_to "##{booking.id}", admin_booking_path(id: booking) %></td>
                       <td><%= booking.room&.name %></td>
                       <td class="text-truncate" style="max-width: 220px;"><%= booking.user&.email %></td>
                       <td><%= booking.start_date.strftime("%d/%m/%Y") %> → <%= booking.end_date.strftime("%d/%m/%Y") %></td>

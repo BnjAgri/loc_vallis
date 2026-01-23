@@ -28,10 +28,10 @@ class MessagesControllerTest < ActionDispatch::IntegrationTest
     sign_in @owner
 
     assert_difference "@booking.messages.count", +1 do
-      post booking_messages_path(@booking), params: { message: { body: "Bonjour" } }
+      post booking_messages_path(booking_id: @booking), params: { message: { body: "Bonjour" } }
     end
 
-    assert_redirected_to admin_booking_path(@booking)
+    assert_redirected_to admin_booking_path(id: @booking)
     assert_equal "Owner", @booking.messages.last.sender_type
     assert_equal @owner.id, @booking.messages.last.sender_id
   end
@@ -40,10 +40,10 @@ class MessagesControllerTest < ActionDispatch::IntegrationTest
     sign_in @user
 
     assert_difference "@booking.messages.count", +1 do
-      post booking_messages_path(@booking), params: { message: { body: "Hello" } }
+      post booking_messages_path(booking_id: @booking), params: { message: { body: "Hello" } }
     end
 
-    assert_redirected_to booking_path(@booking)
+    assert_redirected_to booking_path(id: @booking)
     assert_equal "User", @booking.messages.last.sender_type
     assert_equal @user.id, @booking.messages.last.sender_id
   end
@@ -52,10 +52,10 @@ class MessagesControllerTest < ActionDispatch::IntegrationTest
     sign_in @other_user
 
     assert_no_difference "@booking.messages.count" do
-      post booking_messages_path(@booking), params: { message: { body: "Hacked" } }
+      post booking_messages_path(booking_id: @booking), params: { message: { body: "Hacked" } }
     end
 
     assert_redirected_to root_path
-    assert_equal "You are not authorized to perform this action.", flash[:alert]
+    assert_equal I18n.t("shared.authorization.not_authorized"), flash[:alert]
   end
 end

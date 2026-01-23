@@ -15,7 +15,7 @@ class ProfilesController < ApplicationController
         bypass_sign_in(@profile)
         redirect_to edit_profile_path, notice: t("profiles.flash.updated")
       else
-        render :edit, status: :unprocessable_entity
+        render :edit, status: :unprocessable_content
       end
     else
       safe_attributes = permitted.except(:current_password, :password, :password_confirmation, :email)
@@ -23,7 +23,7 @@ class ProfilesController < ApplicationController
       if @profile.update(safe_attributes)
         redirect_to edit_profile_path, notice: t("profiles.flash.updated")
       else
-        render :edit, status: :unprocessable_entity
+        render :edit, status: :unprocessable_content
       end
     end
   end

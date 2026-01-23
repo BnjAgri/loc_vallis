@@ -22,7 +22,7 @@ class MessageMailer < ApplicationMailer
     uri = URI.parse(base)
 
     booking_url(
-      booking,
+      id: booking,
       host: uri.host,
       protocol: uri.scheme,
       port: uri.port

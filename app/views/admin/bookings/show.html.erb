@@ -7,16 +7,16 @@
     <div class="col-12 col-lg-5">
       <% actions = capture do %>
         <% if policy(@booking).approve? %>
-          <%= button_to "Approuver", approve_admin_booking_path(@booking), method: :patch, class: "btn btn-primary" %>
-          <%= button_to "Refuser", decline_admin_booking_path(@booking), method: :patch, class: "btn btn-outline-danger" %>
+          <%= button_to "Approuver", approve_admin_booking_path(id: @booking), method: :patch, class: "btn btn-primary" %>
+          <%= button_to "Refuser", decline_admin_booking_path(id: @booking), method: :patch, class: "btn btn-outline-danger" %>
         <% end %>
 
         <% if policy(@booking).cancel? %>
-          <%= button_to t("shared.actions.cancel"), cancel_admin_booking_path(@booking), method: :patch, class: "btn btn-outline-danger" %>
+          <%= button_to t("shared.actions.cancel"), cancel_admin_booking_path(id: @booking), method: :patch, class: "btn btn-outline-danger" %>
         <% end %>
 
         <% if policy(@booking).refund? %>
-          <%= button_to "Rembourser", refund_admin_booking_path(@booking), method: :post, class: "btn btn-warning", data: { turbo_confirm: "Effectuer un remboursement pour cette réservation ?" } %>
+          <%= button_to "Rembourser", refund_admin_booking_path(id: @booking), method: :post, class: "btn btn-warning", data: { turbo_confirm: "Effectuer un remboursement pour cette réservation ?" } %>
         <% end %>
       <% end %>
 

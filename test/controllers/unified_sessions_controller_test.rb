@@ -18,7 +18,7 @@ class UnifiedSessionsControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
 
     post login_path, params: { session: { email: user.email, password: "wrong" } }
-    assert_response :unprocessable_entity
+    assert_response :unprocessable_content
 
     post login_path, params: { session: { email: user.email, password: "password" } }
     assert_redirected_to inbox_path

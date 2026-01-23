@@ -26,13 +26,13 @@ class ReviewsControllerTest < ActionDispatch::IntegrationTest
       sign_in user
 
       assert_difference "Review.count", 1 do
-        post booking_reviews_path(booking), params: { review: { rating: 5, comment: "Super séjour" } }
+        post booking_reviews_path(booking_id: booking), params: { review: { rating: 5, comment: "Super séjour" } }
       end
 
       assert_response :redirect
 
       assert_no_difference "Review.count" do
-        post booking_reviews_path(booking), params: { review: { rating: 4, comment: "Deuxième avis" } }
+        post booking_reviews_path(booking_id: booking), params: { review: { rating: 4, comment: "Deuxième avis" } }
       end
     end
   end

@@ -2,9 +2,9 @@
 	<% actions = capture do %>
 		<%= link_to t(".back_to_index"), articles_path, class: "btn btn-soft" %>
 		<% if owner_signed_in? && @article.owner_id == current_owner.id %>
-			<%= link_to "Modifier", edit_article_path(@article), class: "btn btn-outline-primary" %>
+			<%= link_to "Modifier", edit_article_path(id: @article), class: "btn btn-outline-primary" %>
 			<%= button_to "Supprimer",
-				article_path(@article),
+				article_path(id: @article),
 				method: :delete,
 				class: "btn btn-outline-danger",
 				form: {
