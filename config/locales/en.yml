@@ -212,6 +212,10 @@ en:
       welcome_html: "Welcome to <strong>%{owner}</strong> in <strong>%{location}</strong>!"
       subtitle: "Guesthouse and B&B on the Camino de Santiago route"
       accommodations: "Our accommodations"
+      guesthouse_intro:
+        title: "A haven of peace in the heart of Tarn"
+        text: "Nestled in the timeless charm of the village of Anglès, our small guesthouse and two B&B rooms welcome you to a place where calm and nature reign. Here, time seems to slow down. Between deep forests, peaceful lakes, and authentic streets, you’ll enjoy a restorative stay—ideal for reconnecting with what matters. Whether you’re coming for a gentle break, a romantic getaway, or a nature-filled escape, Anglès offers the tranquility you’ve been dreaming of."
+        signature: "Claude"
       capacity: "Capacity: %{count} people"
       from_price: "From"
       per_night: "per night"
@@ -227,6 +231,14 @@ en:
       phone_label: "Phone"
       email_label: "Email"
       not_provided: "Not provided"
+      practical_info:
+        title: "Practical information"
+        parking: "Parking available on-site"
+        bike_storage: "Bicycle storage available"
+        no_dogs: "No dogs allowed"
+        wifi: "Free unlimited Wi‑Fi"
+        washer: "Washing machine (+€5)"
+        dryer: "Dryer (+€5)"
 
   bookings:
     statuses:

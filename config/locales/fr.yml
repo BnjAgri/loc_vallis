@@ -247,6 +247,10 @@ fr:
       welcome_html: "Bienvenue chez <strong>%{owner}</strong> à <strong>%{location}</strong>!"
       subtitle: "Maison et chambres d'hôtes sur la route de Saint Jacques de Compostelle"
       accommodations: "Nos hébergements"
+      guesthouse_intro:
+        title: "Un havre de paix au cœur du Tarn"
+        text: "Niché dans le charme intemporel du village d’Anglès, notre petit gîte et nos deux chambres d’hôtes vous accueillent dans un cadre où le calme et la nature règnent en maîtres. Ici, le temps semble ralentir. Entre forêts profondes, lacs paisibles et ruelles authentiques, vous profitez d’un séjour ressourçant, idéal pour se reconnecter à l’essentiel. Que vous veniez pour une pause en douceur, une escapade romantique ou une parenthèse en pleine nature, Anglès vous offre la tranquillité dont vous rêvez."
+        signature: "Claude"
       capacity: "Capacité : %{count} pers."
       from_price: "À partir de"
       per_night: "par nuit"
@@ -262,6 +266,14 @@ fr:
       phone_label: "Téléphone"
       email_label: "E-mail"
       not_provided: "Non renseigné"
+      practical_info:
+        title: "Informations pratiques"
+        parking: "Possibilité de stationner sur place"
+        bike_storage: "Possibilité de ranger les vélos"
+        no_dogs: "Chiens refusés"
+        wifi: "Accès Wifi gratuit et illimité"
+        washer: "Lave-linge (+5€)"
+        dryer: "Sèche-linge (+5€)"
 
   bookings:
     statuses:
