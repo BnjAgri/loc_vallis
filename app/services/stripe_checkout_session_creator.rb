@@ -11,12 +11,14 @@
 # Note : Stripe nécessite un `unit_amount` (prix unitaire). Comme le total de la booking
 # peut inclure des services optionnels “one-shot”, on facture le total en une seule ligne.
 class StripeCheckoutSessionCreator
-  def self.call(booking:)
-    new(booking:).call
+  def self.call(booking:, success_url: nil, cancel_url: nil)
+    new(booking:, success_url:, cancel_url:).call
   end
 
-  def initialize(booking:)
+  def initialize(booking:, success_url:, cancel_url:)
     @booking = booking
+    @explicit_success_url = success_url
+    @explicit_cancel_url = cancel_url
   end
 
   def call
@@ -62,10 +64,14 @@ class StripeCheckoutSessionCreator
   end
 
   def success_url
+    return @explicit_success_url if @explicit_success_url.present?
+
     "#{base_url}/bookings/#{booking.id}?checkout=success"
   end
 
   def cancel_url
+    return @explicit_cancel_url if @explicit_cancel_url.present?
+
     "#{base_url}/bookings/#{booking.id}?checkout=cancel"
   end
 end
