@@ -21,6 +21,7 @@ class StripeRefundCreator
   end
 
   def call
+    raise StandardError, "Stripe is not configured (missing STRIPE_SECRET_KEY)" if Stripe.api_key.blank?
     raise StandardError, "Only confirmed_paid bookings can be refunded" unless booking.status == "confirmed_paid"
     raise StandardError, "Missing Stripe payment_intent" if booking.stripe_payment_intent_id.blank?
     raise StandardError, "Already refunded" if booking.stripe_refund_id.present? || booking.status == "refunded"

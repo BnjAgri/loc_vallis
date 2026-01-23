@@ -18,13 +18,15 @@
       <%= render "shared/ui/booking_summary_card", booking: @booking, actions: actions, show_user: false %>
 
       <% if policy(@booking).pay? && @booking.payment_expires_at.present? %>
-        <div class="card lv-card lv-card--soft mt-4">
+        <div class="card lv-card lv-card--soft lv-card--payment mt-4">
           <div class="card-body">
             <div class="d-flex align-items-start gap-2">
               <div class="text-uppercase lv-muted small">Paiement</div>
             </div>
-            <div class="fw-semibold">Fenêtre de paiement ouverte</div>
-            <div class="lv-meta">À régler avant : <%= @booking.payment_expires_at %></div>
+            <% days_left = (@booking.payment_expires_at.to_date - Time.zone.today).to_i %>
+            <% days_left = 0 if days_left.negative? %>
+            <div class="lv-payment__headline">Il vous reste <span class="lv-payment__days"><%= days_left %> <%= days_left == 1 ? "jour" : "jours" %></span> pour effectuer votre règlement</div>
+            <div class="lv-meta">À régler avant : <span class="lv-payment__deadline"><%= l(@booking.payment_expires_at, format: :short) %></span></div>
             <div class="lv-meta mt-2">Paiement sécurisé via Stripe.</div>
           </div>
         </div>

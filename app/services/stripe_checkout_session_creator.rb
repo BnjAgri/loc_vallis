@@ -20,6 +20,7 @@ class StripeCheckoutSessionCreator
   end
 
   def call
+    raise StandardError, "Stripe is not configured (missing STRIPE_SECRET_KEY)" if Stripe.api_key.blank?
     raise StandardError, "Booking must be approved for payment" unless booking.payment_window_open?
 
     session = Stripe::Checkout::Session.create(

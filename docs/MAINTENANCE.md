@@ -15,9 +15,24 @@
 	Exceptions : `/stripe/webhook` (Stripe) et `/up` (health check) restent accessibles.
 
 ### Stripe
-- `STRIPE_SECRET_KEY` (si utilisé dans l’app)
+- `STRIPE_SECRET_KEY` (**obligatoire** pour le flow “Payer maintenant” et pour les remboursements)
 - `STRIPE_WEBHOOK_SECRET` (obligatoire pour valider les webhooks)
 - `APP_BASE_URL` (utilisé pour construire les URLs de retour Checkout)
+
+En local, `dotenv-rails` charge automatiquement `.env` : tu peux donc ajouter par ex.
+- `STRIPE_SECRET_KEY=sk_test_...`
+- `STRIPE_WEBHOOK_SECRET=whsec_...`
+
+Rappel (préfixes Stripe) :
+- `pk_...` = **publishable key** (côté navigateur / Stripe.js)
+- `sk_...` = **secret key** (côté serveur, utilisée par `Stripe.api_key`)
+- `whsec_...` = **webhook signing secret** (pour `Stripe::Webhook.construct_event`)
+
+Pour obtenir un `whsec_...` en local :
+- Installer Stripe CLI (voir la doc Stripe “Stripe CLI install”), puis :
+	- `bin/stripe login`
+	- `bin/stripe listen --forward-to localhost:3000/stripe/webhook`
+	- la commande affiche “Your webhook signing secret is whsec_...” (à copier dans `.env`).
 
 ### Heroku / URLs
 - `APP_HOST` : ex. `loc-vallis-demo.herokuapp.com` (pour ActionMailer)
