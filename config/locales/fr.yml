@@ -260,6 +260,7 @@ fr:
       address_label: "Adresse :"
       contact_title: "Coordonnées"
       mapbox_access_token_missing: "MAPBOX_ACCESS_TOKEN manquant"
+      alt_to_move_hint: "Maintenez Alt pour vous déplacer"
       guesthouse_name_label: "Nom du gîte"
       owner_label: "Propriétaire"
       postal_address_label: "Adresse postale"

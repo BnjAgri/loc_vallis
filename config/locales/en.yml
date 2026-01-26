@@ -225,6 +225,7 @@ en:
       address_label: "Address:"
       contact_title: "Contact"
       mapbox_access_token_missing: "MAPBOX_ACCESS_TOKEN is missing"
+      alt_to_move_hint: "Hold Alt to move the map"
       guesthouse_name_label: "Guesthouse name"
       owner_label: "Host"
       postal_address_label: "Postal address"

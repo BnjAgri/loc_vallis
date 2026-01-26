@@ -37,7 +37,7 @@
 <div class="container mt-4">
   <div class="row g-3">
     <div class="col-12 col-lg-8">
-      <div class="card lv-card p-0 overflow-hidden" style="height: 320px; display: block;">
+      <div class="card lv-card p-0 overflow-hidden position-relative" style="height: 320px; display: block;">
         <% if mapbox_access_token.present? %>
           <div
             data-controller="mapbox"
@@ -52,6 +52,10 @@
             data-mapbox-animate-duration-ms-value="2000"
             style="height: 100%; width: 100%;"
           ></div>
+
+          <div class="position-absolute bottom-0 start-50 translate-middle-x mb-2 px-2 py-1 rounded small text-muted bg-white shadow-sm pe-none" style="opacity: 0.9;">
+            <%= t(".alt_to_move_hint") %>
+          </div>
         <% else %>
           <div class="h-100 w-100 d-flex align-items-center justify-content-center lv-surface text-muted">
             <%= t(".mapbox_access_token_missing") %>
