@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+# Local, repo-friendly wrapper around the Stripe CLI.
+# We install the real binary into ~/.local/bin/stripe.
+
+if command -v "$HOME/.local/bin/stripe" >/dev/null 2>&1; then
+  exec "$HOME/.local/bin/stripe" "$@"
+fi
+
+echo "stripe-cli not found at $HOME/.local/bin/stripe" >&2
+echo "Reinstall it or add the stripe binary to your PATH." >&2
+exit 1

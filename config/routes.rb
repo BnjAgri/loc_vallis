@@ -29,6 +29,8 @@ Rails.application.routes.draw do
       resources :reviews, only: %i[create]
       member do
         post :checkout
+        get :payment_success
+        get :payment_cancel
         patch :cancel
       end
     end

@@ -29,10 +29,34 @@ class BookingsController < ApplicationController
     @booking = policy_scope(Booking).find(params[:id])
     authorize @booking, :pay?
 
-    session = StripeCheckoutSessionCreator.call(booking: @booking)
-    redirect_to session.url, allow_other_host: true
+    session = StripeCheckoutSessionCreator.call(
+      booking: @booking,
+      success_url: payment_success_booking_url(@booking),
+      cancel_url: payment_cancel_booking_url(@booking)
+    )
+    redirect_to session.url, allow_other_host: true, status: :see_other
   rescue StandardError => e
     redirect_to @booking, alert: e.message
+  end
+
+  def payment_success
+    @booking = policy_scope(Booking).find(params[:id])
+    authorize @booking, :show?
+
+    @stripe_session = nil
+    return if Stripe.api_key.blank? || @booking.stripe_checkout_session_id.blank?
+
+    @stripe_session = Stripe::Checkout::Session.retrieve(
+      { id: @booking.stripe_checkout_session_id, expand: ["payment_intent"] }
+    )
+  rescue Stripe::StripeError => e
+    Rails.logger.warn("[Stripe] Unable to retrieve checkout session: #{e.class}: #{e.message}")
+    @stripe_session = nil
+  end
+
+  def payment_cancel
+    @booking = policy_scope(Booking).find(params[:id])
+    authorize @booking, :show?
   end
 
   def new

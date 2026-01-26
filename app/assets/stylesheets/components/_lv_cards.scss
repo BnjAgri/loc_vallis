@@ -36,6 +36,31 @@
   background: $lv-surface-soft;
 }
 
+// Payment window highlight card (booking show)
+.lv-card--payment {
+  background: rgba($lv-warning, 0.14);
+  border-color: rgba($lv-warning, 0.30);
+  border-left: 6px solid rgba($lv-warning, 0.85);
+}
+
+.lv-card--payment .lv-payment__headline {
+  margin-top: .25rem;
+  font-weight: 650;
+  font-size: 1.05rem;
+  line-height: 1.35;
+  color: $lv-ink;
+}
+
+.lv-card--payment .lv-payment__days {
+  font-weight: 800;
+  color: $lv-ink;
+}
+
+.lv-card--payment .lv-payment__deadline {
+  font-weight: 700;
+  color: $lv-ink;
+}
+
 .lv-card__kpi {
   display: flex;
   gap: .5rem;

@@ -8,6 +8,8 @@ class ApplicationController < ActionController::Base
   before_action :set_user_unread_conversations_count, if: :user_signed_in?
 
   rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
+  rescue_from ActionController::InvalidAuthenticityToken, with: :handle_invalid_authenticity_token
+  rescue_from ActionController::InvalidCrossOriginRequest, with: :handle_invalid_authenticity_token
 
   # With two Devise scopes (Owner + User), Pundit needs a single actor.
   def pundit_user
@@ -89,5 +91,12 @@ class ApplicationController < ActionController::Base
   def user_not_authorized
     flash[:alert] = t("shared.authorization.not_authorized")
     redirect_back(fallback_location: root_path)
+  end
+
+  def handle_invalid_authenticity_token
+    reset_session
+
+    return_to = request.get? ? request.fullpath : request.referer
+    redirect_to login_path(return_to: return_to), alert: t("sessions.flash.session_expired", default: "Session expirée, merci de vous reconnecter.")
   end
 end

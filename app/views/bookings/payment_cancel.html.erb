@@ -1,0 +1,33 @@
+<div class="container py-4">
+  <%= render "shared/ui/page_header",
+    title: "Paiement annulé",
+    subtitle: "Réservation ##{@booking.id}" %>
+
+  <div class="row g-4 mt-1">
+    <div class="col-12 col-lg-6">
+      <div class="card lv-card lv-card--soft">
+        <div class="card-body">
+          <div class="text-uppercase lv-muted small">Paiement</div>
+          <div class="h5 mb-1">Le paiement n’a pas été finalisé.</div>
+          <div class="lv-meta">Vous pouvez réessayer quand vous le souhaitez tant que la fenêtre de paiement est ouverte.</div>
+
+          <div class="mt-3 d-flex gap-2 flex-wrap">
+            <%= link_to "Retour à la réservation", booking_path(@booking), class: "btn btn-outline-primary" %>
+
+            <% if policy(@booking).pay? %>
+              <%= button_to "Réessayer le paiement",
+                    checkout_booking_path(id: @booking),
+                    method: :post,
+                    data: { turbo: false },
+                    class: "btn btn-accent" %>
+            <% end %>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-12 col-lg-6">
+      <%= render "shared/ui/booking_summary_card", booking: @booking, actions: nil, show_user: false %>
+    </div>
+  </div>
+</div>

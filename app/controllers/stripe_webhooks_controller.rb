@@ -13,10 +13,16 @@ class StripeWebhooksController < ApplicationController
     payload = request.raw_post
     sig_header = request.env["HTTP_STRIPE_SIGNATURE"]
 
+    webhook_secret = ENV["STRIPE_WEBHOOK_SECRET"].presence
+    if webhook_secret.blank?
+      Rails.logger.warn("[Stripe] Missing STRIPE_WEBHOOK_SECRET; cannot verify webhook signature")
+      return head :bad_request
+    end
+
     event = Stripe::Webhook.construct_event(
       payload,
       sig_header,
-      ENV.fetch("STRIPE_WEBHOOK_SECRET")
+      webhook_secret
     )
 
     handle_event(event)

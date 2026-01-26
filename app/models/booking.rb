@@ -44,7 +44,7 @@ class Booking < ApplicationRecord
   validates :stripe_payment_intent_id, uniqueness: true, allow_nil: true
   validates :stripe_refund_id, uniqueness: true, allow_nil: true
 
-  validate :validate_selected_optional_services
+  validate :validate_selected_optional_services, if: :validate_selected_optional_services?
 
   validate :end_date_after_start_date
   validate :within_opening_period_and_available, on: :create
@@ -151,7 +151,13 @@ class Booking < ApplicationRecord
   def self.expire_overdue!
     where(status: "approved_pending_payment")
       .where("payment_expires_at IS NOT NULL AND payment_expires_at < ?", Time.current)
-      .find_each(&:expire_if_needed!)
+      .find_each do |booking|
+        begin
+          booking.expire_if_needed!
+        rescue ActiveRecord::RecordInvalid => e
+          Rails.logger.error("Booking##{booking.id} expire failed: #{e.message}")
+        end
+      end
   end
 
   private
@@ -249,5 +255,9 @@ class Booking < ApplicationRecord
         errors.add(:selected_optional_services, "devise invalide")
       end
     end
+  end
+
+  def validate_selected_optional_services?
+    new_record? || will_save_change_to_selected_optional_services? || will_save_change_to_room_id?
   end
 end
