@@ -129,6 +129,15 @@ fr:
       invalid_credentials: "Email ou mot de passe invalide"
       logged_out: "Déconnecté"
 
+  unified_sessions:
+    new:
+      title: "Se connecter"
+      submit: "Se connecter"
+      sign_up: "S'inscrire"
+      forgot_password: "Mot de passe oublié ?"
+      password_label: "Mot de passe"
+      email_unknown: "E-mail inconnu"
+
   reviews:
     flash:
       already_left: "Vous avez déjà laissé un avis pour cette réservation."
