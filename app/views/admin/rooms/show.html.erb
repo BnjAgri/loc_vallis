@@ -62,7 +62,7 @@
           <% @opening_periods.each do |period| %>
             <div class="list-group-item d-flex justify-content-between align-items-center">
               <div>
-                <div class="fw-bold"><%= period.start_date %> → <%= period.end_date %></div>
+                <div class="fw-bold"><%= l(period.start_date, format: :short) %> → <%= l(period.end_date, format: :short) %></div>
                 <small class="text-muted">
                   <%= format_price_euros(period.nightly_price_cents) %> <%= t('admin.rooms.show.per_night') %>
                 </small>
@@ -73,7 +73,14 @@
                 <%= button_to t('admin.rooms.show.remove_period'),
                       admin_room_opening_period_path(room_id: @room, id: period),
                       method: :delete,
-                      data: { turbo_confirm: t('admin.rooms.show.remove_period_confirm') },
+                      form: {
+                        data: {
+                          controller: "confirm-delete",
+                          action: "submit->confirm-delete#confirm",
+                          "confirm-delete-message-value": t('admin.rooms.show.remove_period_confirm'),
+                          "confirm-delete-confirm-text-value": t('admin.rooms.show.remove_period')
+                        }
+                      },
                       class: "btn btn-sm btn-outline-danger" %>
               </div>
             </div>
@@ -84,14 +91,14 @@
       <hr class="my-4" />
 
       <h3 class="h6"><%= t('admin.rooms.show.add_period_title') %></h3>
-      <%= simple_form_for([:admin, @room, @opening_period]) do |f| %>
+      <%= simple_form_for([:admin, @room, @opening_period], html: { data: { controller: "required-fields" } }) do |f| %>
         <div class="row">
-          <div class="col-md-3"><%= f.input :start_date, as: :string, label: t('admin.rooms.show.start_date'), input_html: { type: "text", data: { controller: "flatpickr", "flatpickr-open-ranges-value": open_ranges.to_json } } %></div>
-          <div class="col-md-3"><%= f.input :end_date, as: :string, label: t('admin.rooms.show.end_date'), input_html: { type: "text", data: { controller: "flatpickr", "flatpickr-open-ranges-value": open_ranges.to_json } } %></div>
-          <div class="col-md-3"><%= f.input :nightly_price_euros, label: t('admin.rooms.show.nightly_price'), input_html: { inputmode: "decimal", step: "0.01", min: 0 } %></div>
-          <div class="col-md-3"><%= f.input :currency, label: t('admin.rooms.show.currency') %></div>
+          <div class="col-md-3"><%= f.input :start_date, as: :string, label: t('admin.rooms.show.start_date'), input_html: { type: "text", data: { controller: "flatpickr", "flatpickr-open-ranges-value": open_ranges.to_json, action: "input->required-fields#update change->required-fields#update", "required-fields-target": "required" } } %></div>
+          <div class="col-md-3"><%= f.input :end_date, as: :string, label: t('admin.rooms.show.end_date'), input_html: { type: "text", data: { controller: "flatpickr", "flatpickr-open-ranges-value": open_ranges.to_json, action: "input->required-fields#update change->required-fields#update", "required-fields-target": "required" } } %></div>
+          <div class="col-md-3"><%= f.input :nightly_price_euros, label: t('admin.rooms.show.nightly_price'), input_html: { inputmode: "decimal", step: "0.01", min: 0, data: { action: "input->required-fields#update change->required-fields#update", "required-fields-target": "required" } } %></div>
+          <div class="col-md-3"><%= f.input :currency, label: t('admin.rooms.show.currency'), input_html: { data: { action: "change->required-fields#update", "required-fields-target": "required" } } %></div>
         </div>
-        <%= f.submit t('admin.rooms.show.add_button'), class: "btn btn-primary" %>
+        <%= f.submit t('admin.rooms.show.add_button'), class: "btn btn-primary", disabled: true, data: { "required-fields-target": "submit" } %>
       <% end %>
     </div>
   </div>
