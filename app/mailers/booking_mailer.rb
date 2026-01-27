@@ -43,6 +43,13 @@ class BookingMailer < ApplicationMailer
     mail(to: recipient_emails_for_booking, subject: "Booking refunded")
   end
 
+  def review_request
+    @booking = params.fetch(:booking)
+    @booking_url = booking_url_for(@booking)
+
+    mail(to: @booking.user.email, subject: "How was your stay?")
+  end
+
   private
 
   def recipient_emails_for_booking
