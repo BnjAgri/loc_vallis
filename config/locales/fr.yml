@@ -159,6 +159,19 @@ fr:
         minimum_password_length: "%{count} caractères minimum"
         sign_up_button: "S'inscrire"
 
+    passwords:
+      new:
+        title: "Mot de passe oublié ?"
+        instructions: "Indiquez votre e-mail et nous vous enverrons les instructions pour réinitialiser votre mot de passe."
+        email_label: "E-mail"
+        submit: "Réinitialiser"
+      edit:
+        title: "Changer votre mot de passe"
+        password_label: "Nouveau mot de passe"
+        password_confirmation_label: "Confirmer le nouveau mot de passe"
+        minimum_password_length: "%{count} caractères minimum"
+        submit: "Changer mon mot de passe"
+
   admin:
     shared:
       flash:

@@ -160,6 +160,43 @@ en:
       invalid_credentials: "Invalid email or password"
       logged_out: "Logged out"
 
+  unified_sessions:
+    new:
+      title: "Log in"
+      submit: "Log in"
+      sign_up: "Sign up"
+      forgot_password: "Forgot your password?"
+      password_label: "Password"
+      email_unknown: "Unknown email"
+
+  devise:
+    registrations:
+      new:
+        sign_up: "Sign up"
+        first_name: "First name"
+        last_name: "Last name"
+        email: "Email"
+        postal_address: "Postal address"
+        phone: "Phone"
+        guesthouse_name: "Guesthouse name"
+        password: "Password"
+        password_confirmation: "Confirm password"
+        minimum_password_length: "%{count} characters minimum"
+        sign_up_button: "Create account"
+
+    passwords:
+      new:
+        title: "Forgot your password?"
+        instructions: "Enter your email and we’ll send you instructions to reset your password."
+        email_label: "Email"
+        submit: "Reset password"
+      edit:
+        title: "Change your password"
+        password_label: "New password"
+        password_confirmation_label: "Confirm new password"
+        minimum_password_length: "%{count} characters minimum"
+        submit: "Change my password"
+
   reviews:
     flash:
       already_left: "You already left a review for this booking."
