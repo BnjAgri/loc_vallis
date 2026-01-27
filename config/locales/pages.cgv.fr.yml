@@ -1,0 +1,43 @@
+fr:
+  shared:
+    footer:
+      cgv: "CGV"
+
+  pages:
+    cgv:
+      title: "Conditions générales de vente"
+      updated_at: "Dernière mise à jour : %{date}"
+      back: "Retour"
+
+      parties:
+        title: "1. Qui vend ?"
+        body: "Ces conditions générales de vente (CGV) s'appliquent aux réservations effectuées via ce site. Le vendeur est %{publisher_name}. Contact : %{publisher_email}."
+
+      booking_process:
+        title: "2. Réservation"
+        body: "Vous envoyez une demande de réservation avec vos dates. La réservation n'est définitive qu'après acceptation par l'hôte et, le cas échéant, paiement en ligne."
+
+      prices:
+        title: "3. Prix"
+        body: "Les prix sont indiqués en euros (TTC) et correspondent au tarif par nuit, ainsi qu'aux éventuels services complémentaires sélectionnés."
+
+      payment:
+        title: "4. Paiement"
+        body: "Le paiement (lorsqu'il est requis) est réalisé en ligne via un prestataire de paiement. La confirmation de paiement vaut preuve de la transaction."
+
+      cancellation:
+        title: "5. Annulation"
+        policy: "Toute annulation moins de 7 jours avant le début du séjour donne lieu à une retenue de 30% du total de la réservation."
+        optional_services_note: "Les services complémentaires (options) ne sont pas inclus dans le calcul de cette retenue."
+
+      no_withdrawal:
+        title: "6. Remboursement"
+        body: "Toute annulation plus de 7 jours avant le début du séjour donne lieu au remboursement intégral du client. Conformément à l'article L221-28 du Code de la consommation, les prestations d'hébergement fournies à une date déterminée ne sont pas soumises au droit de rétractation."
+
+      liability:
+        title: "7. Responsabilité"
+        body: "Le vendeur ne saurait être tenu responsable des dommages indirects. En cas de force majeure, l'exécution des obligations pourra être suspendue."
+
+      law:
+        title: "8. Droit applicable"
+        body: "Les présentes CGV sont soumises au droit français. En cas de litige, les parties rechercheront une solution amiable avant toute action judiciaire."

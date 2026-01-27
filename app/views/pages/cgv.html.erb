@@ -1,0 +1,38 @@
+<div class="container py-4">
+  <%= render "shared/ui/page_header", title: t("pages.cgv.title") %>
+
+  <div class="card lv-card">
+    <div class="card-body prose">
+      <p class="text-muted"><%= t("pages.cgv.updated_at", date: l(Date.current, format: :short)) %></p>
+
+      <h2><%= t("pages.cgv.parties.title") %></h2>
+      <p><%= t("pages.cgv.parties.body", publisher_name: @publisher_name, publisher_email: @publisher_email) %></p>
+
+      <h2><%= t("pages.cgv.booking_process.title") %></h2>
+      <p><%= t("pages.cgv.booking_process.body") %></p>
+
+      <h2><%= t("pages.cgv.prices.title") %></h2>
+      <p><%= t("pages.cgv.prices.body") %></p>
+
+      <h2><%= t("pages.cgv.payment.title") %></h2>
+      <p><%= t("pages.cgv.payment.body") %></p>
+
+      <h2><%= t("pages.cgv.cancellation.title") %></h2>
+      <p><%= t("pages.cgv.cancellation.policy") %></p>
+      <p><%= t("pages.cgv.cancellation.optional_services_note") %></p>
+
+      <h2><%= t("pages.cgv.no_withdrawal.title") %></h2>
+      <p><%= t("pages.cgv.no_withdrawal.body") %></p>
+
+      <h2><%= t("pages.cgv.liability.title") %></h2>
+      <p><%= t("pages.cgv.liability.body") %></p>
+
+      <h2><%= t("pages.cgv.law.title") %></h2>
+      <p><%= t("pages.cgv.law.body") %></p>
+    </div>
+  </div>
+
+  <div class="mt-3">
+    <%= link_to t("pages.cgv.back"), (@back_url || root_path), class: "btn btn-soft" %>
+  </div>
+</div>

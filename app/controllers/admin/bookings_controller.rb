@@ -42,6 +42,8 @@ module Admin
       @booking.approve!(by: current_owner)
       BookingMailer.with(booking: @booking).approved.deliver_later
       redirect_to admin_booking_path(id: @booking), notice: t("admin.bookings.flash.approved")
+    rescue ActiveRecord::RecordInvalid => e
+      redirect_to admin_booking_path(id: @booking), alert: e.record.errors.full_messages.to_sentence
     end
 
     def decline

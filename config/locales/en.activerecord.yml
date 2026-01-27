@@ -1,0 +1,8 @@
+en:
+  activerecord:
+    errors:
+      models:
+        booking:
+          attributes:
+            accepts_terms:
+              accepted: "You must accept the terms and conditions"

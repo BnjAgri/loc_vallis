@@ -4,7 +4,7 @@
   <div class="row justify-content-center">
     <div class="col-12 col-md-8 col-lg-6">
       <div class="card-trip p-4" style="background-color: white;">
-        <%= form_with model: [@room, @booking] do |f| %>
+        <%= form_with model: [@room, @booking], data: { controller: "required-fields" } do |f| %>
           <% if @booking.errors.any? %>
             <div class="alert alert-danger">
               <ul>
@@ -48,7 +48,25 @@
             </div>
           <% end %>
 
-          <%= f.submit t(".submit"), class: "btn btn-primary" %>
+          <div class="mb-3 lv-terms-check">
+            <div class="form-check">
+              <%= f.check_box :accepts_terms,
+                class: "form-check-input",
+                data: { action: "change->required-fields#update", "required-fields-target": "required" } %>
+              <%= f.label :accepts_terms, class: "form-check-label" do %>
+                <%= sanitize(
+                  t(
+                    ".accept_terms_html",
+                    cgv_link: link_to(t(".cgv_link_text"), cgv_path(return_to: request.fullpath), target: "_blank", rel: "noopener")
+                  ),
+                  tags: %w[a],
+                  attributes: %w[href target rel]
+                ) %>
+              <% end %>
+            </div>
+          </div>
+
+          <%= f.submit t(".submit"), class: "btn btn-primary", disabled: true, data: { "required-fields-target": "submit" } %>
         <% end %>
       </div>
     </div>

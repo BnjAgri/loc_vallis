@@ -79,7 +79,7 @@ class BookingsController < ApplicationController
 
     authorize @booking
 
-    if @booking.save
+    if @booking.save(context: :user_request)
       BookingMailer.with(booking: @booking).requested.deliver_later
       redirect_to @booking, notice: t("bookings.flash.request_sent")
     else
@@ -102,7 +102,7 @@ class BookingsController < ApplicationController
   private
 
   def booking_params
-    params.require(:booking).permit(:start_date, :end_date)
+    params.require(:booking).permit(:start_date, :end_date, :accepts_terms)
   end
 
   def selected_optional_services_from_params(room)

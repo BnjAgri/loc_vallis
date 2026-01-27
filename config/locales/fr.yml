@@ -39,6 +39,7 @@ fr:
 
     footer:
       legal: "Mentions légales"
+      cgv: "CGV"
 
   pages:
     legal:
@@ -309,6 +310,8 @@ fr:
       start_date: "Date de début"
       end_date: "Date de fin"
       submit: "Envoyer la demande"
+      cgv_link_text: "CGV"
+      accept_terms_html: "J'ai lu et j'accepte les %{cgv_link}. Toute annulation de la réservation moins de 7 jours avant le début du séjour donnera lieu à une retenue de 30% du total (hors services complémentaires)."
       optional_services:
         title: "Services optionnels"
         hint: "Ces options s'ajoutent au total de la réservation."

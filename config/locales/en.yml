@@ -69,6 +69,7 @@ en:
 
     footer:
       legal: "Legal notice"
+      cgv: "Terms"
 
   pages:
     legal:
@@ -266,6 +267,8 @@ en:
       start_date: "Start date"
       end_date: "End date"
       submit: "Send request"
+      cgv_link_text: "terms"
+      accept_terms_html: "I have read and accept the %{cgv_link}. Any cancellation less than 7 days before the start date will result in a 30% retention of the total (excluding optional services)."
       optional_services:
         title: "Optional services"
         hint: "These options are added to the booking total."
