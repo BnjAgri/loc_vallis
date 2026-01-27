@@ -3,6 +3,18 @@ class UnifiedSessionsController < ApplicationController
     session[:return_to] = safe_return_to(params[:return_to]) || safe_return_to_from_referer || session[:return_to]
   end
 
+  def email_exists
+    email = params[:email].to_s.strip
+
+    exists = false
+    if email.present?
+      exists = Owner.find_for_database_authentication(email: email).present? ||
+        User.find_for_database_authentication(email: email).present?
+    end
+
+    render json: { exists: exists }
+  end
+
   def create
     email = params.dig(:session, :email).to_s.strip
     password = params.dig(:session, :password).to_s

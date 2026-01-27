@@ -12,11 +12,13 @@ Rails.application.routes.draw do
 
     get "login", to: "unified_sessions#new"
     post "login", to: "unified_sessions#create"
+    get "login/email_exists", to: "unified_sessions#email_exists"
     delete "logout", to: "unified_sessions#destroy"
 
     root to: "rooms#index"
 
     get "legal", to: "pages#legal"
+    get "cgv", to: "pages#cgv"
 
     resource :profile, only: %i[edit update destroy]
 

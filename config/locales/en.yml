@@ -48,6 +48,7 @@ en:
       blog: "Anglès & surroundings"
       my_bookings: "My bookings"
       profile: "My profile"
+      password_label: "Password"
       account: "Account"
       edit_profile: "Edit my profile"
       inbox: "Inbox"
@@ -68,6 +69,7 @@ en:
 
     footer:
       legal: "Legal notice"
+      cgv: "Terms"
 
   pages:
     legal:
@@ -212,6 +214,12 @@ en:
       welcome_html: "Welcome to <strong>%{owner}</strong> in <strong>%{location}</strong>!"
       subtitle: "Guesthouse and B&B on the Camino de Santiago route"
       accommodations: "Our accommodations"
+      pwa_install:
+        title: "Install the app"
+        body: "Add Loc Vallis to your home screen for faster access."
+        install: "Install"
+        dismiss: "Not now"
+        ios_instructions: "On iPhone/iPad: tap Share then “Add to Home Screen”"
       guesthouse_intro:
         title: "A haven of peace in the heart of Tarn"
         text: "Nestled in the timeless charm of the village of Anglès, our small guesthouse and two B&B rooms welcome you to a place where calm and nature reign. Here, time seems to slow down. Between deep forests, peaceful lakes, and authentic streets, you’ll enjoy a restorative stay—ideal for reconnecting with what matters. Whether you’re coming for a gentle break, a romantic getaway, or a nature-filled escape, Anglès offers the tranquility you’ve been dreaming of."
@@ -225,6 +233,7 @@ en:
       address_label: "Address:"
       contact_title: "Contact"
       mapbox_access_token_missing: "MAPBOX_ACCESS_TOKEN is missing"
+      alt_to_move_hint: "Hold Alt to move the map"
       guesthouse_name_label: "Guesthouse name"
       owner_label: "Host"
       postal_address_label: "Postal address"
@@ -258,6 +267,8 @@ en:
       start_date: "Start date"
       end_date: "End date"
       submit: "Send request"
+      cgv_link_text: "terms"
+      accept_terms_html: "I have read and accept the %{cgv_link}. Any cancellation less than 7 days before the start date will result in a 30% retention of the total (excluding optional services)."
       optional_services:
         title: "Optional services"
         hint: "These options are added to the booking total."

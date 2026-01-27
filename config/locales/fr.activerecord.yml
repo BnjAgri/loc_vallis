@@ -3,3 +3,8 @@ fr:
     errors:
       messages:
         record_invalid: "Validation échouée : %{errors}"
+      models:
+        booking:
+          attributes:
+            accepts_terms:
+              accepted: "Vous devez accepter les conditions générales de vente"

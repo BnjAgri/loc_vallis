@@ -39,6 +39,7 @@ fr:
 
     footer:
       legal: "Mentions légales"
+      cgv: "CGV"
 
   pages:
     legal:
@@ -128,6 +129,15 @@ fr:
       missing_credentials: "Email et mot de passe requis"
       invalid_credentials: "Email ou mot de passe invalide"
       logged_out: "Déconnecté"
+
+  unified_sessions:
+    new:
+      title: "Se connecter"
+      submit: "Se connecter"
+      sign_up: "S'inscrire"
+      forgot_password: "Mot de passe oublié ?"
+      password_label: "Mot de passe"
+      email_unknown: "E-mail inconnu"
 
   reviews:
     flash:
@@ -247,6 +257,12 @@ fr:
       welcome_html: "Bienvenue chez <strong>%{owner}</strong> à <strong>%{location}</strong>!"
       subtitle: "Maison et chambres d'hôtes sur la route de Saint Jacques de Compostelle"
       accommodations: "Nos hébergements"
+      pwa_install:
+        title: "Installer l'application"
+        body: "Ajoutez Loc Vallis à votre écran d'accueil pour un accès plus rapide."
+        install: "Installer"
+        dismiss: "Plus tard"
+        ios_instructions: "Sur iPhone/iPad : appuyez sur Partager puis « Sur l'écran d'accueil »"
       guesthouse_intro:
         title: "Un havre de paix au cœur du Tarn"
         text: "Niché dans le charme intemporel du village d’Anglès, notre petit gîte et nos deux chambres d’hôtes vous accueillent dans un cadre où le calme et la nature règnent en maîtres. Ici, le temps semble ralentir. Entre forêts profondes, lacs paisibles et ruelles authentiques, vous profitez d’un séjour ressourçant, idéal pour se reconnecter à l’essentiel. Que vous veniez pour une pause en douceur, une escapade romantique ou une parenthèse en pleine nature, Anglès vous offre la tranquillité dont vous rêvez."
@@ -260,6 +276,7 @@ fr:
       address_label: "Adresse :"
       contact_title: "Coordonnées"
       mapbox_access_token_missing: "MAPBOX_ACCESS_TOKEN manquant"
+      alt_to_move_hint: "Maintenez Alt pour vous déplacer"
       guesthouse_name_label: "Nom du gîte"
       owner_label: "Propriétaire"
       postal_address_label: "Adresse postale"
@@ -293,6 +310,8 @@ fr:
       start_date: "Date de début"
       end_date: "Date de fin"
       submit: "Envoyer la demande"
+      cgv_link_text: "CGV"
+      accept_terms_html: "J'ai lu et j'accepte les %{cgv_link}. Toute annulation de la réservation moins de 7 jours avant le début du séjour donnera lieu à une retenue de 30% du total (hors services complémentaires)."
       optional_services:
         title: "Services optionnels"
         hint: "Ces options s'ajoutent au total de la réservation."

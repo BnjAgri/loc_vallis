@@ -1,18 +1,29 @@
 <div data-controller="login-modal">
   <div class="container py-4" data-login-modal-target="content">
-    <h1>Login</h1>
+    <h1><%= t(".title") %></h1>
 
-    <%= simple_form_for :session, url: login_path do |f| %>
-      <%= f.input :email, autofocus: true, autocomplete: "email" %>
-      <%= f.input :password, as: :password, autocomplete: "current-password" %>
+    <%= simple_form_for :session, url: login_path,
+          html: {
+            data: {
+              controller: "login-form",
+              action: "input->login-form#onInput submit->login-form#onSubmit",
+              "login-form-email-check-url-value": login_email_exists_path
+            }
+          } do |f| %>
+      <%= f.input :email, autofocus: true, autocomplete: "email", input_html: { data: { "login-form-target": "email" } } %>
+      <%= f.input :password, as: :password, autocomplete: "current-password", label: t(".password_label"), input_html: { data: { "login-form-target": "password" } } %>
+
+      <div class="small text-danger d-none" data-login-form-target="emailUnknown">
+        <%= t(".email_unknown") %>
+      </div>
 
       <div class="d-flex gap-2 align-items-center">
-        <%= f.button :submit, "Login", class: "btn btn-primary" %>
-        <%= link_to "S'inscrire", new_user_registration_path, class: "btn btn-outline-primary" %>
+        <%= f.button :submit, t(".submit"), class: "btn btn-primary", disabled: true, data: { "login-form-target": "submit" } %>
+        <%= link_to t(".sign_up"), new_user_registration_path, class: "btn btn-outline-primary" %>
       </div>
 
       <div class="mt-2">
-        <%= link_to "Mot de passe oublié ?", new_user_password_path, class: "small text-muted" %>
+        <%= link_to t(".forgot_password"), new_user_password_path, class: "small text-muted" %>
       </div>
     <% end %>
   </div>

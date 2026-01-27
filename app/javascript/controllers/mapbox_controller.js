@@ -33,6 +33,11 @@ export default class extends Controller {
       attributionControl: true
     })
 
+    this.map.addControl(
+      new mapboxgl.NavigationControl({ showCompass: false, showZoom: true }),
+      "top-right"
+    )
+
     this.marker = new mapboxgl.Marker().setLngLat([this.lngValue, this.latValue]).addTo(this.map)
 
     if (this.animateZoomValue) {

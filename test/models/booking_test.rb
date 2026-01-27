@@ -60,4 +60,25 @@ class BookingTest < ActiveSupport::TestCase
     assert_not overlapping.valid?
     assert_includes overlapping.errors.full_messages.join(" "), "overlap"
   end
+
+  test "missing persisted pricing is backfilled on update" do
+    booking = Booking.create!(
+      room: @room,
+      user: @user,
+      start_date: Date.new(2026, 1, 10),
+      end_date: Date.new(2026, 1, 13)
+    )
+
+    booking.update_columns(total_price_cents: nil, currency: nil)
+    booking.reload
+
+    assert_nil booking.total_price_cents
+    assert_nil booking.currency
+
+    booking.update!(status: "requested")
+    booking.reload
+
+    assert_equal 30_000, booking.total_price_cents
+    assert_equal "EUR", booking.currency
+  end
 end

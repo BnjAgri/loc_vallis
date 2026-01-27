@@ -48,10 +48,12 @@
                           input_html: { autocomplete: "tel" } %>
 
               <%= f.input :password,
+                          label: t('devise.registrations.new.password'),
                           required: true,
                           hint: (@minimum_password_length ? t('devise.registrations.new.minimum_password_length', count: @minimum_password_length) : nil),
                           input_html: { autocomplete: "new-password" } %>
               <%= f.input :password_confirmation,
+                          label: t('devise.registrations.new.password_confirmation'),
                           required: true,
                           input_html: { autocomplete: "new-password" } %>
             </div>

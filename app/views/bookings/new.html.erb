@@ -1,10 +1,12 @@
 <h1><%= t(".title", room: @room.name) %></h1>
 
+<% prechecked_optional_service_names = Array(params.dig(:booking, :optional_service_names)).map(&:to_s) %>
+
 <div class="container mt-4">
   <div class="row justify-content-center">
     <div class="col-12 col-md-8 col-lg-6">
       <div class="card-trip p-4" style="background-color: white;">
-        <%= form_with model: [@room, @booking] do |f| %>
+        <%= form_with model: [@room, @booking], data: { controller: "required-fields booking-form-persist", booking_form_persist_key_value: "room-#{@room.id}" } do |f| %>
           <% if @booking.errors.any? %>
             <div class="alert alert-danger">
               <ul>
@@ -35,9 +37,11 @@
                   <% price_cents = service["price_cents"] || service[:price_cents] %>
                   <% next if name.blank? || price_cents.blank? %>
 
+                  <% checked = prechecked_optional_service_names.include?(name) %>
+
                   <div class="form-check d-flex justify-content-between align-items-center">
                     <div>
-                      <%= check_box_tag "booking[optional_service_names][]", name, false, id: "booking_optional_service_#{name.parameterize}", class: "form-check-input" %>
+                      <%= check_box_tag "booking[optional_service_names][]", name, checked, id: "booking_optional_service_#{name.parameterize}", class: "form-check-input" %>
                       <%= label_tag "booking_optional_service_#{name.parameterize}", name, class: "form-check-label" %>
                     </div>
                     <div class="text-muted"><%= format_price_euros(price_cents) %></div>
@@ -48,7 +52,25 @@
             </div>
           <% end %>
 
-          <%= f.submit t(".submit"), class: "btn btn-primary" %>
+          <div class="mb-3 lv-terms-check">
+            <div class="form-check">
+              <%= f.check_box :accepts_terms,
+                class: "form-check-input",
+                data: { action: "change->required-fields#update", "required-fields-target": "required" } %>
+              <%= f.label :accepts_terms, class: "form-check-label" do %>
+                <%= sanitize(
+                  t(
+                    ".accept_terms_html",
+                    cgv_link: link_to(t(".cgv_link_text"), cgv_path(return_to: request.fullpath), target: "_blank", rel: "noopener")
+                  ),
+                  tags: %w[a],
+                  attributes: %w[href target rel]
+                ) %>
+              <% end %>
+            </div>
+          </div>
+
+          <%= f.submit t(".submit"), class: "btn btn-primary", disabled: true, data: { "required-fields-target": "submit" } %>
         <% end %>
       </div>
     </div>

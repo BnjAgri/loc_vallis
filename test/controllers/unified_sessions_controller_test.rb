@@ -23,4 +23,16 @@ class UnifiedSessionsControllerTest < ActionDispatch::IntegrationTest
     post login_path, params: { session: { email: user.email, password: "password" } }
     assert_redirected_to inbox_path
   end
+
+  test "email_exists returns whether email is in database" do
+    User.create!(email: "existing@test.local", password: "password")
+
+    get login_email_exists_path, params: { email: "existing@test.local" }
+    assert_response :success
+    assert_equal true, JSON.parse(response.body).fetch("exists")
+
+    get login_email_exists_path, params: { email: "missing@test.local" }
+    assert_response :success
+    assert_equal false, JSON.parse(response.body).fetch("exists")
+  end
 end

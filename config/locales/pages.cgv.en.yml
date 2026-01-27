@@ -1,0 +1,43 @@
+en:
+  shared:
+    footer:
+      cgv: "Terms"
+
+  pages:
+    cgv:
+      title: "Terms and conditions"
+      updated_at: "Last updated: %{date}"
+      back: "Back"
+
+      parties:
+        title: "1. Seller"
+        body: "These terms apply to bookings made on this website. The seller is %{publisher_name}. Contact: %{publisher_email}."
+
+      booking_process:
+        title: "2. Booking"
+        body: "You submit a booking request with your dates. The booking is only confirmed after host approval and, when required, online payment."
+
+      prices:
+        title: "3. Prices"
+        body: "Prices are shown in euros (incl. taxes) and include the nightly rate and any selected optional services."
+
+      payment:
+        title: "4. Payment"
+        body: "Payment (when required) is processed online through a payment provider. Payment confirmation is evidence of the transaction."
+
+      cancellation:
+        title: "5. Cancellation"
+        policy: "Any cancellation less than 7 days before the start date results in a 30% retention of the booking total."
+        optional_services_note: "Optional services are excluded from this retention calculation."
+
+      no_withdrawal:
+        title: "6. Refund"
+        body: "Any cancellation more than 7 days before the start date results in a full refund to the customer. Under French consumer law (Article L221-28), accommodation services provided on a specific date are not subject to a withdrawal right."
+
+      liability:
+        title: "7. Liability"
+        body: "The seller is not liable for indirect damages. In case of force majeure, obligations may be suspended."
+
+      law:
+        title: "8. Governing law"
+        body: "These terms are governed by French law. In the event of a dispute, the parties will seek an amicable solution before any court action."

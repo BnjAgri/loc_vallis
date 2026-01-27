@@ -19,6 +19,8 @@ class Booking < ApplicationRecord
   belongs_to :room
   belongs_to :user
 
+  attr_accessor :accepts_terms
+
   has_one :review, dependent: :destroy
 
   has_many :messages, dependent: :destroy
@@ -48,9 +50,12 @@ class Booking < ApplicationRecord
 
   validate :end_date_after_start_date
   validate :within_opening_period_and_available, on: :create
+  validate :no_overlap_with_other_reserved_bookings, if: :reserved_status?
+
+  validates :accepts_terms, acceptance: { accept: ["1", true] }, on: :user_request
 
   before_validation :default_status, on: :create
-  before_validation :populate_pricing_from_quote, on: :create
+  before_validation :populate_pricing_from_quote, if: -> { total_price_cents.blank? || currency.blank? }
 
   def nights
     return 0 if start_date.blank? || end_date.blank?
@@ -99,6 +104,10 @@ class Booking < ApplicationRecord
 
   def confirmed_paid?
     status == "confirmed_paid"
+  end
+
+  def reserved_status?
+    RESERVED_STATUSES.include?(status)
   end
 
   def refunded?
@@ -189,6 +198,19 @@ class Booking < ApplicationRecord
     return if result.nil?
 
     errors.add(:base, result.error) unless result.ok?
+  end
+
+  def no_overlap_with_other_reserved_bookings
+    return if room_id.blank? || start_date.blank? || end_date.blank?
+
+    overlap_exists = Booking
+      .where(room_id: room_id)
+      .where(status: RESERVED_STATUSES)
+      .where.not(id: id)
+      .where("start_date < ? AND end_date > ?", end_date, start_date)
+      .exists?
+
+    errors.add(:base, "Dates overlap an existing booking") if overlap_exists
   end
 
   def populate_pricing_from_quote
