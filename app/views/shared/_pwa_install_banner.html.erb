@@ -1,0 +1,32 @@
+<div
+  data-controller="pwa-install"
+  data-pwa-install-dismiss-for-days-value="14"
+>
+  <div class="lv-pwa-install" data-pwa-install-target="banner" role="dialog" aria-live="polite">
+    <div class="lv-pwa-install__content">
+      <div class="lv-pwa-install__text">
+        <div class="lv-pwa-install__title"><%= t("rooms.index.pwa_install.title") %></div>
+        <div class="lv-pwa-install__body"><%= t("rooms.index.pwa_install.body") %></div>
+        <div class="lv-pwa-install__ios" data-pwa-install-target="iosInstructions" hidden>
+          <%= t("rooms.index.pwa_install.ios_instructions") %>
+        </div>
+      </div>
+
+      <div class="lv-pwa-install__actions">
+        <button
+          type="button"
+          class="btn btn-primary btn-sm"
+          data-action="pwa-install#install"
+          data-pwa-install-target="installButton"
+          hidden
+        ><%= t("rooms.index.pwa_install.install") %></button>
+
+        <button
+          type="button"
+          class="btn btn-outline-secondary btn-sm"
+          data-action="pwa-install#dismiss"
+        ><%= t("rooms.index.pwa_install.dismiss") %></button>
+      </div>
+    </div>
+  </div>
+</div>

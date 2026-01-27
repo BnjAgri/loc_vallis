@@ -21,6 +21,10 @@
   <body class="lv-app">
     <%= render "shared/navbar" %>
     <%= render "shared/flashes" %>
+
+    <% if controller_name == "rooms" && action_name == "index" %>
+      <%= render "shared/pwa_install_banner" %>
+    <% end %>
     <div class="container pb-5">
       <%= yield %>
     </div>

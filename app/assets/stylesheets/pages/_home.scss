@@ -1,1 +1,76 @@
 // Specific CSS for your home-page
+
+.lv-pwa-install {
+	/* Sticky right under the (sticky) navbar */
+	position: sticky;
+	top: var(--lv-navbar-offset, 0px);
+	z-index: 1010;
+	padding: 0.5rem 0.75rem;
+
+	/* Slide-in from the right */
+	transform: translateX(110%);
+	opacity: 0;
+	visibility: hidden;
+	pointer-events: none;
+	transition: transform 260ms ease, opacity 260ms ease, visibility 0s linear 260ms;
+}
+
+.lv-pwa-install.is-visible {
+	transform: translateX(0);
+	opacity: 1;
+	visibility: visible;
+	pointer-events: auto;
+	transition: transform 260ms ease, opacity 260ms ease;
+}
+
+.lv-pwa-install__content {
+	max-width: 1100px;
+	margin: 0 auto;
+	background: #ffffff;
+	border: 1px solid rgba(0, 0, 0, 0.08);
+	border-radius: 14px;
+	box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12);
+	padding: 0.85rem 0.9rem;
+	display: flex;
+	gap: 0.75rem;
+	align-items: center;
+	justify-content: space-between;
+}
+
+.lv-pwa-install__text {
+	min-width: 0;
+}
+
+.lv-pwa-install__title {
+	font-weight: 700;
+	font-size: 0.95rem;
+	line-height: 1.1;
+}
+
+.lv-pwa-install__body {
+	color: rgba(0, 0, 0, 0.7);
+	font-size: 0.9rem;
+}
+
+.lv-pwa-install__ios {
+	margin-top: 0.25rem;
+	color: rgba(0, 0, 0, 0.7);
+	font-size: 0.85rem;
+}
+
+.lv-pwa-install__actions {
+	display: flex;
+	align-items: center;
+	gap: 0.5rem;
+	flex: 0 0 auto;
+}
+
+@media (min-width: 768px) {
+	.lv-pwa-install {
+		display: none !important;
+	}
+}
+
+@media (min-width: 992px) {
+	.lv-pwa-install { padding: 0.75rem; }
+}
