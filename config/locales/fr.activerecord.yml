@@ -8,3 +8,7 @@ fr:
           attributes:
             accepts_terms:
               accepted: "Vous devez accepter les conditions générales de vente"
+            end_date:
+              after_start_date: "doit être après la date de début"
+            base:
+              dates_overlap_existing_booking: "Ces dates chevauchent une réservation existante"
