@@ -55,7 +55,7 @@ class Booking < ApplicationRecord
   validates :accepts_terms, acceptance: { accept: ["1", true] }, on: :user_request
 
   before_validation :default_status, on: :create
-  before_validation :populate_pricing_from_quote, on: :create
+  before_validation :populate_pricing_from_quote, if: -> { total_price_cents.blank? || currency.blank? }
 
   def nights
     return 0 if start_date.blank? || end_date.blank?
