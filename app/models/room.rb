@@ -18,6 +18,7 @@ class Room < ApplicationRecord
   validates :name, presence: true
   validates :capacity, numericality: { only_integer: true, greater_than: 0 }, allow_nil: true
   validate :mvp_room_limit, on: :create
+  validate :validate_photos
 
   before_validation :normalize_optional_services
   validate :validate_optional_services
@@ -113,5 +114,23 @@ class Room < ApplicationRecord
     return unless Room.count >= 2
 
     errors.add(:base, "MVP limit reached: maximum 2 rooms")
+  end
+
+  def validate_photos
+    return unless photos.attached?
+
+    allowed_types = %w[image/jpeg image/png image/gif]
+
+    photos.each do |photo|
+      content_type = photo.blob.content_type.to_s
+
+      unless allowed_types.include?(content_type)
+        errors.add(:photos, :invalid_content_type)
+      end
+
+      if photo.blob.byte_size > 3.megabytes
+        errors.add(:photos, :too_large)
+      end
+    end
   end
 end

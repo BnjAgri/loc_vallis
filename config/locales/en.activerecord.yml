@@ -10,3 +10,8 @@ en:
               after_start_date: "must be after the start date"
             base:
               dates_overlap_existing_booking: "Dates overlap an existing booking"
+        room:
+          attributes:
+            photos:
+              invalid_content_type: "must be a JPEG, PNG, or GIF file"
+              too_large: "must be smaller than 3 MB"
