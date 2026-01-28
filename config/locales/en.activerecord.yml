@@ -17,4 +17,5 @@ en:
             content:
               blank: "can't be blank"
             image_url:
+              blank: "can't be blank"
               invalid_image_url: "must be an http(s) URL to a JPG, PNG, or GIF image"
