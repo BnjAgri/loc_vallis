@@ -12,13 +12,12 @@
   end
 %>
 
-<% all_images = if @room.photos.attached?
-  @room.photos.map { |photo| url_for(photo) }
-elsif @room.image_urls.any?
-  @room.image_urls.map { |u| normalize_image_url.call(u) }.compact
-else
-  ["https://raw.githubusercontent.com/lewagon/fullstack-images/master/uikit/greece.jpg"]
-end %>
+<%
+  all_images = []
+  all_images += @room.photos.map { |photo| url_for(photo) } if @room.photos.attached?
+  all_images += @room.image_urls.map { |u| normalize_image_url.call(u) }.compact if @room.image_urls.any?
+  all_images = ["https://raw.githubusercontent.com/lewagon/fullstack-images/master/uikit/greece.jpg"] if all_images.empty?
+%>
 
 <% main_image_url = all_images.first %>
 
