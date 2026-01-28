@@ -1,9 +1,11 @@
 // Specific CSS for your home-page
 
 .lv-pwa-install {
-	/* Sticky right under the (sticky) navbar */
-	position: sticky;
+	/* Fixed right under the (sticky) navbar */
+	position: fixed;
 	top: var(--lv-navbar-offset, 0px);
+	left: 0;
+	right: 0;
 	z-index: 1010;
 	padding: 0.5rem 0.75rem;
 
