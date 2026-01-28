@@ -1,4 +1,30 @@
 module ApplicationHelper
+	# Switch locale while preserving the current path (and query string).
+	# We rewrite the URL instead of using `url_for(locale: ...)` because some
+	# routes (notably Devise) are ambiguous between :user and :owner and Rails may
+	# pick the first matching route.
+	def switch_locale_path(target_locale)
+		fullpath = request.fullpath.to_s
+		path, query = fullpath.split("?", 2)
+
+		segments = path.split("/")
+		available = I18n.available_locales.map(&:to_s)
+
+		# Remove any existing locale prefix.
+		segments.delete_at(1) if segments[1].present? && available.include?(segments[1])
+
+		# Add locale prefix unless it's the default locale (which we keep unprefixed).
+		target = target_locale&.to_sym
+		if target.present? && target != I18n.default_locale
+			segments.insert(1, target.to_s)
+		end
+
+		new_path = segments.join("/")
+		new_path = "/" if new_path.blank?
+
+		query.present? ? "#{new_path}?#{query}" : new_path
+	end
+
 	def stars_for_rating(rating, out_of: 5)
 		rounded = rating.to_f.round
 

@@ -2,9 +2,20 @@
 
 fr:
   devise:
+    passwords:
+      no_token: "Vous ne pouvez pas accéder à cette page sans passer par l’e-mail de réinitialisation. Veuillez utiliser le lien complet reçu par e-mail."
+      send_instructions: "Vous allez recevoir dans quelques minutes un e-mail avec les instructions pour réinitialiser votre mot de passe."
+      send_paranoid_instructions: "Si cette adresse e-mail existe, vous recevrez dans quelques minutes un lien pour réinitialiser votre mot de passe."
+      updated: "Votre mot de passe a été modifié avec succès."
+      updated_not_active: "Votre mot de passe a été modifié avec succès."
     failure:
       unauthenticated: "Vous devez vous connecter ou vous inscrire pour continuer."
       user:
         unauthenticated: "Vous devez vous connecter ou vous inscrire pour continuer."
       owner:
         unauthenticated: "Vous devez vous connecter ou vous inscrire pour continuer."
+
+    sessions:
+      signed_in: "Connexion réussie."
+      signed_out: "Vous êtes déconnecté(e)."
+      already_signed_out: "Vous êtes déconnecté(e)."

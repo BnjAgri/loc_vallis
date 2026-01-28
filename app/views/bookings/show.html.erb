@@ -1,13 +1,13 @@
 <div class="container py-4">
   <%= render "shared/ui/page_header",
-    title: "Votre réservation ##{@booking.id}",
+    title: t(".title", id: @booking.id),
     subtitle: @booking.room.name %>
 
   <div class="row g-4 mt-1">
     <div class="col-12 col-lg-5">
       <% actions = capture do %>
         <% if policy(@booking).pay? %>
-          <%= button_to "Payer maintenant",
+          <%= button_to t(".actions.pay_now"),
                 checkout_booking_path(id: @booking),
                 method: :post,
                 data: { turbo: false },
@@ -15,7 +15,19 @@
         <% end %>
 
         <% if policy(@booking).cancel? %>
-          <%= button_to t("shared.actions.cancel"), cancel_booking_path(id: @booking), method: :patch, class: "btn btn-outline-danger" %>
+          <%= button_to t("shared.actions.cancel"),
+                cancel_booking_path(id: @booking),
+                method: :patch,
+                class: "btn btn-outline-danger",
+                form: {
+                  data: {
+                    controller: "confirm-delete",
+                    action: "submit->confirm-delete#confirm",
+                    "confirm-delete-message-value": t(".cancel_confirm.message"),
+                    "confirm-delete-confirm-text-value": t(".cancel_confirm.confirm"),
+                    "confirm-delete-cancel-text-value": t(".cancel_confirm.cancel")
+                  }
+                } %>
         <% end %>
       <% end %>
 
@@ -25,21 +37,22 @@
         <div class="card lv-card lv-card--soft lv-card--payment mt-4">
           <div class="card-body">
             <div class="d-flex align-items-start gap-2">
-              <div class="text-uppercase lv-muted small">Paiement</div>
+              <div class="text-uppercase lv-muted small"><%= t(".payment.label") %></div>
             </div>
             <% days_left = (@booking.payment_expires_at.to_date - Time.zone.today).to_i %>
             <% days_left = 0 if days_left.negative? %>
-            <div class="lv-payment__headline">Il vous reste <span class="lv-payment__days"><%= days_left %> <%= days_left == 1 ? "jour" : "jours" %></span> pour effectuer votre règlement</div>
-            <div class="lv-meta">À régler avant : <span class="lv-payment__deadline"><%= l(@booking.payment_expires_at, format: :short) %></span></div>
-            <div class="lv-meta mt-2">Paiement sécurisé via Stripe.</div>
+            <% days_html = content_tag(:span, "#{days_left} #{t('.payment.days', count: days_left)}", class: "lv-payment__days") %>
+            <div class="lv-payment__headline"><%= t(".payment.headline_html", days_html: days_html) %></div>
+            <div class="lv-meta"><%= t(".payment.deadline") %> <span class="lv-payment__deadline"><%= l(@booking.payment_expires_at, format: :short) %></span></div>
+            <div class="lv-meta mt-2"><%= t(".payment.secure") %></div>
           </div>
         </div>
       <% end %>
 
       <div class="card lv-card mt-4">
         <div class="card-body">
-          <div class="text-uppercase lv-muted small">Après le séjour</div>
-          <div class="h5 mb-0">Votre avis</div>
+          <div class="text-uppercase lv-muted small"><%= t(".review.after_stay") %></div>
+          <div class="h5 mb-0"><%= t(".review.title") %></div>
 
           <hr class="my-3 lv-divider" />
 
@@ -55,16 +68,16 @@
             <%= simple_form_for [@booking, @review] do |f| %>
               <div class="row g-2">
                 <div class="col-12 col-md-3">
-                  <%= f.input :rating, collection: (1..5).to_a, include_blank: false, label: "Note" %>
+                  <%= f.input :rating, collection: (1..5).to_a, include_blank: false, label: t(".review.rating") %>
                 </div>
                 <div class="col-12 col-md-9">
-                  <%= f.input :comment, as: :text, label: "Commentaire", input_html: { rows: 3 } %>
+                  <%= f.input :comment, as: :text, label: t(".review.comment"), input_html: { rows: 3 } %>
                 </div>
               </div>
-              <%= f.button :submit, "Envoyer mon avis", class: "btn btn-primary" %>
+              <%= f.button :submit, t(".review.submit"), class: "btn btn-primary" %>
             <% end %>
           <% else %>
-            <p class="text-muted mb-0">Vous pourrez laisser un avis après votre séjour (et une seule fois par réservation).</p>
+            <p class="text-muted mb-0"><%= t(".review.not_available") %></p>
           <% end %>
         </div>
       </div>
@@ -75,8 +88,8 @@
         <div class="card-body">
           <div class="d-flex align-items-start justify-content-between gap-2 mb-2">
             <div>
-              <div class="text-uppercase lv-muted small">Conversation</div>
-              <div class="h5 mb-0">Messages avec l’hôte</div>
+              <div class="text-uppercase lv-muted small"><%= t(".conversation.label") %></div>
+              <div class="h5 mb-0"><%= t(".conversation.title") %></div>
             </div>
             <div class="text-end">
               <%= render "shared/ui/status_badge", status: @booking.status %>

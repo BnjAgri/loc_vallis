@@ -9,11 +9,21 @@
   background-position: center;
   padding: 72px 0;
 
-  // The layout wraps pages in `.container`; this makes the banner full-width.
-  width: 100vw;
-  margin-left: calc(50% - 50vw);
-  margin-right: calc(50% - 50vw);
+  // On mobile, `.container` already spans the viewport; keep this in-flow to
+  // avoid tiny subpixel overflows that enable horizontal scrolling.
+  width: 100%;
+  margin-left: 0;
+  margin-right: 0;
   border-bottom: 1px solid rgba($lv-ink, 0.08);
+}
+
+@media (min-width: 576px) {
+  .banner {
+    // The layout wraps pages in `.container`; this makes the banner full-width.
+    width: 100vw;
+    margin-left: calc(50% - 50vw);
+    margin-right: calc(50% - 50vw);
+  }
 }
 
 @media (min-width: 768px) {

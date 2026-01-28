@@ -8,3 +8,16 @@ fr:
           attributes:
             accepts_terms:
               accepted: "Vous devez accepter les conditions générales de vente"
+            end_date:
+              after_start_date: "doit être après la date de début"
+            base:
+              dates_overlap_existing_booking: "Ces dates chevauchent une réservation existante"
+        article:
+          attributes:
+            title:
+              blank: "doit être renseigné"
+            content:
+              blank: "doit être renseigné"
+            image_url:
+              blank: "doit être renseignée"
+              invalid_image_url: "doit être une URL http(s) vers une image JPG, PNG ou GIF"

@@ -53,6 +53,15 @@ Notes :
 - `CLOUDINARY_API_KEY`
 - `CLOUDINARY_API_SECRET`
 
+### TODO (à faire demain) — Mailer Gmail (tests)
+- Objectif : configurer l’envoi de mails réels via une adresse Gmail perso (dev + Heroku).
+- Pré-requis Gmail : activer la validation en 2 étapes + générer un **mot de passe d’application**.
+- Dev (local) : définir `SMTP_ADDRESS`, `SMTP_PORT`, `SMTP_USERNAME`, `SMTP_PASSWORD`, `SMTP_STARTTLS`, `MAIL_FROM`.
+	- Le mode SMTP en dev est activé dès que `SMTP_ADDRESS` est présent ; sinon, on reste en `delivery_method = :test`.
+- Prod (Heroku) : ajouter les mêmes variables en config vars, et vérifier la config ActionMailer production.
+- Script de test : `bin/rails runner script/send_user_mail_flow.rb <email>` (déclenche welcome + booking mails + message + demande d’avis).
+- Option : activer le welcome automatique à la création avec `SEND_WELCOME_EMAILS=true` (et lancer `bin/jobs start` si besoin).
+
 ## Dépannage rapide
 - Paiements “confirmés” qui ne passent pas : vérifier que le webhook Stripe arrive bien et que `STRIPE_WEBHOOK_SECRET` correspond.
 - Bookings qui “expirent” trop tôt/tard : vérifier la timezone, et le déclenchement de `Booking.expire_overdue!`/job.

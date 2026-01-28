@@ -179,7 +179,7 @@ class Booking < ApplicationRecord
     return if start_date.blank? || end_date.blank?
     return if end_date > start_date
 
-    errors.add(:end_date, "must be after start_date")
+    errors.add(:end_date, :after_start_date)
   end
 
   def quote
@@ -210,7 +210,7 @@ class Booking < ApplicationRecord
       .where("start_date < ? AND end_date > ?", end_date, start_date)
       .exists?
 
-    errors.add(:base, "Dates overlap an existing booking") if overlap_exists
+    errors.add(:base, :dates_overlap_existing_booking) if overlap_exists
   end
 
   def populate_pricing_from_quote

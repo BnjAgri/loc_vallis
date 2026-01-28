@@ -78,6 +78,27 @@ Rails.application.configure do
 
   config.action_mailer.perform_caching = false
 
+  # SMTP (Heroku): configure mail delivery via environment variables.
+  # Set at minimum: SMTP_ADDRESS, SMTP_PORT, SMTP_USERNAME, SMTP_PASSWORD, SMTP_STARTTLS, MAIL_FROM.
+  if ENV["SMTP_ADDRESS"].present?
+    config.action_mailer.delivery_method = :smtp
+    config.action_mailer.perform_deliveries = true
+    config.action_mailer.raise_delivery_errors = true
+
+    config.action_mailer.smtp_settings = {
+      address: ENV.fetch("SMTP_ADDRESS"),
+      port: ENV.fetch("SMTP_PORT", 587).to_i,
+      user_name: ENV["SMTP_USERNAME"],
+      password: ENV["SMTP_PASSWORD"],
+      authentication: (ENV["SMTP_AUTH"].presence || "plain"),
+      domain: ENV["SMTP_DOMAIN"].presence,
+      enable_starttls_auto: ENV.fetch("SMTP_STARTTLS", "true") == "true",
+      ssl: ENV.fetch("SMTP_SSL", "false") == "true",
+      open_timeout: ENV.fetch("SMTP_OPEN_TIMEOUT", 10).to_i,
+      read_timeout: ENV.fetch("SMTP_READ_TIMEOUT", 30).to_i
+    }.compact
+  end
+
   # Ignore bad email addresses and do not raise email delivery errors.
   # Set this to true and configure the email server for immediate delivery to raise delivery errors.
   # config.action_mailer.raise_delivery_errors = false

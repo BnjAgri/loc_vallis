@@ -30,11 +30,15 @@
 en:
   date:
     formats:
+      default: "%m/%d/%Y"
       short: "%m/%d/%Y"
+      long: "%B %-d, %Y"
 
   time:
     formats:
+      default: "%m/%d/%Y %H:%M"
       short: "%m/%d %H:%M"
+      long: "%B %-d, %Y %H:%M"
 
   app:
     title: "LocVallis"
@@ -70,6 +74,20 @@ en:
     footer:
       legal: "Legal notice"
       cgv: "Terms"
+
+    ui:
+      booking_summary_card:
+        label: "Booking"
+        traveler: "Traveler:"
+        dates: "Dates"
+        nights:
+          one: "1 night"
+          other: "%{count} nights"
+        total: "Total"
+        tax_included: "incl. tax"
+        subtotal_nights: "Nights subtotal:"
+        subtotal_services: "Services subtotal:"
+        optional_services: "Optional services"
 
   pages:
     legal:
@@ -159,6 +177,43 @@ en:
       missing_credentials: "Email and password are required"
       invalid_credentials: "Invalid email or password"
       logged_out: "Logged out"
+
+  unified_sessions:
+    new:
+      title: "Log in"
+      submit: "Log in"
+      sign_up: "Sign up"
+      forgot_password: "Forgot your password?"
+      password_label: "Password"
+      email_unknown: "Unknown email"
+
+  devise:
+    registrations:
+      new:
+        sign_up: "Sign up"
+        first_name: "First name"
+        last_name: "Last name"
+        email: "Email"
+        postal_address: "Postal address"
+        phone: "Phone"
+        guesthouse_name: "Guesthouse name"
+        password: "Password"
+        password_confirmation: "Confirm password"
+        minimum_password_length: "%{count} characters minimum"
+        sign_up_button: "Create account"
+
+    passwords:
+      new:
+        title: "Forgot your password?"
+        instructions: "Enter your email and we’ll send you instructions to reset your password."
+        email_label: "Email"
+        submit: "Reset password"
+      edit:
+        title: "Change your password"
+        password_label: "New password"
+        password_confirmation_label: "Confirm new password"
+        minimum_password_length: "%{count} characters minimum"
+        submit: "Change my password"
 
   reviews:
     flash:
@@ -272,6 +327,53 @@ en:
       optional_services:
         title: "Optional services"
         hint: "These options are added to the booking total."
+
+    show:
+      title: "Your booking #%{id}"
+      actions:
+        pay_now: "Pay now"
+      cancel_confirm:
+        message: "Cancel this booking? This action cannot be undone."
+        confirm: "Yes, cancel"
+        cancel: "Keep booking"
+      payment:
+        label: "Payment"
+        days:
+          one: "day"
+          other: "days"
+        headline_html: "You have %{days_html} left to pay"
+        deadline: "Pay by:"
+        secure: "Secure payment via Stripe."
+      review:
+        after_stay: "After your stay"
+        title: "Your review"
+        rating: "Rating"
+        comment: "Comment"
+        submit: "Submit my review"
+        not_available: "You can leave a review after your stay (only once per booking)."
+      conversation:
+        label: "Conversation"
+        title: "Messages with the host"
+
+    payment_success:
+      title: "Payment received"
+      subtitle: "Booking #%{id}"
+      thanks: "Thank you"
+      confirmed:
+        title: "Your payment is confirmed."
+        body_html: "Your booking is now <strong>confirmed</strong>."
+      pending:
+        title: "Your payment has been received."
+        body: "Confirmation is in progress (Stripe webhook). If needed, refresh in a few moments."
+      actions:
+        view_booking: "View my booking"
+        print: "Print confirmation"
+        back_home: "Back to home"
+      summary:
+        label: "Summary"
+        total_amount: "Total amount"
+        session: "Session:"
+        payment_intent: "PaymentIntent:"
 
   profiles:
     flash:

@@ -1,0 +1,12 @@
+<% content_for :preheader do %>
+  Donnez votre avis sur votre séjour.
+<% end %>
+
+<h1 style="margin:0 0 10px 0; font-size:20px; line-height:1.25;">Comment s’est passé votre séjour ?</h1>
+<p style="margin:0 0 12px 0;">Bonjour <%= @booking.user.display_name %>,</p>
+<p style="margin:0 0 12px 0;">Nous espérons que vous avez apprécié votre séjour.</p>
+<p style="margin:0 0 12px 0;">Pouvez-vous prendre une minute pour laisser un avis ?</p>
+
+<%= render "shared/email_button", url: @booking_url, label: "Laisser un avis" %>
+
+<p style="margin:14px 0 0 0; color:#6B7280; font-size:13px;">Merci,<br>Loc Vallis</p>

@@ -3,10 +3,10 @@
     <div class="col-12 col-sm-10 col-md-8 col-lg-5">
       <div class="card">
         <div class="card-body">
-          <h2 class="h4 mb-3">Mot de passe oublié ?</h2>
+          <h2 class="h4 mb-3"><%= t("devise.passwords.new.title") %></h2>
 
           <p class="text-muted mb-3">
-            Indiquez votre e-mail et nous vous enverrons les instructions pour réinitialiser votre mot de passe.
+            <%= t("devise.passwords.new.instructions") %>
           </p>
 
           <%= simple_form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :post }) do |f| %>
@@ -14,14 +14,14 @@
 
             <div class="form-inputs">
               <%= f.input :email,
-                          label: "E-mail",
+                          label: t("devise.passwords.new.email_label"),
                           required: true,
                           autofocus: true,
                           input_html: { autocomplete: "email" } %>
             </div>
 
             <div class="form-actions d-grid">
-              <%= f.button :submit, "Réinitialiser", class: "btn btn-primary" %>
+              <%= f.button :submit, t("devise.passwords.new.submit"), class: "btn btn-primary" %>
             </div>
           <% end %>
 

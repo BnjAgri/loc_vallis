@@ -56,7 +56,7 @@ class BookingWorkflowTest < ActiveSupport::TestCase
     assert_equal "approved_pending_payment", first.reload.status
 
     error = assert_raises(ActiveRecord::RecordInvalid) { second.approve!(by: @owner) }
-    assert_includes error.message, "overlap"
+    assert error.record.errors.added?(:base, :dates_overlap_existing_booking)
     assert_equal "requested", second.reload.status
   end
 end

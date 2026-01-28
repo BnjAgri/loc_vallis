@@ -1,0 +1,26 @@
+<% content_for :preheader do %>
+  Réservation #<%= @booking.id %> demandée pour <%= @booking.room.name %>.
+<% end %>
+
+<h1 style="margin:0 0 10px 0; font-size:20px; line-height:1.25;">Réservation demandée</h1>
+<p style="margin:0 0 14px 0; color:#6B7280;">Réservation #<%= @booking.id %></p>
+
+<table role="presentation" cellspacing="0" cellpadding="0" border="0" style="width:100%; font-size:14px;">
+  <tr>
+    <td style="padding:6px 0; color:#6B7280; width:160px;">Logement</td>
+    <td style="padding:6px 0;"><strong><%= @booking.room.name %></strong></td>
+  </tr>
+  <tr>
+    <td style="padding:6px 0; color:#6B7280;">Dates</td>
+    <td style="padding:6px 0;">
+      <%= I18n.l(@booking.start_date) %> → <%= I18n.l(@booking.end_date) %>
+      (<%= @booking.nights %> nuits)
+    </td>
+  </tr>
+  <tr>
+    <td style="padding:6px 0; color:#6B7280;">Total</td>
+    <td style="padding:6px 0;"><strong><%= number_to_currency(@booking.total_price_cents.to_i / 100.0, unit: "#{@booking.currency.to_s.upcase} ", format: "%u%n") %></strong></td>
+  </tr>
+</table>
+
+<%= render "shared/email_button", url: @booking_url, label: "Voir la réservation" %>

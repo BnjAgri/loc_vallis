@@ -1,0 +1,14 @@
+<% content_for :preheader do %>
+  Réservation #<%= @booking.id %> approuvée — paiement requis.
+<% end %>
+
+<h1 style="margin:0 0 10px 0; font-size:20px; line-height:1.25;">Réservation approuvée</h1>
+<p style="margin:0 0 14px 0; color:#6B7280;">Paiement requis sous 48h.</p>
+
+<% if @deadline_formatted.present? %>
+  <p style="margin:0 0 12px 0;"><strong>Date limite :</strong> <%= @deadline_formatted %></p>
+<% end %>
+
+<%= render "shared/email_button", url: @booking_url, label: "Payer et voir la réservation" %>
+
+<p style="margin:14px 0 0 0; color:#6B7280; font-size:13px;">Si le paiement n’est pas effectué à temps, la réservation expirera automatiquement.</p>

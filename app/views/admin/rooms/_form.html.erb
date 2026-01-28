@@ -2,7 +2,11 @@
   <%= f.input :name, label: "Nom" %>
   <%= f.input :description, as: :text, label: "Description", hint: "Décrivez la chambre, ses équipements, etc." %>
   <%= f.input :capacity, label: "Capacité", hint: "Optionnel" %>
-  <%= f.input :photos, as: :file, input_html: { multiple: true }, label: "Photos", hint: "Importer une ou plusieurs images" %>
+  <%= f.input :photos,
+              as: :file,
+              input_html: { multiple: true, accept: "image/jpeg,image/png,image/gif" },
+              label: "Photos",
+              hint: "Importer une ou plusieurs images (JPEG, PNG, GIF · 3 Mo max)" %>
   <%= f.input :room_url, as: :text, label: "URLs d'images", hint: "Une URL d'image par ligne" %>
 
   <div class="mt-4" data-controller="optional-services" data-optional-services-max-value="5">

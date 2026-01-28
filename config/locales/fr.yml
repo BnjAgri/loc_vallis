@@ -1,11 +1,15 @@
 fr:
   date:
     formats:
+      default: "%d/%m/%Y"
       short: "%d/%m/%Y"
+      long: "%-d %B %Y"
 
   time:
     formats:
+      default: "%d/%m/%Y %H:%M"
       short: "%d/%m %H:%M"
+      long: "%-d %B %Y à %H:%M"
 
   app:
     title: "LocVallis"
@@ -40,6 +44,20 @@ fr:
     footer:
       legal: "Mentions légales"
       cgv: "CGV"
+
+    ui:
+      booking_summary_card:
+        label: "Réservation"
+        traveler: "Voyageur :"
+        dates: "Dates"
+        nights:
+          one: "1 nuit"
+          other: "%{count} nuits"
+        total: "Total"
+        tax_included: "TTC"
+        subtotal_nights: "Sous-total nuits :"
+        subtotal_services: "Sous-total services :"
+        optional_services: "Services optionnels"
 
   pages:
     legal:
@@ -158,6 +176,19 @@ fr:
         password_confirmation: "Confirmation du mot de passe"
         minimum_password_length: "%{count} caractères minimum"
         sign_up_button: "S'inscrire"
+
+    passwords:
+      new:
+        title: "Mot de passe oublié ?"
+        instructions: "Indiquez votre e-mail et nous vous enverrons les instructions pour réinitialiser votre mot de passe."
+        email_label: "E-mail"
+        submit: "Réinitialiser"
+      edit:
+        title: "Changer votre mot de passe"
+        password_label: "Nouveau mot de passe"
+        password_confirmation_label: "Confirmer le nouveau mot de passe"
+        minimum_password_length: "%{count} caractères minimum"
+        submit: "Changer mon mot de passe"
 
   admin:
     shared:
@@ -315,6 +346,53 @@ fr:
       optional_services:
         title: "Services optionnels"
         hint: "Ces options s'ajoutent au total de la réservation."
+
+    show:
+      title: "Votre réservation #%{id}"
+      actions:
+        pay_now: "Payer maintenant"
+      cancel_confirm:
+        message: "Annuler cette réservation ? Cette action est définitive."
+        confirm: "Oui, annuler"
+        cancel: "Conserver"
+      payment:
+        label: "Paiement"
+        days:
+          one: "jour"
+          other: "jours"
+        headline_html: "Il vous reste %{days_html} pour effectuer votre règlement"
+        deadline: "À régler avant :"
+        secure: "Paiement sécurisé via Stripe."
+      review:
+        after_stay: "Après le séjour"
+        title: "Votre avis"
+        rating: "Note"
+        comment: "Commentaire"
+        submit: "Envoyer mon avis"
+        not_available: "Vous pourrez laisser un avis après votre séjour (et une seule fois par réservation)."
+      conversation:
+        label: "Conversation"
+        title: "Messages avec l’hôte"
+
+    payment_success:
+      title: "Paiement reçu"
+      subtitle: "Réservation #%{id}"
+      thanks: "Merci"
+      confirmed:
+        title: "Votre paiement est confirmé."
+        body_html: "Votre réservation est maintenant <strong>confirmée</strong>."
+      pending:
+        title: "Votre paiement a bien été pris en compte."
+        body: "La confirmation est en cours (webhook Stripe). Si besoin, rafraîchissez dans quelques instants."
+      actions:
+        view_booking: "Voir ma réservation"
+        print: "Imprimer la confirmation"
+        back_home: "Retour à l’accueil"
+      summary:
+        label: "Résumé"
+        total_amount: "Montant total"
+        session: "Session :"
+        payment_intent: "PaymentIntent :"
 
   profiles:
     flash:

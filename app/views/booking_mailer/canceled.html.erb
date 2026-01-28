@@ -1,0 +1,12 @@
+<% content_for :preheader do %>
+  Réservation #<%= @booking.id %> annulée.
+<% end %>
+
+<h1 style="margin:0 0 10px 0; font-size:20px; line-height:1.25;">Réservation annulée</h1>
+<p style="margin:0 0 14px 0; color:#6B7280;">Réservation #<%= @booking.id %></p>
+
+<p style="margin:0 0 10px 0;"><strong>Annulée par :</strong> <%= @canceled_by || "unknown" %></p>
+<p style="margin:0 0 10px 0;"><strong>Logement :</strong> <%= @booking.room.name %></p>
+<p style="margin:0 0 14px 0;"><strong>Dates :</strong> <%= I18n.l(@booking.start_date) %> → <%= I18n.l(@booking.end_date) %></p>
+
+<%= render "shared/email_button", url: @booking_url, label: "Voir la réservation" %>

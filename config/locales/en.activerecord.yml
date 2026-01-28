@@ -6,3 +6,16 @@ en:
           attributes:
             accepts_terms:
               accepted: "You must accept the terms and conditions"
+            end_date:
+              after_start_date: "must be after the start date"
+            base:
+              dates_overlap_existing_booking: "Dates overlap an existing booking"
+        article:
+          attributes:
+            title:
+              blank: "can't be blank"
+            content:
+              blank: "can't be blank"
+            image_url:
+              blank: "can't be blank"
+              invalid_image_url: "must be an http(s) URL to a JPG, PNG, or GIF image"

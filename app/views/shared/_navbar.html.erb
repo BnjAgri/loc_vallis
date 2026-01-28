@@ -84,12 +84,12 @@
 
       <ul class="navbar-nav ms-auto">
         <li class="nav-item d-flex flex-column">
-          <%= link_to url_for(locale: nil), class: ["nav-link", "py-0", "d-inline-flex", "align-items-center", "gap-1", (I18n.locale == :fr ? "active" : nil)].compact.join(" "), aria: { label: "Français" } do %>
+          <%= link_to switch_locale_path(nil), class: ["nav-link", "py-0", "d-inline-flex", "align-items-center", "gap-1", (I18n.locale == :fr ? "active" : nil)].compact.join(" "), aria: { label: "Français" } do %>
             <%= image_tag "flags/fr.svg", class: "lv-locale-flag", alt: "FR", width: 18, height: 12, loading: "lazy" %>
             <span class="text-uppercase" style="font-size: .7rem; letter-spacing: .04em;">FR</span>
           <% end %>
 
-          <%= link_to url_for(locale: :en), class: ["nav-link", "py-0", "d-inline-flex", "align-items-center", "gap-1", (I18n.locale == :en ? "active" : nil)].compact.join(" "), aria: { label: "English" } do %>
+          <%= link_to switch_locale_path(:en), class: ["nav-link", "py-0", "d-inline-flex", "align-items-center", "gap-1", (I18n.locale == :en ? "active" : nil)].compact.join(" "), aria: { label: "English" } do %>
             <%= image_tag "flags/en.svg", class: "lv-locale-flag", alt: "EN", width: 18, height: 12, loading: "lazy" %>
             <span class="text-uppercase" style="font-size: .7rem; letter-spacing: .04em;">EN</span>
           <% end %>
