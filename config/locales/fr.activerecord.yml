@@ -12,8 +12,11 @@ fr:
               after_start_date: "doit être après la date de début"
             base:
               dates_overlap_existing_booking: "Ces dates chevauchent une réservation existante"
-        room:
+        article:
           attributes:
-            photos:
-              invalid_content_type: "doit être un fichier JPEG, PNG ou GIF"
-              too_large: "doit faire moins de 3 Mo"
+            title:
+              blank: "doit être renseigné"
+            content:
+              blank: "doit être renseigné"
+            image_url:
+              invalid_image_url: "doit être une URL http(s) vers une image JPG, PNG ou GIF"
