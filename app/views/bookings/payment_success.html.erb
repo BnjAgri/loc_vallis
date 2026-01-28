@@ -1,33 +1,33 @@
 <div class="container py-4">
   <%= render "shared/ui/page_header",
-    title: "Paiement reçu",
-    subtitle: "Réservation ##{@booking.id}" %>
+    title: t(".title"),
+    subtitle: t(".subtitle", id: @booking.id) %>
 
   <div class="row g-4 mt-1">
     <div class="col-12 col-lg-6">
       <div class="card lv-card lv-card--soft">
         <div class="card-body">
-          <div class="text-uppercase lv-muted small">Merci</div>
+          <div class="text-uppercase lv-muted small"><%= t(".thanks") %></div>
 
           <% if @booking.confirmed_paid? %>
-            <div class="h5 mb-1">Votre paiement est confirmé.</div>
-            <div class="lv-meta">Votre réservation est maintenant <strong>confirmée</strong>.</div>
+            <div class="h5 mb-1"><%= t(".confirmed.title") %></div>
+            <div class="lv-meta"><%= t(".confirmed.body_html") %></div>
           <% else %>
-            <div class="h5 mb-1">Votre paiement a bien été pris en compte.</div>
-            <div class="lv-meta">La confirmation est en cours (webhook Stripe). Si besoin, rafraîchissez dans quelques instants.</div>
+            <div class="h5 mb-1"><%= t(".pending.title") %></div>
+            <div class="lv-meta"><%= t(".pending.body") %></div>
           <% end %>
 
           <div class="mt-3">
-            <%= link_to "Voir ma réservation", booking_path(@booking), class: "btn btn-accent" %>
-            <button type="button" class="btn btn-outline-secondary" data-controller="print" data-action="click->print#print">Imprimer la confirmation</button>
-            <%= link_to "Retour à l’accueil", root_path, class: "btn btn-link" %>
+            <%= link_to t(".actions.view_booking"), booking_path(@booking), class: "btn btn-accent" %>
+            <button type="button" class="btn btn-outline-secondary" data-controller="print" data-action="click->print#print"><%= t(".actions.print") %></button>
+            <%= link_to t(".actions.back_home"), root_path, class: "btn btn-link" %>
           </div>
         </div>
       </div>
 
       <div class="card lv-card mt-4">
         <div class="card-body">
-          <div class="text-uppercase lv-muted small">Résumé</div>
+          <div class="text-uppercase lv-muted small"><%= t(".summary.label") %></div>
 
           <hr class="my-3 lv-divider" />
 
@@ -37,21 +37,21 @@
 
             <div class="lv-card__kpi">
               <div class="lv-card__kpi-value"><%= number_to_currency(amount_cents / 100.0, unit: "#{currency} ") %></div>
-              <div class="lv-card__kpi-label">Montant total</div>
+              <div class="lv-card__kpi-label"><%= t(".summary.total_amount") %></div>
             </div>
 
-            <div class="lv-meta mt-2">Session : <%= @stripe_session.id %></div>
+            <div class="lv-meta mt-2"><%= t(".summary.session") %> <%= @stripe_session.id %></div>
             <% if @stripe_session.payment_intent.present? %>
-              <div class="lv-meta">PaymentIntent : <%= @stripe_session.payment_intent.id %> (<%= @stripe_session.payment_intent.status %>)</div>
+              <div class="lv-meta"><%= t(".summary.payment_intent") %> <%= @stripe_session.payment_intent.id %> (<%= @stripe_session.payment_intent.status %>)</div>
             <% end %>
           <% else %>
             <div class="lv-card__kpi">
               <div class="lv-card__kpi-value"><%= number_to_currency(@booking.total_price_cents.to_i / 100.0, unit: "#{@booking.currency.to_s.upcase} ") %></div>
-              <div class="lv-card__kpi-label">Montant total</div>
+              <div class="lv-card__kpi-label"><%= t(".summary.total_amount") %></div>
             </div>
 
             <% if @booking.stripe_checkout_session_id.present? %>
-              <div class="lv-meta mt-2">Session : <%= @booking.stripe_checkout_session_id %></div>
+              <div class="lv-meta mt-2"><%= t(".summary.session") %> <%= @booking.stripe_checkout_session_id %></div>
             <% end %>
           <% end %>
         </div>

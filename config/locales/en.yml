@@ -71,6 +71,20 @@ en:
       legal: "Legal notice"
       cgv: "Terms"
 
+    ui:
+      booking_summary_card:
+        label: "Booking"
+        traveler: "Traveler:"
+        dates: "Dates"
+        nights:
+          one: "1 night"
+          other: "%{count} nights"
+        total: "Total"
+        tax_included: "incl. tax"
+        subtotal_nights: "Nights subtotal:"
+        subtotal_services: "Services subtotal:"
+        optional_services: "Optional services"
+
   pages:
     legal:
       title: "Legal notice"
@@ -309,6 +323,53 @@ en:
       optional_services:
         title: "Optional services"
         hint: "These options are added to the booking total."
+
+    show:
+      title: "Your booking #%{id}"
+      actions:
+        pay_now: "Pay now"
+      cancel_confirm:
+        message: "Cancel this booking? This action cannot be undone."
+        confirm: "Yes, cancel"
+        cancel: "Keep booking"
+      payment:
+        label: "Payment"
+        days:
+          one: "day"
+          other: "days"
+        headline_html: "You have %{days_html} left to pay"
+        deadline: "Pay by:"
+        secure: "Secure payment via Stripe."
+      review:
+        after_stay: "After your stay"
+        title: "Your review"
+        rating: "Rating"
+        comment: "Comment"
+        submit: "Submit my review"
+        not_available: "You can leave a review after your stay (only once per booking)."
+      conversation:
+        label: "Conversation"
+        title: "Messages with the host"
+
+    payment_success:
+      title: "Payment received"
+      subtitle: "Booking #%{id}"
+      thanks: "Thank you"
+      confirmed:
+        title: "Your payment is confirmed."
+        body_html: "Your booking is now <strong>confirmed</strong>."
+      pending:
+        title: "Your payment has been received."
+        body: "Confirmation is in progress (Stripe webhook). If needed, refresh in a few moments."
+      actions:
+        view_booking: "View my booking"
+        print: "Print confirmation"
+        back_home: "Back to home"
+      summary:
+        label: "Summary"
+        total_amount: "Total amount"
+        session: "Session:"
+        payment_intent: "PaymentIntent:"
 
   profiles:
     flash:

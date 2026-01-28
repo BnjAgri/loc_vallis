@@ -6,10 +6,10 @@
   <div class="card-body">
     <div class="d-flex align-items-start justify-content-between gap-3">
       <div>
-        <div class="text-uppercase lv-muted small">Réservation</div>
+        <div class="text-uppercase lv-muted small"><%= t(".label") %></div>
         <div class="h5 mb-1">#<%= booking.id %></div>
         <% if show_user %>
-          <div class="lv-meta">Voyageur : <%= booking.user.email %></div>
+          <div class="lv-meta"><%= t(".traveler") %> <%= booking.user.email %></div>
         <% end %>
       </div>
       <div class="text-end">
@@ -21,29 +21,29 @@
 
     <div class="row g-3">
       <div class="col-12 col-md-6">
-        <div class="lv-meta">Dates</div>
+        <div class="lv-meta"><%= t(".dates") %></div>
         <div class="fw-semibold">
-          <%= booking.start_date.strftime("%d/%m/%Y") %> → <%= booking.end_date.strftime("%d/%m/%Y") %>
+          <%= l(booking.start_date, format: :short) %> → <%= l(booking.end_date, format: :short) %>
         </div>
-        <div class="lv-meta mt-1"><%= booking.nights %> nuits</div>
+        <div class="lv-meta mt-1"><%= t(".nights", count: booking.nights) %></div>
       </div>
 
       <div class="col-12 col-md-6">
-        <div class="lv-meta">Total</div>
+        <div class="lv-meta"><%= t(".total") %></div>
         <div class="lv-card__kpi">
           <div class="lv-card__kpi-value h4 mb-0"><%= format_price(booking.total_price_cents, currency: booking.currency) %></div>
-          <div class="lv-card__kpi-label">TTC</div>
+          <div class="lv-card__kpi-label"><%= t(".tax_included") %></div>
         </div>
-        <div class="lv-meta">Sous-total nuits : <%= format_price(nights_total_cents, currency: booking.currency) %></div>
+        <div class="lv-meta"><%= t(".subtotal_nights") %> <%= format_price(nights_total_cents, currency: booking.currency) %></div>
         <% if booking.selected_optional_services_total_cents.to_i.positive? %>
-          <div class="lv-meta">Sous-total services : <%= format_price(booking.selected_optional_services_total_cents, currency: booking.currency) %></div>
+          <div class="lv-meta"><%= t(".subtotal_services") %> <%= format_price(booking.selected_optional_services_total_cents, currency: booking.currency) %></div>
         <% end %>
       </div>
     </div>
 
     <% if Array(booking.selected_optional_services).any? %>
       <hr class="my-3 lv-divider" />
-      <div class="fw-semibold mb-2">Services optionnels</div>
+      <div class="fw-semibold mb-2"><%= t(".optional_services") %></div>
       <ul class="lv-list mb-0">
         <% Array(booking.selected_optional_services).each do |service| %>
           <% next unless service.is_a?(Hash) %>

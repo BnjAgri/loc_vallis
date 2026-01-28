@@ -41,6 +41,20 @@ fr:
       legal: "Mentions légales"
       cgv: "CGV"
 
+    ui:
+      booking_summary_card:
+        label: "Réservation"
+        traveler: "Voyageur :"
+        dates: "Dates"
+        nights:
+          one: "1 nuit"
+          other: "%{count} nuits"
+        total: "Total"
+        tax_included: "TTC"
+        subtotal_nights: "Sous-total nuits :"
+        subtotal_services: "Sous-total services :"
+        optional_services: "Services optionnels"
+
   pages:
     legal:
       title: "Mentions légales"
@@ -328,6 +342,53 @@ fr:
       optional_services:
         title: "Services optionnels"
         hint: "Ces options s'ajoutent au total de la réservation."
+
+    show:
+      title: "Votre réservation #%{id}"
+      actions:
+        pay_now: "Payer maintenant"
+      cancel_confirm:
+        message: "Annuler cette réservation ? Cette action est définitive."
+        confirm: "Oui, annuler"
+        cancel: "Conserver"
+      payment:
+        label: "Paiement"
+        days:
+          one: "jour"
+          other: "jours"
+        headline_html: "Il vous reste %{days_html} pour effectuer votre règlement"
+        deadline: "À régler avant :"
+        secure: "Paiement sécurisé via Stripe."
+      review:
+        after_stay: "Après le séjour"
+        title: "Votre avis"
+        rating: "Note"
+        comment: "Commentaire"
+        submit: "Envoyer mon avis"
+        not_available: "Vous pourrez laisser un avis après votre séjour (et une seule fois par réservation)."
+      conversation:
+        label: "Conversation"
+        title: "Messages avec l’hôte"
+
+    payment_success:
+      title: "Paiement reçu"
+      subtitle: "Réservation #%{id}"
+      thanks: "Merci"
+      confirmed:
+        title: "Votre paiement est confirmé."
+        body_html: "Votre réservation est maintenant <strong>confirmée</strong>."
+      pending:
+        title: "Votre paiement a bien été pris en compte."
+        body: "La confirmation est en cours (webhook Stripe). Si besoin, rafraîchissez dans quelques instants."
+      actions:
+        view_booking: "Voir ma réservation"
+        print: "Imprimer la confirmation"
+        back_home: "Retour à l’accueil"
+      summary:
+        label: "Résumé"
+        total_amount: "Montant total"
+        session: "Session :"
+        payment_intent: "PaymentIntent :"
 
   profiles:
     flash:
