@@ -61,12 +61,12 @@
                   </div>
 
                   <div class="text-muted small mt-1">
-                    <%= booking.start_date %> → <%= booking.end_date %>
+                    <%= l(booking.start_date, format: :short) %> → <%= l(booking.end_date, format: :short) %>
                     <span class="mx-1">·</span>
                     <span class="badge <%= booking_status_badge_class(booking.status) %>"><%= booking_status_label(booking.status) %></span>
                   </div>
 
-                  <div class="mt-2">
+                  <div class="mt-2 <%= unread_count.positive? ? "fw-bold" : nil %>">
                     <% if last_message.present? %>
                       <% sender = last_message.sender_type == "Owner" ? t("messages.sender.me") : t("messages.sender.traveler") %>
                       <span class="text-muted"><%= t("inbox.last_message_prefix", sender: sender) %></span>
