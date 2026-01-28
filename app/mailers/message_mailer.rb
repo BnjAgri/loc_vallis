@@ -2,14 +2,18 @@ class MessageMailer < ApplicationMailer
   def new_message
     @message = params.fetch(:message)
     @booking = @message.booking
+    set_booking_brand!
     @booking_url = booking_url_for(@booking)
 
-    mail(to: recipient_email, subject: "New message about booking ##{@booking.id}")
+    mail(to: recipient_email, subject: brand_subject("New message about booking ##{@booking.id}"))
   end
 
   private
 
   def recipient_email
+    override = params[:override_to].to_s.strip.presence
+    return override if override
+
     if @message.sender.is_a?(User)
       @booking.room.owner.email
     else
@@ -27,5 +31,11 @@ class MessageMailer < ApplicationMailer
       protocol: uri.scheme,
       port: uri.port
     )
+  end
+
+  def set_booking_brand!
+    owner = @booking&.room&.owner
+    brand_name = owner&.guesthouse_name.to_s.strip.presence || owner&.display_name
+    set_email_brand(name: (brand_name || "Loc Vallis"), url: default_email_brand_url)
   end
 end

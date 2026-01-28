@@ -1,1 +1,5 @@
 <%= yield %>
+
+--
+<%= @email_brand_name.presence || "Loc Vallis" %>
+<%= ENV.fetch("APP_BASE_URL", "http://localhost:3000") %>

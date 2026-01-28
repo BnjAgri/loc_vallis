@@ -1,11 +1,15 @@
 fr:
   date:
     formats:
+      default: "%d/%m/%Y"
       short: "%d/%m/%Y"
+      long: "%-d %B %Y"
 
   time:
     formats:
+      default: "%d/%m/%Y %H:%M"
       short: "%d/%m %H:%M"
+      long: "%-d %B %Y à %H:%M"
 
   app:
     title: "LocVallis"

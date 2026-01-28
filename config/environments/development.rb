@@ -4,28 +4,22 @@ Rails.application.configure do
   config.action_mailer.default_url_options = { host: "localhost", port: 3000 }
 
   # By default, don't try to send real emails in development.
+  # You can enable SMTP by setting SMTP_ADDRESS.
   config.action_mailer.delivery_method = :test
-  config.action_mailer.raise_delivery_errors = false
 
   # Optional SMTP configuration (for testing real deliveries locally).
   # Example (Mailtrap / Gmail app password / etc.)
   #   SMTP_ADDRESS=smtp.gmail.com SMTP_PORT=587 SMTP_USERNAME=... SMTP_PASSWORD=...
   #   MAIL_FROM=no-reply@your-domain.tld
   if ENV["SMTP_ADDRESS"].present?
-    smtp_port = ENV.fetch("SMTP_PORT", 587).to_i
-    use_ssl = ENV.fetch("SMTP_SSL", "false") == "true"
-
     config.action_mailer.delivery_method = :smtp
     config.action_mailer.smtp_settings = {
       address: ENV.fetch("SMTP_ADDRESS"),
-      port: smtp_port,
+      port: ENV.fetch("SMTP_PORT", 587).to_i,
       user_name: ENV["SMTP_USERNAME"],
       password: ENV["SMTP_PASSWORD"],
       authentication: (ENV["SMTP_AUTH"].presence || "plain"),
-      enable_starttls_auto: ENV.fetch("SMTP_STARTTLS", "true") == "true",
-      ssl: use_ssl,
-      open_timeout: ENV.fetch("SMTP_OPEN_TIMEOUT", 30).to_i,
-      read_timeout: ENV.fetch("SMTP_READ_TIMEOUT", 30).to_i
+      enable_starttls_auto: ENV.fetch("SMTP_STARTTLS", "true") == "true"
     }
     config.action_mailer.raise_delivery_errors = true
   end
@@ -67,6 +61,10 @@ Rails.application.configure do
   else
     :local
   end
+
+  # Don't care if the mailer can't send.
+  # When SMTP_ADDRESS is present we override this to true above.
+  config.action_mailer.raise_delivery_errors = false
 
   config.action_mailer.perform_caching = false
 
