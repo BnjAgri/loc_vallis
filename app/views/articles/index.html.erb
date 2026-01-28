@@ -14,12 +14,16 @@
 	<% if @articles.any? %>
 		<div class="row g-3 mt-1">
 			<% @articles.each do |article| %>
-				<% image_src = article.image.attached? ? url_for(article.image) : article.image_url %>
+				<% image_src = article.image.attached? ? url_for(article.image) : article.safe_image_url %>
 				<div class="col-12 col-md-6 col-lg-4">
 					<%= link_to article_path(id: article), class: "text-decoration-none" do %>
 						<div class="card lv-card lv-card--hover h-100 overflow-hidden">
 							<div style="height: 190px; overflow: hidden;">
-								<%= image_tag image_src, alt: article.title, class: "w-100 h-100", style: "object-fit: cover;" %>
+								<% if image_src.present? %>
+									<%= image_tag image_src, alt: article.title, class: "w-100 h-100", style: "object-fit: cover;" %>
+								<% else %>
+									<div class="w-100 h-100" style="background: #f3f4f6;"></div>
+								<% end %>
 							</div>
 
 							<div class="card-body">
