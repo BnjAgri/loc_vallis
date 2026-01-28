@@ -22,7 +22,7 @@
 		subtitle: [(@article.owner&.guesthouse_name.presence || @article.owner&.email), l(@article.created_at.to_date, format: :short)].compact.join(" · "),
 		actions: actions %>
 
-	<% image_src = @article.image.attached? ? url_for(@article.image) : @article.image_url %>
+	<% image_src = @article.image.attached? ? url_for(@article.image) : @article.safe_image_url %>
 
 	<div class="card lv-card overflow-hidden">
 		<div style="height: 360px; overflow: hidden;">
@@ -33,7 +33,7 @@
 
 		<div class="card-body">
 			<div class="prose">
-				<%= simple_format(@article.content.to_s) %>
+				<%= simple_format(strip_tags(@article.content.to_s)) %>
 			</div>
 		</div>
 	</div>
