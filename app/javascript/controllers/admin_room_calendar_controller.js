@@ -14,6 +14,8 @@ export default class extends Controller {
     this.bookedRanges = this.normalizeRanges(this.bookedRangesValue || [])
     this.pendingRanges = this.normalizeRanges(this.pendingRangesValue || [])
 
+    this.onDayClick = this.onDayClick.bind(this)
+
     const repaintHook = this.applyDayClasses.bind(this)
     const decorateHook = this.decorateDay.bind(this)
 
@@ -28,7 +30,7 @@ export default class extends Controller {
         instance.clear()
       },
       onDayCreate: [decorateHook],
-      onReady: [repaintHook],
+      onReady: [repaintHook, (_selectedDates, _dateStr, instance) => this.bindClickHandler(instance)],
       onMonthChange: [repaintHook],
       onYearChange: [repaintHook],
       onValueUpdate: [repaintHook]
@@ -38,7 +40,46 @@ export default class extends Controller {
   }
 
   disconnect() {
+    if (this.picker?.daysContainer && this.onDayClick) {
+      this.picker.daysContainer.removeEventListener("click", this.onDayClick, true)
+    }
+
     if (this.picker) this.picker.destroy()
+  }
+
+  bindClickHandler(instance) {
+    if (!instance?.daysContainer) return
+    instance.daysContainer.removeEventListener("click", this.onDayClick, true)
+    instance.daysContainer.addEventListener("click", this.onDayClick, true)
+  }
+
+  onDayClick(event) {
+    const dayElem = event.target?.closest?.(".flatpickr-day")
+    if (!dayElem?.dateObj) return
+
+    const dateKey = this.formatDateKey(dayElem.dateObj)
+    if (!dateKey) return
+
+    const isBooked = this.isInAnyRange(dateKey, this.bookedRanges)
+    const isPending = !isBooked && this.isInAnyRange(dateKey, this.pendingRanges)
+
+    // Prevent Flatpickr from selecting/closing when we click inside the calendar.
+    event.preventDefault()
+    event.stopPropagation()
+    event.stopImmediatePropagation?.()
+
+    if (!isBooked && !isPending) return
+
+    const kind = isBooked ? "booked" : "pending"
+    const bookingId = this.bookingIdForDate(dateKey, isBooked ? this.bookedRanges : this.pendingRanges)
+
+    if (bookingId) {
+      window.location.href = `/admin/bookings/${bookingId}`
+      return
+    }
+
+    const url = `/admin/bookings?date=${encodeURIComponent(dateKey)}&kind=${encodeURIComponent(kind)}`
+    window.location.href = url
   }
 
   applyDayClasses(_selectedDates, _dateStr, instance) {
@@ -65,13 +106,13 @@ export default class extends Controller {
 
     if (this.isInAnyRange(dateKey, this.bookedRanges)) {
       dayElem.classList.add("lv-booked-day")
-      dayElem.title = "Réservé"
+      dayElem.title = "Réservé — cliquer pour voir la réservation"
       return
     }
 
     if (this.isInAnyRange(dateKey, this.pendingRanges)) {
       dayElem.classList.add("lv-pending-day")
-      dayElem.title = "Demande en attente"
+      dayElem.title = "Demande en attente — cliquer pour voir la réservation"
       return
     }
 
@@ -86,8 +127,22 @@ export default class extends Controller {
       .filter((range) => range && range.from && range.to)
       .map((range) => ({
         from: this.normalizeDateString(range.from),
-        to: this.normalizeDateString(range.to)
+        to: this.normalizeDateString(range.to),
+        bookingId: range.booking_id || range.bookingId || null
       }))
+  }
+
+  bookingIdForDate(dateKey, ranges) {
+    const ids = new Set()
+
+    ranges.forEach((range) => {
+      if (!range?.from || !range?.to) return
+      if (!(range.from <= dateKey && dateKey <= range.to)) return
+      if (range.bookingId) ids.add(range.bookingId)
+    })
+
+    if (ids.size !== 1) return null
+    return Array.from(ids)[0]
   }
 
   normalizeDateString(value) {

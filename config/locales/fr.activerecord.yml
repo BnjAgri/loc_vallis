@@ -5,6 +5,13 @@ fr:
         current_password: "Mot de passe actuel"
       owner:
         current_password: "Mot de passe actuel"
+      room:
+        name: "Nom"
+        description: "Description"
+        capacity: "Capacité"
+        photos: "Photos"
+        room_url: "URLs d'images"
+        optional_services: "Services optionnels"
     errors:
       messages:
         record_invalid: "Validation échouée : %{errors}"

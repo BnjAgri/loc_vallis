@@ -9,6 +9,21 @@
   display: none;
 }
 
+.lv-calendar-wrap {
+  display: block;
+  width: fit-content;
+  max-width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.lv-admin-rooms-combined {
+  width: fit-content;
+  max-width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
 .lv-calendar-dot {
   display: inline-block;
   width: 0.75rem;
@@ -59,9 +74,19 @@
   color: #664d03;
 }
 
+.flatpickr-calendar .flatpickr-day.lv-booked-day,
+.flatpickr-calendar .flatpickr-day.lv-pending-day {
+  cursor: pointer;
+}
+
 .flatpickr-day.lv-booked-day:hover,
 .flatpickr-day.lv-pending-day:hover,
 .flatpickr-day.lv-open-day:hover {
   background: inherit;
   border-color: inherit;
+}
+
+.flatpickr-day.lv-booked-day:hover,
+.flatpickr-day.lv-pending-day:hover {
+  box-shadow: inset 0 0 0 1px currentColor;
 }
