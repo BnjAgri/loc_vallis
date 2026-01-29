@@ -5,7 +5,7 @@
     <% end %>
 
     <% if owner_signed_in? %>
-      <ul class="navbar-nav d-none d-sm-flex flex-row align-items-center gap-1 ms-2">
+      <ul class="navbar-nav d-none d-sm-flex flex-row align-items-center gap-2 ms-2">
         <li class="nav-item">
           <%= link_to t("shared.nav.dashboard"), admin_bookings_path, class: ["nav-link", (request.path.start_with?(admin_bookings_path) ? "active" : nil)].compact.join(" ") %>
         </li>
@@ -33,7 +33,7 @@
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <% current_path = request.path %>
       <% if owner_signed_in? %>
-        <ul class="navbar-nav d-sm-none">
+        <ul class="navbar-nav d-sm-none gap-2">
           <li class="nav-item">
             <%= link_to t("shared.nav.dashboard"), admin_bookings_path, class: ["nav-link", (current_path.start_with?(admin_bookings_path) ? "active" : nil)].compact.join(" ") %>
           </li>
@@ -53,7 +53,7 @@
           </li>
         </ul>
 
-        <ul class="navbar-nav me-auto">
+        <ul class="navbar-nav me-auto gap-2">
           <li class="nav-item">
             <%= link_to t("shared.nav.rooms"), rooms_path, class: ["nav-link", (current_path == rooms_path ? "active" : nil)].compact.join(" ") %>
           </li>
@@ -63,7 +63,7 @@
           </li>
         </ul>
       <% else %>
-        <ul class="navbar-nav me-auto">
+        <ul class="navbar-nav me-auto gap-2">
           <li class="nav-item">
             <%= link_to t("shared.nav.rooms"), rooms_path, class: ["nav-link", (current_path == rooms_path ? "active" : nil)].compact.join(" ") %>
           </li>
@@ -88,12 +88,12 @@
         </ul>
       <% end %>
 
-      <ul class="navbar-nav ms-auto">
+      <ul class="navbar-nav ms-auto gap-2">
         <% if (owner_signed_in? || user_signed_in?) && @login_notifications_count.to_i.positive? %>
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle d-inline-flex align-items-center position-relative" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="<%= t('notifications.login.title') %>">
               <i class="fa-solid fa-bell" aria-hidden="true"></i>
-              <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill text-bg-danger">
+              <span class="position-absolute top-0 start-100 translate-middle-y badge rounded-pill text-bg-danger">
                 <%= @login_notifications_count %>
               </span>
             </a>
