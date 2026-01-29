@@ -1,5 +1,10 @@
 en:
   activerecord:
+    attributes:
+      user:
+        current_password: "Current password"
+      owner:
+        current_password: "Current password"
     errors:
       models:
         booking:
