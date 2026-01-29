@@ -3,7 +3,7 @@ class BookingMailer < ApplicationMailer
     @booking = params.fetch(:booking)
     set_booking_brand!
     @booking_url = booking_url_for(@booking)
-    mail(to: recipient_emails_for_booking, subject: brand_subject("Booking requested"))
+    mail(to: recipient_emails_for_booking, subject: brand_subject("Demande de réservation envoyée"))
   end
 
   def approved
@@ -12,21 +12,21 @@ class BookingMailer < ApplicationMailer
     @deadline = @booking.payment_expires_at
     @deadline_formatted = @deadline.present? ? I18n.l(@deadline, format: :long) : nil
     @booking_url = booking_url_for(@booking)
-    mail(to: recipient_emails_for_booking, subject: brand_subject("Booking approved — payment required"))
+    mail(to: recipient_emails_for_booking, subject: brand_subject("Réservation acceptée — paiement requis"))
   end
 
   def declined
     @booking = params.fetch(:booking)
     set_booking_brand!
     @booking_url = booking_url_for(@booking)
-    mail(to: recipient_emails_for_booking, subject: brand_subject("Booking declined"))
+    mail(to: recipient_emails_for_booking, subject: brand_subject("Réservation refusée"))
   end
 
   def confirmed
     @booking = params.fetch(:booking)
     set_booking_brand!
     @booking_url = booking_url_for(@booking)
-    mail(to: recipient_emails_for_booking, subject: brand_subject("Booking confirmed"))
+    mail(to: recipient_emails_for_booking, subject: brand_subject("Réservation confirmée"))
   end
 
   def canceled
@@ -34,21 +34,21 @@ class BookingMailer < ApplicationMailer
     set_booking_brand!
     @canceled_by = params[:canceled_by]
     @booking_url = booking_url_for(@booking)
-    mail(to: recipient_emails_for_booking, subject: brand_subject("Booking canceled"))
+    mail(to: recipient_emails_for_booking, subject: brand_subject("Réservation annulée"))
   end
 
   def expired
     @booking = params.fetch(:booking)
     set_booking_brand!
     @booking_url = booking_url_for(@booking)
-    mail(to: recipient_emails_for_booking, subject: brand_subject("Booking expired"))
+    mail(to: recipient_emails_for_booking, subject: brand_subject("Réservation expirée"))
   end
 
   def refunded
     @booking = params.fetch(:booking)
     set_booking_brand!
     @booking_url = booking_url_for(@booking)
-    mail(to: recipient_emails_for_booking, subject: brand_subject("Booking refunded"))
+    mail(to: recipient_emails_for_booking, subject: brand_subject("Réservation remboursée"))
   end
 
   def review_request
@@ -56,7 +56,7 @@ class BookingMailer < ApplicationMailer
     set_booking_brand!
     @booking_url = booking_url_for(@booking)
 
-    mail(to: @booking.user.email, subject: brand_subject("How was your stay?"))
+    mail(to: @booking.user.email, subject: brand_subject("Comment s’est passé votre séjour ?"))
   end
 
   private

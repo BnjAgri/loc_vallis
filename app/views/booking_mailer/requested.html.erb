@@ -1,8 +1,12 @@
 <% content_for :preheader do %>
-  Réservation #<%= @booking.id %> demandée pour <%= @booking.room.name %>.
+  Votre demande a été envoyée au propriétaire (réservation #<%= @booking.id %>).
 <% end %>
 
-<h1 style="margin:0 0 10px 0; font-size:20px; line-height:1.25;">Réservation demandée</h1>
+<h1 style="margin:0 0 10px 0; font-size:20px; line-height:1.25;">Votre demande a été envoyée au propriétaire</h1>
+<p style="margin:0 0 14px 0; color:#6B7280;">
+  Nous vous contacterons par téléphone ou messagerie dans les 24 heures afin de valider votre réservation.
+  D'ici là, nous nous tenons à votre disposition. Merci de votre confiance!
+</p>
 <p style="margin:0 0 14px 0; color:#6B7280;">Réservation #<%= @booking.id %></p>
 
 <table role="presentation" cellspacing="0" cellpadding="0" border="0" style="width:100%; font-size:14px;">

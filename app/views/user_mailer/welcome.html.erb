@@ -4,8 +4,12 @@
 
 <h1 style="margin:0 0 10px 0; font-size:20px; line-height:1.25;">Bienvenue <%= @user.display_name %>,</h1>
 <p style="margin:0 0 12px 0;">Votre compte a été créé avec succès.</p>
-<p style="margin:0 0 12px 0;">Vous pouvez maintenant vous connecter et commencer à réserver.</p>
+<p style="margin:0 0 12px 0;">
+  Vous pouvez maintenant vous connecter et commencer à réserver.
+  <br>
+  Votre identifiant : <strong><%= @login_identifier %></strong>
+</p>
 
-<%= render "shared/email_button", url: ENV.fetch("APP_BASE_URL", "http://localhost:3000"), label: "Accéder à Loc Vallis" %>
+<%= render "shared/email_button", url: @login_url, label: "Accéder à Loc Vallis" %>
 
 <p style="margin:14px 0 0 0; color:#6B7280; font-size:13px;">À très vite,<br>Loc Vallis</p>
