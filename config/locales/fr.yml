@@ -84,6 +84,7 @@ fr:
       dashboard: "Tableau de bord"
       accommodations: "Hébergements"
       planning: "Planning"
+      clients: "Clients"
       login: "Se connecter"
     authorization:
       not_authorized: "Vous n'êtes pas autorisé à effectuer cette action."
@@ -201,6 +202,15 @@ fr:
       missing_credentials: "Email et mot de passe requis"
       invalid_credentials: "Email ou mot de passe invalide"
       logged_out: "Déconnecté"
+
+  notifications:
+    login:
+      title: "Nouveautés depuis votre dernière visite"
+      new_booking: "Nouvelle réservation #%{id}."
+      booking_status_changed: "Le statut de la réservation #%{id} a changé : %{status}."
+      new_message: "Nouveau message pour la réservation #%{id}."
+      actions:
+        open: "Ouvrir"
 
   unified_sessions:
     new:
@@ -320,6 +330,56 @@ fr:
         added: "Période d'ouverture ajoutée."
         removed: "Période d'ouverture supprimée."
         updated: "Période d'ouverture mise à jour."
+
+    clients:
+      flash:
+        deleted: "Profil utilisateur supprimé."
+        active_bookings: "Des réservations sont actives pour cet utilisateur. Veuillez les annuler d'abord."
+      index:
+        title: "Clients"
+        empty: "Aucun client pour le moment."
+        client: "Client"
+        email: "Email"
+        next_booking: "Prochaine réservation"
+        current_status: "Statut actuel"
+        total_bookings: "Réservations"
+        cancellations: "Annulations"
+        no_upcoming: "A venir : —"
+        no_status: "—"
+        sort:
+          label: "Trier :"
+          alpha: "Nom"
+          alpha_asc: "Nom A→Z"
+          alpha_desc: "Nom Z→A"
+          next_booking: "Prochaine réservation"
+          next_booking_asc: "Prochaine ↑"
+          next_booking_desc: "Prochaine ↓"
+      show:
+        back: "Retour"
+        ban: "Bannir"
+        ban_cancel: "Annuler"
+        ban_confirm: "Cette opération est irréversible, voulez vous effacer le profil de cet utilisateur ?"
+        profile: "Profil"
+        full_name: "Nom"
+        phone: "Téléphone"
+        address: "Adresse"
+        next_booking: "Prochaine réservation"
+        no_upcoming: "Aucune réservation à venir."
+        open_booking: "Ouvrir"
+        booking_history: "Historique des réservations"
+        no_bookings: "Aucune réservation pour le moment."
+        dates: "Dates"
+        room: "Chambre"
+        status: "Statut"
+        open: "Ouvrir"
+        messages: "Messages"
+        no_messages: "Aucun message pour le moment."
+        more_messages: "+%{count} messages"
+        reviews: "Avis"
+        no_reviews: "Aucun avis pour le moment."
+        rating:
+          one: "%{count} étoile"
+          other: "%{count} étoiles"
 
   rooms:
     show:

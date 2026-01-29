@@ -1,0 +1,16 @@
+<div class="d-flex flex-column gap-2">
+  <div class="fw-semibold"><%= t("notifications.login.title") %></div>
+
+  <% notifications.each do |n| %>
+    <div class="d-flex align-items-center justify-content-between gap-2 flex-wrap">
+      <div><%= n.fetch(:text) %></div>
+      <% if n[:url].present? %>
+        <%= link_to(
+          (n[:action_label] || t("notifications.login.actions.open")),
+          mark_notifications_read_path(redirect_to: n[:url]),
+          class: "btn btn-sm btn-outline-primary"
+        ) %>
+      <% end %>
+    </div>
+  <% end %>
+</div>

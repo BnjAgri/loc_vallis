@@ -30,6 +30,8 @@ Rails.application.routes.draw do
     get "login/email_exists", to: "unified_sessions#email_exists"
     delete "logout", to: "unified_sessions#destroy"
 
+    get "notifications/mark_read", to: "notifications#mark_read", as: :mark_notifications_read
+
     root to: "rooms#index"
 
     get "legal", to: "pages#legal"
@@ -74,6 +76,8 @@ Rails.application.routes.draw do
           post :refund
         end
       end
+
+      resources :clients, only: %i[index show destroy]
     end
   end
 end

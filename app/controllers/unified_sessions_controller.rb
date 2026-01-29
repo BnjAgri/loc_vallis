@@ -33,6 +33,7 @@ class UnifiedSessionsController < ApplicationController
         sign_out(:user) if user_signed_in?
         sign_in(:owner, owner)
         session.delete(:return_to)
+        set_login_notifications_flash(owner)
         redirect_to(return_to || after_sign_in_path_for(owner))
       else
         flash.now[:alert] = t("sessions.flash.invalid_credentials")
@@ -46,6 +47,7 @@ class UnifiedSessionsController < ApplicationController
       sign_out(:owner) if owner_signed_in?
       sign_in(:user, user)
       session.delete(:return_to)
+      set_login_notifications_flash(user)
       redirect_to(return_to || after_sign_in_path_for(user))
     else
       flash.now[:alert] = t("sessions.flash.invalid_credentials")

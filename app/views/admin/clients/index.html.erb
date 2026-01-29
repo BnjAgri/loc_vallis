@@ -1,0 +1,111 @@
+<div class="container py-4">
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <h1 class="h3 mb-0"><%= t("admin.clients.index.title") %></h1>
+    <%= link_to t("shared.nav.dashboard"), admin_bookings_path, class: "btn btn-outline-primary" %>
+  </div>
+
+  <% if @clients.empty? %>
+    <p class="text-muted"><%= t("admin.clients.index.empty") %></p>
+  <% else %>
+    <% current_sort = params[:sort].presence || "next_booking" %>
+    <% current_direction = params[:direction].presence || "asc" %>
+
+    <div class="d-flex flex-wrap gap-2 justify-content-end mb-2">
+      <span class="text-muted small align-self-center"><%= t("admin.clients.index.sort.label") %></span>
+
+      <div class="btn-group" role="group" aria-label="<%= t('admin.clients.index.sort.alpha') %>">
+        <%= link_to t("admin.clients.index.sort.alpha_asc"), url_for(sort: "alpha", direction: "asc"), class: ["btn", "btn-sm", (current_sort == "alpha" && current_direction == "asc") ? "btn-primary" : "btn-outline-primary"] %>
+        <%= link_to t("admin.clients.index.sort.alpha_desc"), url_for(sort: "alpha", direction: "desc"), class: ["btn", "btn-sm", (current_sort == "alpha" && current_direction == "desc") ? "btn-primary" : "btn-outline-primary"] %>
+      </div>
+
+      <div class="btn-group" role="group" aria-label="<%= t('admin.clients.index.sort.next_booking') %>">
+        <%= link_to t("admin.clients.index.sort.next_booking_asc"), url_for(sort: "next_booking", direction: "asc"), class: ["btn", "btn-sm", (current_sort == "next_booking" && current_direction == "asc") ? "btn-primary" : "btn-outline-primary"] %>
+        <%= link_to t("admin.clients.index.sort.next_booking_desc"), url_for(sort: "next_booking", direction: "desc"), class: ["btn", "btn-sm", (current_sort == "next_booking" && current_direction == "desc") ? "btn-primary" : "btn-outline-primary"] %>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="table-responsive">
+        <table class="table mb-0 align-middle">
+          <thead>
+            <tr>
+              <th><%= t("admin.clients.index.client") %></th>
+              <th><%= t("admin.clients.index.email") %></th>
+              <th class="text-center"><%= t("admin.clients.index.next_booking") %></th>
+              <th class="text-center"><%= t("admin.clients.index.current_status") %></th>
+              <th class="text-center"><%= t("admin.clients.index.total_bookings") %></th>
+              <th class="text-center"><%= t("admin.clients.index.cancellations") %></th>
+            </tr>
+          </thead>
+          <tbody>
+            <% @clients.each do |client| %>
+              <tr>
+                <td class="fw-semibold">
+                  <%= link_to client.display_name, admin_client_path(id: client), class: "text-decoration-none" %>
+                </td>
+                <td class="text-muted"><%= client.email %></td>
+                <td class="text-center">
+                  <% if client.respond_to?(:next_booking_start_date) && client.next_booking_start_date.present? %>
+                    <div class="d-flex justify-content-center">
+                      <span class="badge text-bg-success"><%= l(client.next_booking_start_date.to_date) %></span>
+                    </div>
+                  <% else %>
+                    <div class="d-flex justify-content-center">
+                      <span class="text-muted"><%= t("admin.clients.index.no_upcoming") %></span>
+                    </div>
+                  <% end %>
+                </td>
+
+                <td class="text-center">
+                  <div class="d-flex justify-content-center gap-2 flex-wrap">
+                    <% if client.respond_to?(:current_booking_status) && client.current_booking_status.present? %>
+                      <span class="badge <%= booking_status_badge_class(client.current_booking_status) %>"><%= booking_status_label(client.current_booking_status) %></span>
+                    <% elsif client.respond_to?(:last_relevant_booking_start_date) && client.last_relevant_booking_start_date.present? %>
+                      <span class="badge text-bg-light text-muted border"><%= l(client.last_relevant_booking_start_date.to_date) %></span>
+                      <% if client.respond_to?(:last_relevant_booking_status) && client.last_relevant_booking_status.present? %>
+                        <span class="badge <%= booking_status_badge_class(client.last_relevant_booking_status) %>"><%= booking_status_label(client.last_relevant_booking_status) %></span>
+                      <% end %>
+                    <% else %>
+                      <span class="text-muted"><%= t("admin.clients.index.no_status") %></span>
+                    <% end %>
+                  </div>
+                </td>
+
+                <td class="text-center">
+                  <div class="d-flex justify-content-center">
+                    <span class="badge text-bg-secondary"><%= client.respond_to?(:bookings_count) ? client.bookings_count.to_i : client.bookings.size %></span>
+                  </div>
+                </td>
+                <td class="text-center">
+                  <div class="d-flex justify-content-center">
+                    <span class="badge text-bg-warning"><%= client.respond_to?(:cancellations_count) ? client.cancellations_count.to_i : 0 %></span>
+                  </div>
+                </td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <% if defined?(@total_pages) && @total_pages.to_i > 1 %>
+      <nav class="mt-3" aria-label="Pagination">
+        <ul class="pagination justify-content-center mb-0">
+          <li class="page-item <%= @page.to_i <= 1 ? 'disabled' : '' %>">
+            <%= link_to "←", (@page.to_i <= 1 ? "#" : url_for(page: @page.to_i - 1)), class: "page-link", aria: { label: "Previous" } %>
+          </li>
+
+          <% 1.upto(@total_pages.to_i) do |p| %>
+            <li class="page-item <%= p == @page.to_i ? 'active' : '' %>">
+              <%= link_to p, url_for(page: p), class: "page-link", aria: { current: (p == @page.to_i ? "page" : nil) } %>
+            </li>
+          <% end %>
+
+          <li class="page-item <%= @page.to_i >= @total_pages.to_i ? 'disabled' : '' %>">
+            <%= link_to "→", (@page.to_i >= @total_pages.to_i ? "#" : url_for(page: @page.to_i + 1)), class: "page-link", aria: { label: "Next" } %>
+          </li>
+        </ul>
+      </nav>
+    <% end %>
+  <% end %>
+</div>

@@ -60,6 +60,7 @@ en:
       dashboard: "Dashboard"
       accommodations: "Accommodations"
       planning: "Planning"
+      clients: "Customers"
       login: "Log in"
     authorization:
       not_authorized: "You are not authorized to perform this action."
@@ -247,6 +248,56 @@ en:
         declined: "Booking declined."
         canceled: "Booking canceled."
         refund_initiated: "Refund initiated."
+
+    clients:
+      flash:
+        deleted: "User profile deleted."
+        active_bookings: "Active bookings exist for this user. Please cancel them first."
+      index:
+        title: "Customers"
+        empty: "No customers yet."
+        client: "Customer"
+        email: "Email"
+        next_booking: "Next booking"
+        current_status: "Current status"
+        total_bookings: "Bookings"
+        cancellations: "Cancellations"
+        no_upcoming: "Upcoming: —"
+        no_status: "—"
+        sort:
+          label: "Sort:"
+          alpha: "Name"
+          alpha_asc: "Name A→Z"
+          alpha_desc: "Name Z→A"
+          next_booking: "Next booking"
+          next_booking_asc: "Next ↑"
+          next_booking_desc: "Next ↓"
+      show:
+        back: "Back"
+        ban: "Ban"
+        ban_cancel: "Cancel"
+        ban_confirm: "This action is irreversible. Do you want to delete this user's profile?"
+        profile: "Profile"
+        full_name: "Name"
+        phone: "Phone"
+        address: "Address"
+        next_booking: "Next booking"
+        no_upcoming: "No upcoming booking."
+        open_booking: "Open"
+        booking_history: "Booking history"
+        no_bookings: "No bookings yet."
+        dates: "Dates"
+        room: "Room"
+        status: "Status"
+        open: "Open"
+        messages: "Messages"
+        no_messages: "No messages yet."
+        more_messages: "+%{count} messages"
+        reviews: "Reviews"
+        no_reviews: "No reviews yet."
+        rating:
+          one: "%{count} star"
+          other: "%{count} stars"
 
   rooms:
     show:

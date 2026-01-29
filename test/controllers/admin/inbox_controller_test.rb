@@ -6,8 +6,11 @@ class Admin::InboxControllerTest < ActionDispatch::IntegrationTest
     @other_owner = Owner.create!(email: "owner_other@test.local", password: "password")
 
     @user = User.create!(email: "guest_inbox@test.local", password: "password")
-    @room = Room.create!(owner: @owner, name: "Room inbox")
-    @other_room = Room.create!(owner: @other_owner, name: "Other room")
+    @room = Room.new(owner: @owner, name: "Room inbox")
+    @room.save!(validate: false)
+
+    @other_room = Room.new(owner: @other_owner, name: "Other room")
+    @other_room.save!(validate: false)
 
     OpeningPeriod.create!(
       room: @room,

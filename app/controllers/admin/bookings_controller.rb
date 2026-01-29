@@ -29,12 +29,31 @@ module Admin
         end
       end
 
-      @bookings = @bookings.includes(:room, :user).order(created_at: :desc)
+      per_page = 10
 
-      if params[:date].present? && @bookings.size == 1
-        redirect_to admin_booking_path(id: @bookings.first)
+      filtered_bookings = @bookings
+
+      total_bookings = filtered_bookings.count
+
+      if params[:date].present? && total_bookings == 1
+        redirect_to admin_booking_path(id: filtered_bookings.first)
         return
       end
+
+      @bookings_page = params[:bookings_page].to_i
+      @bookings_page = 1 if @bookings_page < 1
+      @total_bookings = total_bookings
+      @bookings_total_pages = (@total_bookings.to_f / per_page).ceil
+      @bookings_total_pages = 1 if @bookings_total_pages < 1
+      @bookings_page = @bookings_total_pages if @bookings_page > @bookings_total_pages
+
+      bookings_offset = (@bookings_page - 1) * per_page
+      @bookings = filtered_bookings
+        .includes(:room, :user)
+        .order(created_at: :desc)
+        .limit(per_page)
+        .offset(bookings_offset)
+
       @rooms = policy_scope(Room).includes(:opening_periods).order(created_at: :desc)
 
       unread_bookings_scope = bookings_scope
@@ -45,12 +64,23 @@ module Admin
 
       @unread_conversations_count = unread_bookings_scope.count
 
-      @recent_messages = Message
+      recent_messages_scope = Message
         .joins(:booking)
         .merge(bookings_scope)
+
+      @messages_page = params[:messages_page].to_i
+      @messages_page = 1 if @messages_page < 1
+      @total_messages = recent_messages_scope.count
+      @messages_total_pages = (@total_messages.to_f / per_page).ceil
+      @messages_total_pages = 1 if @messages_total_pages < 1
+      @messages_page = @messages_total_pages if @messages_page > @messages_total_pages
+
+      messages_offset = (@messages_page - 1) * per_page
+      @recent_messages = recent_messages_scope
         .includes(:sender, booking: %i[room user])
         .order(created_at: :desc)
-        .limit(10)
+        .limit(per_page)
+        .offset(messages_offset)
     end
 
     def show
@@ -59,7 +89,7 @@ module Admin
 
       @booking.mark_owner_read!
 
-      @messages = @booking.messages.includes(:sender).order(:created_at)
+      @messages = @booking.messages.includes(:sender).order(created_at: :desc)
       @message = Message.new
     end
 

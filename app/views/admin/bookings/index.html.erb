@@ -45,6 +45,26 @@
                 <% end %>
               <% end %>
             </div>
+
+            <% if @messages_total_pages.to_i > 1 %>
+              <nav class="mt-3" aria-label="Messages pagination">
+                <ul class="pagination pagination-sm justify-content-center mb-0">
+                  <li class="page-item <%= @messages_page.to_i <= 1 ? 'disabled' : '' %>">
+                    <%= link_to "←", (@messages_page.to_i <= 1 ? "#" : url_for(messages_page: @messages_page.to_i - 1)), class: "page-link", aria: { label: "Previous" } %>
+                  </li>
+
+                  <% 1.upto(@messages_total_pages.to_i) do |p| %>
+                    <li class="page-item <%= p == @messages_page.to_i ? 'active' : '' %>">
+                      <%= link_to p, url_for(messages_page: p), class: "page-link", aria: { current: (p == @messages_page.to_i ? "page" : nil) } %>
+                    </li>
+                  <% end %>
+
+                  <li class="page-item <%= @messages_page.to_i >= @messages_total_pages.to_i ? 'disabled' : '' %>">
+                    <%= link_to "→", (@messages_page.to_i >= @messages_total_pages.to_i ? "#" : url_for(messages_page: @messages_page.to_i + 1)), class: "page-link", aria: { label: "Next" } %>
+                  </li>
+                </ul>
+              </nav>
+            <% end %>
           <% end %>
         </div>
       </div>
@@ -125,6 +145,26 @@
                 </tbody>
               </table>
             </div>
+
+            <% if @bookings_total_pages.to_i > 1 %>
+              <nav class="mt-3" aria-label="Bookings pagination">
+                <ul class="pagination pagination-sm justify-content-center mb-0">
+                  <li class="page-item <%= @bookings_page.to_i <= 1 ? 'disabled' : '' %>">
+                    <%= link_to "←", (@bookings_page.to_i <= 1 ? "#" : url_for(bookings_page: @bookings_page.to_i - 1)), class: "page-link", aria: { label: "Previous" } %>
+                  </li>
+
+                  <% 1.upto(@bookings_total_pages.to_i) do |p| %>
+                    <li class="page-item <%= p == @bookings_page.to_i ? 'active' : '' %>">
+                      <%= link_to p, url_for(bookings_page: p), class: "page-link", aria: { current: (p == @bookings_page.to_i ? "page" : nil) } %>
+                    </li>
+                  <% end %>
+
+                  <li class="page-item <%= @bookings_page.to_i >= @bookings_total_pages.to_i ? 'disabled' : '' %>">
+                    <%= link_to "→", (@bookings_page.to_i >= @bookings_total_pages.to_i ? "#" : url_for(bookings_page: @bookings_page.to_i + 1)), class: "page-link", aria: { label: "Next" } %>
+                  </li>
+                </ul>
+              </nav>
+            <% end %>
           <% end %>
         </div>
       </div>
