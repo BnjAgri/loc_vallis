@@ -48,6 +48,7 @@ class BookingMailer < ApplicationMailer
     @booking = params.fetch(:booking)
     set_booking_brand!
     @booking_url = booking_url_for(@booking)
+    @cgv_url = cgv_url_for
     mail(to: recipient_emails_for_booking, subject: brand_subject("Réservation remboursée"))
   end
 
@@ -74,6 +75,17 @@ class BookingMailer < ApplicationMailer
 
     booking_url(
       id: booking,
+      host: uri.host,
+      protocol: uri.scheme,
+      port: uri.port
+    )
+  end
+
+  def cgv_url_for
+    base = ENV.fetch("APP_BASE_URL", "http://localhost:3000")
+    uri = URI.parse(base)
+
+    cgv_url(
       host: uri.host,
       protocol: uri.scheme,
       port: uri.port

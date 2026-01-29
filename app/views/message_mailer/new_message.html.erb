@@ -11,6 +11,7 @@
   <div style="white-space:pre-wrap;"><%= ERB::Util.html_escape(@message.body.to_s) %></div>
 </div>
 
-<%= render "shared/email_button", url: @booking_url, label: "Voir la réservation" %>
+<% cta_label = @message.sender.is_a?(Owner) ? "Répondre" : "Voir la réservation" %>
+<%= render "shared/email_button", url: @booking_url, label: cta_label %>
 
 <p style="margin:14px 0 0 0; color:#6B7280; font-size:13px;">Vous pouvez répondre directement depuis la conversation sur le site.</p>
