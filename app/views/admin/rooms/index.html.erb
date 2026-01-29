@@ -53,8 +53,8 @@
     <div class="row g-3">
       <% @rooms.each do |room| %>
         <% open_ranges = room.opening_periods.sort_by(&:start_date).map { |p| { from: p.start_date, to: (p.end_date - 1.day) } } %>
-        <% booked_ranges = room.bookings.select { |b| Booking::RESERVED_STATUSES.include?(b.status) }.sort_by(&:start_date).map { |b| { from: b.start_date, to: (b.end_date - 1.day) } } %>
-        <% pending_ranges = room.bookings.select { |b| b.status == "requested" }.sort_by(&:start_date).map { |b| { from: b.start_date, to: (b.end_date - 1.day) } } %>
+        <% booked_ranges = room.bookings.select { |b| Booking::RESERVED_STATUSES.include?(b.status) }.sort_by(&:start_date).map { |b| { from: b.start_date, to: (b.end_date - 1.day), booking_id: b.id } } %>
+        <% pending_ranges = room.bookings.select { |b| b.status == "requested" }.sort_by(&:start_date).map { |b| { from: b.start_date, to: (b.end_date - 1.day), booking_id: b.id } } %>
 
         <div class="col-12 col-md-6">
           <div class="card h-100">

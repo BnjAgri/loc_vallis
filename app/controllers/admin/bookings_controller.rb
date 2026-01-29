@@ -6,7 +6,35 @@ module Admin
     def index
       bookings_scope = policy_scope(Booking)
 
-      @bookings = bookings_scope.includes(:room, :user).order(created_at: :desc)
+      @bookings = bookings_scope
+      if params[:date].present?
+        begin
+          date = Date.iso8601(params[:date].to_s)
+
+          statuses =
+            case params[:kind].to_s
+            when "pending"
+              ["requested"]
+            when "booked"
+              Booking::RESERVED_STATUSES
+            else
+              Booking::RESERVED_STATUSES + ["requested"]
+            end
+
+          @bookings = @bookings
+            .where(status: statuses)
+            .where("start_date <= ? AND end_date > ?", date, date)
+        rescue ArgumentError
+          # ignore invalid date
+        end
+      end
+
+      @bookings = @bookings.includes(:room, :user).order(created_at: :desc)
+
+      if params[:date].present? && @bookings.size == 1
+        redirect_to admin_booking_path(id: @bookings.first)
+        return
+      end
       @rooms = policy_scope(Room).includes(:opening_periods).order(created_at: :desc)
 
       unread_bookings_scope = bookings_scope
