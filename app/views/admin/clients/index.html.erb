@@ -58,27 +58,12 @@
 
                 <td class="text-center">
                   <div class="d-flex justify-content-center gap-2 flex-wrap">
-                    <% badge_class_for = lambda do |status|
-                      case status.to_s
-                      when "confirmed_paid" then "text-bg-success"
-                      when "approved_pending_payment" then "text-bg-warning"
-                      when "requested" then "text-bg-primary"
-                      when "canceled" then "text-bg-danger"
-                      when "refunded" then "text-bg-secondary"
-                      when "expired" then "text-bg-secondary"
-                      else "text-bg-secondary"
-                      end
-                    end %>
-
                     <% if client.respond_to?(:current_booking_status) && client.current_booking_status.present? %>
-                      <span class="badge <%= badge_class_for.call(client.current_booking_status) %>"><%= t("bookings.statuses.#{client.current_booking_status}") %></span>
-                      <% if client.respond_to?(:current_booking_start_date) && client.current_booking_start_date.present? %>
-                        <span class="badge text-bg-light text-muted border"><%= l(client.current_booking_start_date.to_date) %></span>
-                      <% end %>
+                      <span class="badge <%= booking_status_badge_class(client.current_booking_status) %>"><%= booking_status_label(client.current_booking_status) %></span>
                     <% elsif client.respond_to?(:last_relevant_booking_start_date) && client.last_relevant_booking_start_date.present? %>
                       <span class="badge text-bg-light text-muted border"><%= l(client.last_relevant_booking_start_date.to_date) %></span>
                       <% if client.respond_to?(:last_relevant_booking_status) && client.last_relevant_booking_status.present? %>
-                        <span class="badge <%= badge_class_for.call(client.last_relevant_booking_status) %>"><%= t("bookings.statuses.#{client.last_relevant_booking_status}") %></span>
+                        <span class="badge <%= booking_status_badge_class(client.last_relevant_booking_status) %>"><%= booking_status_label(client.last_relevant_booking_status) %></span>
                       <% end %>
                     <% else %>
                       <span class="text-muted"><%= t("admin.clients.index.no_status") %></span>

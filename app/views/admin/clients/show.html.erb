@@ -42,7 +42,7 @@
             <div class="mt-2">
               <div>
                 <span class="badge text-bg-success"><%= l(@next_booking.start_date) %> → <%= l(@next_booking.end_date) %></span>
-                <span class="badge text-bg-secondary"><%= @next_booking.status %></span>
+                <span class="badge <%= booking_status_badge_class(@next_booking.status) %>"><%= booking_status_label(@next_booking.status) %></span>
               </div>
               <div class="mt-2 text-muted">
                 <%= @next_booking.room&.name %>
@@ -76,7 +76,7 @@
                     <tr>
                       <td><%= l(booking.start_date) %> → <%= l(booking.end_date) %></td>
                       <td><%= booking.room&.name %></td>
-                      <td><span class="badge text-bg-secondary"><%= booking.status %></span></td>
+                      <td><span class="badge <%= booking_status_badge_class(booking.status) %>"><%= booking_status_label(booking.status) %></span></td>
                       <td class="text-end">
                         <%= link_to t("admin.clients.show.open"), admin_booking_path(id: booking), class: "btn btn-sm btn-outline-primary" %>
                       </td>

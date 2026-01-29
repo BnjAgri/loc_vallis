@@ -97,7 +97,7 @@ module Admin
       assert_response :success
 
       assert_includes response.body, I18n.t("bookings.statuses.confirmed_paid")
-      assert_includes response.body, I18n.l((Date.current - 1).to_date)
+      assert_not_includes response.body, I18n.l((Date.current - 1).to_date)
       assert_includes response.body, I18n.t("bookings.statuses.canceled")
       assert_includes response.body, I18n.l((Date.current - 10).to_date)
     end
