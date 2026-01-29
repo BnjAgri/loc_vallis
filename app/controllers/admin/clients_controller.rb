@@ -88,6 +88,24 @@ module Admin
           nulls = direction == "asc" ? "NULLS LAST" : "NULLS FIRST"
           @clients.order(Arel.sql("next_booking_start_date #{direction.upcase} #{nulls}, last_booking_start_date DESC, users.id DESC"))
         end
+
+      per_page = 20
+      @page = params[:page].to_i
+      @page = 1 if @page < 1
+
+      total_clients_relation =
+        policy_scope(User)
+          .joins(:bookings)
+          .where(bookings: { id: bookings_scope.select(:id) })
+          .distinct
+
+      @total_clients = total_clients_relation.count(:id)
+      @total_pages = (@total_clients.to_f / per_page).ceil
+      @total_pages = 1 if @total_pages < 1
+      @page = @total_pages if @page > @total_pages
+
+      offset = (@page - 1) * per_page
+      @clients = @clients.limit(per_page).offset(offset)
     end
 
     def show

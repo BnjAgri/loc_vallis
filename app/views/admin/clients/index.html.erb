@@ -87,5 +87,25 @@
         </table>
       </div>
     </div>
+
+    <% if defined?(@total_pages) && @total_pages.to_i > 1 %>
+      <nav class="mt-3" aria-label="Pagination">
+        <ul class="pagination justify-content-center mb-0">
+          <li class="page-item <%= @page.to_i <= 1 ? 'disabled' : '' %>">
+            <%= link_to "←", (@page.to_i <= 1 ? "#" : url_for(page: @page.to_i - 1)), class: "page-link", aria: { label: "Previous" } %>
+          </li>
+
+          <% 1.upto(@total_pages.to_i) do |p| %>
+            <li class="page-item <%= p == @page.to_i ? 'active' : '' %>">
+              <%= link_to p, url_for(page: p), class: "page-link", aria: { current: (p == @page.to_i ? "page" : nil) } %>
+            </li>
+          <% end %>
+
+          <li class="page-item <%= @page.to_i >= @total_pages.to_i ? 'disabled' : '' %>">
+            <%= link_to "→", (@page.to_i >= @total_pages.to_i ? "#" : url_for(page: @page.to_i + 1)), class: "page-link", aria: { label: "Next" } %>
+          </li>
+        </ul>
+      </nav>
+    <% end %>
   <% end %>
 </div>

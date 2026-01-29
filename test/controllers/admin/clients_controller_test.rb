@@ -102,6 +102,36 @@ module Admin
       assert_includes response.body, I18n.l((Date.current - 10).to_date)
     end
 
+    test "index paginates 20 clients per page with navigation" do
+      owner = Owner.create!(email: "owner_clients_pagination@test.local", password: "password")
+      room = Room.new(owner:, name: "Owner room")
+      room.save!(validate: false)
+
+      OpeningPeriod.create!(room:, start_date: Date.current - 30, end_date: Date.current + 365, nightly_price_cents: 10_00, currency: "EUR")
+
+      users = (1..21).map do |i|
+        User.create!(email: "client_pag_#{i}@test.local", password: "password", first_name: "Client#{i}")
+      end
+
+      users.each_with_index do |user, i|
+        Booking.create!(room:, user:, start_date: Date.current + (i + 1), end_date: Date.current + (i + 2), status: "requested")
+      end
+
+      sign_in owner
+
+      get admin_clients_path
+      assert_response :success
+
+      assert_includes response.body, "Client1"
+      assert_includes response.body, "Client20"
+      assert_not_includes response.body, "Client21"
+      assert_includes response.body, "page=2"
+
+      get admin_clients_path(page: 2)
+      assert_response :success
+      assert_includes response.body, "Client21"
+    end
+
     test "show displays next booking and history" do
       owner = Owner.create!(email: "owner_clients_show@test.local", password: "password")
       room = Room.new(owner:, name: "Owner room")
