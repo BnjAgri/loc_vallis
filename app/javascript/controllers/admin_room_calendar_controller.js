@@ -41,7 +41,7 @@ export default class extends Controller {
 
   disconnect() {
     if (this.picker?.daysContainer && this.onDayClick) {
-      this.picker.daysContainer.removeEventListener("click", this.onDayClick)
+      this.picker.daysContainer.removeEventListener("click", this.onDayClick, true)
     }
 
     if (this.picker) this.picker.destroy()
@@ -49,8 +49,8 @@ export default class extends Controller {
 
   bindClickHandler(instance) {
     if (!instance?.daysContainer) return
-    instance.daysContainer.removeEventListener("click", this.onDayClick)
-    instance.daysContainer.addEventListener("click", this.onDayClick)
+    instance.daysContainer.removeEventListener("click", this.onDayClick, true)
+    instance.daysContainer.addEventListener("click", this.onDayClick, true)
   }
 
   onDayClick(event) {
@@ -62,6 +62,12 @@ export default class extends Controller {
 
     const isBooked = this.isInAnyRange(dateKey, this.bookedRanges)
     const isPending = !isBooked && this.isInAnyRange(dateKey, this.pendingRanges)
+
+    // Prevent Flatpickr from selecting/closing when we click inside the calendar.
+    event.preventDefault()
+    event.stopPropagation()
+    event.stopImmediatePropagation?.()
+
     if (!isBooked && !isPending) return
 
     const kind = isBooked ? "booked" : "pending"
@@ -100,13 +106,13 @@ export default class extends Controller {
 
     if (this.isInAnyRange(dateKey, this.bookedRanges)) {
       dayElem.classList.add("lv-booked-day")
-      dayElem.title = "Réservé"
+      dayElem.title = "Réservé — cliquer pour voir la réservation"
       return
     }
 
     if (this.isInAnyRange(dateKey, this.pendingRanges)) {
       dayElem.classList.add("lv-pending-day")
-      dayElem.title = "Demande en attente"
+      dayElem.title = "Demande en attente — cliquer pour voir la réservation"
       return
     }
 
