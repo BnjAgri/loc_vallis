@@ -3,7 +3,12 @@
 <% end %>
 
 <h1 style="margin:0 0 10px 0; font-size:20px; line-height:1.25;">Réservation refusée</h1>
-<p style="margin:0 0 14px 0; color:#6B7280;">Réservation #<%= @booking.id %></p>
+<p style="margin:0 0 14px 0; color:#6B7280; text-align:right;">Réservation #<%= @booking.id %></p>
+
+<p style="margin:0 0 14px 0; color:#6B7280;">
+  Nous sommes au regret de vous informer que nous n'avons pu accepter votre demande.
+  Nous vous remercions de votre compréhension et vous souhaitons le meilleur dans vos recherches.
+</p>
 
 <p style="margin:0 0 10px 0;"><strong>Logement :</strong> <%= @booking.room.name %></p>
 <p style="margin:0 0 14px 0;"><strong>Dates :</strong> <%= I18n.l(@booking.start_date) %> → <%= I18n.l(@booking.end_date) %></p>

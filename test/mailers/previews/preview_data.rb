@@ -91,7 +91,7 @@ module PreviewData
       attrs[:payment_expires_at] = record.payment_expires_at || (now - 1.hour)
     when "refunded"
       attrs[:refunded_at] = record.refunded_at || now
-      attrs[:stripe_refund_id] = record.stripe_refund_id.presence || "re_preview_123"
+      attrs[:stripe_refund_id] = record.stripe_refund_id.presence || "re_preview_#{record.id}"
     end
 
     record.update!(attrs)

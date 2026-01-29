@@ -3,6 +3,7 @@
 <% end %>
 
 <h1 style="margin:0 0 10px 0; font-size:20px; line-height:1.25;">Bonne nouvelle, le propriétaire a accepté votre réservation</h1>
+<p style="margin:0 0 10px 0; color:#6B7280; text-align:right;">Réservation #<%= @booking.id %></p>
 <p style="margin:0 0 14px 0; color:#6B7280;">Vous disposez de 48h pour régler et finaliser votre séjour.</p>
 
 <% if @deadline_formatted.present? %>
