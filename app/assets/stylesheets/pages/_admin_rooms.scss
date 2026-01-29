@@ -9,6 +9,21 @@
   display: none;
 }
 
+.lv-calendar-wrap {
+  display: block;
+  width: fit-content;
+  max-width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.lv-admin-rooms-combined {
+  width: fit-content;
+  max-width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
 .lv-calendar-dot {
   display: inline-block;
   width: 0.75rem;

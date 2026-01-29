@@ -4,8 +4,9 @@ class RoomTest < ActiveSupport::TestCase
   test "enforces MVP hard limit of 2 rooms" do
     owner = Owner.create!(email: "owner_room@test.local", password: "password")
 
-    Room.create!(owner:, name: "Room 1")
-    Room.create!(owner:, name: "Room 2")
+    while Room.count < 2
+      Room.create!(owner:, name: "Room #{Room.count + 1}")
+    end
 
     third = Room.new(owner:, name: "Room 3")
     assert_not third.valid?
@@ -38,5 +39,39 @@ class RoomTest < ActiveSupport::TestCase
 
     assert_not room.valid?
     assert_includes room.errors.full_messages.join(" "), "maximum 5"
+  end
+
+  test "capacity must be an integer (localized error message in fr)" do
+    owner = Owner.create!(email: "owner_capacity@test.local", password: "password")
+
+    I18n.with_locale(:fr) do
+      room = Room.new(owner:, name: "Room", capacity: 2.5)
+      assert_not room.valid?
+
+      messages = room.errors.full_messages.join(" ")
+      assert_includes messages, "Capacité"
+      assert_includes messages, "entier"
+      assert_not_includes messages.downcase, "translation missing"
+    end
+  end
+
+  test "room form fields have no missing i18n translations (fr)" do
+    owner = Owner.create!(email: "owner_room_i18n@test.local", password: "password")
+
+    I18n.with_locale(:fr) do
+      room = Room.new(
+        owner:,
+        name: nil,
+        capacity: 2.5,
+        optional_services: 6.times.map { |i| { "name" => "Option #{i}", "price_eur" => "1" } }
+      )
+
+      room.photos.attach(io: StringIO.new("not an image"), filename: "not-an-image.txt", content_type: "text/plain")
+
+      assert_not room.valid?
+
+      messages = room.errors.full_messages.join(" \n")
+      assert_not_includes messages.downcase, "translation missing"
+    end
   end
 end

@@ -1,4 +1,13 @@
 fr:
+  errors:
+    messages:
+      blank: "doit être renseigné"
+      not_a_number: "n'est pas un nombre"
+      not_an_integer: "doit être un entier"
+      greater_than: "doit être supérieur à %{count}"
+      invalid_content_type: "doit être une image (JPEG, PNG ou GIF)"
+      too_large: "est trop volumineuse (3 Mo maximum)"
+
   date:
     formats:
       default: "%d/%m/%Y"
