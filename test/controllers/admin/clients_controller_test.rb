@@ -54,6 +54,54 @@ module Admin
       assert_operator near_index, :<, far_index
     end
 
+    test "index can sort alphabetically (asc)" do
+      owner = Owner.create!(email: "owner_clients_sort_alpha@test.local", password: "password")
+      room = Room.new(owner:, name: "Owner room")
+      room.save!(validate: false)
+
+      OpeningPeriod.create!(room:, start_date: Date.current - 30, end_date: Date.current + 60, nightly_price_cents: 10_00, currency: "EUR")
+
+      a_user = User.create!(email: "alpha_a@test.local", password: "password", first_name: "Alice", last_name: "Aaa")
+      b_user = User.create!(email: "alpha_b@test.local", password: "password", first_name: "Bob", last_name: "Bbb")
+
+      Booking.create!(room:, user: b_user, start_date: Date.current + 20, end_date: Date.current + 22, status: "requested")
+      Booking.create!(room:, user: a_user, start_date: Date.current + 25, end_date: Date.current + 27, status: "requested")
+
+      sign_in owner
+
+      get admin_clients_path(sort: "alpha", direction: "asc")
+      assert_response :success
+
+      a_index = response.body.index("Alice")
+      b_index = response.body.index("Bob")
+      assert a_index.present? && b_index.present?, "Expected both users to appear in the response"
+      assert_operator a_index, :<, b_index
+    end
+
+    test "index shows current booking status or last relevant booking date/status" do
+      owner = Owner.create!(email: "owner_clients_status@test.local", password: "password")
+      room = Room.new(owner:, name: "Owner room")
+      room.save!(validate: false)
+
+      OpeningPeriod.create!(room:, start_date: Date.current - 30, end_date: Date.current + 60, nightly_price_cents: 10_00, currency: "EUR")
+
+      current_user = User.create!(email: "current@test.local", password: "password", first_name: "Current")
+      past_user = User.create!(email: "past@test.local", password: "password", first_name: "Past")
+
+      Booking.create!(room:, user: current_user, start_date: Date.current - 1, end_date: Date.current + 1, status: "confirmed_paid")
+      Booking.create!(room:, user: past_user, start_date: Date.current - 10, end_date: Date.current - 8, status: "canceled")
+
+      sign_in owner
+
+      get admin_clients_path
+      assert_response :success
+
+      assert_includes response.body, I18n.t("bookings.statuses.confirmed_paid")
+      assert_includes response.body, I18n.l((Date.current - 1).to_date)
+      assert_includes response.body, I18n.t("bookings.statuses.canceled")
+      assert_includes response.body, I18n.l((Date.current - 10).to_date)
+    end
+
     test "show displays next booking and history" do
       owner = Owner.create!(email: "owner_clients_show@test.local", password: "password")
       room = Room.new(owner:, name: "Owner room")

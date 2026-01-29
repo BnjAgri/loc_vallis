@@ -7,6 +7,23 @@
   <% if @clients.empty? %>
     <p class="text-muted"><%= t("admin.clients.index.empty") %></p>
   <% else %>
+    <% current_sort = params[:sort].presence || "next_booking" %>
+    <% current_direction = params[:direction].presence || "asc" %>
+
+    <div class="d-flex flex-wrap gap-2 justify-content-end mb-2">
+      <span class="text-muted small align-self-center"><%= t("admin.clients.index.sort.label") %></span>
+
+      <div class="btn-group" role="group" aria-label="<%= t('admin.clients.index.sort.alpha') %>">
+        <%= link_to t("admin.clients.index.sort.alpha_asc"), url_for(sort: "alpha", direction: "asc"), class: ["btn", "btn-sm", (current_sort == "alpha" && current_direction == "asc") ? "btn-primary" : "btn-outline-primary"] %>
+        <%= link_to t("admin.clients.index.sort.alpha_desc"), url_for(sort: "alpha", direction: "desc"), class: ["btn", "btn-sm", (current_sort == "alpha" && current_direction == "desc") ? "btn-primary" : "btn-outline-primary"] %>
+      </div>
+
+      <div class="btn-group" role="group" aria-label="<%= t('admin.clients.index.sort.next_booking') %>">
+        <%= link_to t("admin.clients.index.sort.next_booking_asc"), url_for(sort: "next_booking", direction: "asc"), class: ["btn", "btn-sm", (current_sort == "next_booking" && current_direction == "asc") ? "btn-primary" : "btn-outline-primary"] %>
+        <%= link_to t("admin.clients.index.sort.next_booking_desc"), url_for(sort: "next_booking", direction: "desc"), class: ["btn", "btn-sm", (current_sort == "next_booking" && current_direction == "desc") ? "btn-primary" : "btn-outline-primary"] %>
+      </div>
+    </div>
+
     <div class="card">
       <div class="table-responsive">
         <table class="table mb-0 align-middle">
@@ -15,6 +32,7 @@
               <th><%= t("admin.clients.index.client") %></th>
               <th><%= t("admin.clients.index.email") %></th>
               <th class="text-center"><%= t("admin.clients.index.next_booking") %></th>
+              <th class="text-center"><%= t("admin.clients.index.current_status") %></th>
               <th class="text-center"><%= t("admin.clients.index.total_bookings") %></th>
               <th class="text-center"><%= t("admin.clients.index.cancellations") %></th>
             </tr>
@@ -37,6 +55,37 @@
                     </div>
                   <% end %>
                 </td>
+
+                <td class="text-center">
+                  <div class="d-flex justify-content-center gap-2 flex-wrap">
+                    <% badge_class_for = lambda do |status|
+                      case status.to_s
+                      when "confirmed_paid" then "text-bg-success"
+                      when "approved_pending_payment" then "text-bg-warning"
+                      when "requested" then "text-bg-primary"
+                      when "canceled" then "text-bg-danger"
+                      when "refunded" then "text-bg-secondary"
+                      when "expired" then "text-bg-secondary"
+                      else "text-bg-secondary"
+                      end
+                    end %>
+
+                    <% if client.respond_to?(:current_booking_status) && client.current_booking_status.present? %>
+                      <span class="badge <%= badge_class_for.call(client.current_booking_status) %>"><%= t("bookings.statuses.#{client.current_booking_status}") %></span>
+                      <% if client.respond_to?(:current_booking_start_date) && client.current_booking_start_date.present? %>
+                        <span class="badge text-bg-light text-muted border"><%= l(client.current_booking_start_date.to_date) %></span>
+                      <% end %>
+                    <% elsif client.respond_to?(:last_relevant_booking_start_date) && client.last_relevant_booking_start_date.present? %>
+                      <span class="badge text-bg-light text-muted border"><%= l(client.last_relevant_booking_start_date.to_date) %></span>
+                      <% if client.respond_to?(:last_relevant_booking_status) && client.last_relevant_booking_status.present? %>
+                        <span class="badge <%= badge_class_for.call(client.last_relevant_booking_status) %>"><%= t("bookings.statuses.#{client.last_relevant_booking_status}") %></span>
+                      <% end %>
+                    <% else %>
+                      <span class="text-muted"><%= t("admin.clients.index.no_status") %></span>
+                    <% end %>
+                  </div>
+                </td>
+
                 <td class="text-center">
                   <div class="d-flex justify-content-center">
                     <span class="badge text-bg-secondary"><%= client.respond_to?(:bookings_count) ? client.bookings_count.to_i : client.bookings.size %></span>
