@@ -3,9 +3,18 @@
 <% end %>
 
 <h1 style="margin:0 0 10px 0; font-size:20px; line-height:1.25;">Remboursement effectué</h1>
-<p style="margin:0 0 14px 0; color:#6B7280;">Réservation #<%= @booking.id %></p>
+<p style="margin:0 0 14px 0; color:#6B7280; text-align:right;">Réservation #<%= @booking.id %></p>
+
+<p style="margin:0 0 14px 0; color:#6B7280;">
+  Suite à votre annulation, nous venons de procéder au remboursement de votre réservation, conformément à nos conditions générales de vente
+  (<%= link_to "lien vers les CGV", @cgv_url %>).
+  Vous en trouverez le détail ci-dessous. Merci de votre confiance et à bientôt chez nous !
+</p>
 
 <p style="margin:0 0 10px 0;"><strong>Référence remboursement :</strong> <%= @booking.stripe_refund_id %></p>
+<% if @booking.total_price_cents.present? %>
+  <p style="margin:0 0 10px 0;"><strong>Montant remboursé :</strong> <%= number_to_currency(@booking.total_price_cents.to_i / 100.0, unit: "#{@booking.currency.to_s.upcase} ", format: "%u%n") %></p>
+<% end %>
 <p style="margin:0 0 10px 0;"><strong>Logement :</strong> <%= @booking.room.name %></p>
 <p style="margin:0 0 14px 0;"><strong>Dates :</strong> <%= I18n.l(@booking.start_date) %> → <%= I18n.l(@booking.end_date) %></p>
 

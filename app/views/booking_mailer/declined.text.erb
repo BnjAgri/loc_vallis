@@ -1,6 +1,8 @@
-Réservation #<%= @booking.id %> was declined.
+Réservation #<%= @booking.id %>
 
-Room: <%= @booking.room.name %>
-Dates: <%= @booking.start_date %> → <%= @booking.end_date %>
+Nous sommes au regret de vous informer que nous n'avons pu accepter votre demande. Nous vous remercions de votre compréhension et vous souhaitons le meilleur dans vos recherches.
 
-View: <%= @booking_url %>
+Logement : <%= @booking.room.name %>
+Dates : <%= I18n.l(@booking.start_date) %> → <%= I18n.l(@booking.end_date) %>
+
+Voir : <%= @booking_url %>

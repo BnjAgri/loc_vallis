@@ -5,6 +5,51 @@ fr:
       short: "%d/%m/%Y"
       long: "%-d %B %Y"
 
+    day_names:
+      - dimanche
+      - lundi
+      - mardi
+      - mercredi
+      - jeudi
+      - vendredi
+      - samedi
+    abbr_day_names:
+      - dim.
+      - lun.
+      - mar.
+      - mer.
+      - jeu.
+      - ven.
+      - sam.
+    month_names:
+      - ~
+      - janvier
+      - février
+      - mars
+      - avril
+      - mai
+      - juin
+      - juillet
+      - août
+      - septembre
+      - octobre
+      - novembre
+      - décembre
+    abbr_month_names:
+      - ~
+      - jan.
+      - fév.
+      - mars
+      - avr.
+      - mai
+      - juin
+      - juil.
+      - août
+      - sept.
+      - oct.
+      - nov.
+      - déc.
+
   time:
     formats:
       default: "%d/%m/%Y %H:%M"
@@ -224,6 +269,13 @@ fr:
         created: "Chambre créée."
         updated: "Chambre mise à jour."
         deleted: "Chambre supprimée."
+      photos:
+        existing_title: "Photos existantes"
+        delete_button: "Supprimer"
+        delete_confirm: "Supprimer cette photo définitivement ?"
+        flash:
+          deleted: "Photo supprimée."
+          not_found: "Photo introuvable."
       show:
         calendar_title: "Calendrier des disponibilités"
         legend_open: "Ouvert"

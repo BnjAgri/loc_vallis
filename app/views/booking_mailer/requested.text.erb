@@ -1,7 +1,11 @@
-Réservation #<%= @booking.id %> was requested.
+Réservation #<%= @booking.id %>
 
-Room: <%= @booking.room.name %>
-Dates: <%= @booking.start_date %> → <%= @booking.end_date %> (<%= @booking.nights %> nights)
-Total: <%= number_to_currency(@booking.total_price_cents.to_i / 100.0, unit: "#{@booking.currency.to_s.upcase} ", format: "%u%n") %>
+Votre demande a été envoyée au propriétaire.
 
-View: <%= @booking_url %>
+Nous vous contacterons par téléphone ou messagerie dans les 24 heures afin de valider votre réservation. D'ici là, nous nous tenons à votre disposition. Merci de votre confiance!
+
+Logement : <%= @booking.room.name %>
+Dates : <%= I18n.l(@booking.start_date) %> → <%= I18n.l(@booking.end_date) %> (<%= @booking.nights %> <%= @booking.nights.to_i == 1 ? "nuit" : "nuits" %>)
+Total : <%= number_to_currency(@booking.total_price_cents.to_i / 100.0, unit: "#{@booking.currency.to_s.upcase} ", format: "%u%n") %>
+
+Voir : <%= @booking_url %>

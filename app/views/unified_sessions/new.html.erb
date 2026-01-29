@@ -10,7 +10,13 @@
               "login-form-email-check-url-value": login_email_exists_path
             }
           } do |f| %>
-      <%= f.input :email, autofocus: true, autocomplete: "email", input_html: { data: { "login-form-target": "email" } } %>
+      <%= f.input :email,
+                  autofocus: true,
+                  autocomplete: "email",
+                  input_html: {
+                    value: params[:email].to_s.strip.presence,
+                    data: { "login-form-target": "email" }
+                  } %>
       <%= f.input :password, as: :password, autocomplete: "current-password", label: t(".password_label"), input_html: { data: { "login-form-target": "password" } } %>
 
       <div class="small text-danger d-none" data-login-form-target="emailUnknown">

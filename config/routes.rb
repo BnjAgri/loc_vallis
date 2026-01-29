@@ -60,6 +60,9 @@ Rails.application.routes.draw do
       get "inbox", to: "inbox#index"
 
       resources :rooms, only: %i[index show new create edit update destroy] do
+        member do
+          delete "photos/:photo_id", to: "rooms#destroy_photo", as: :photo
+        end
         resources :opening_periods, only: %i[create edit update destroy]
       end
 

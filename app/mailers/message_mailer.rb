@@ -5,7 +5,7 @@ class MessageMailer < ApplicationMailer
     set_booking_brand!
     @booking_url = booking_url_for(@booking)
 
-    mail(to: recipient_email, subject: brand_subject("New message about booking ##{@booking.id}"))
+    mail(to: recipient_email, subject: brand_subject("Nouveau message concernant la réservation ##{@booking.id}"))
   end
 
   private

@@ -1,8 +1,14 @@
-Réservation #<%= @booking.id %> was refunded.
+Réservation #<%= @booking.id %>
 
-Refund ID: <%= @booking.stripe_refund_id %>
+Suite à votre annulation, nous venons de procéder au remboursement de votre réservation, conformément à nos conditions générales de vente (CGV) : <%= @cgv_url %>
+Vous en trouverez le détail ci-dessous. Merci de votre confiance et à bientôt chez nous !
 
-Room: <%= @booking.room.name %>
-Dates: <%= @booking.start_date %> → <%= @booking.end_date %>
+Référence remboursement : <%= @booking.stripe_refund_id %>
+<% if @booking.total_price_cents.present? %>
+Montant remboursé : <%= number_to_currency(@booking.total_price_cents.to_i / 100.0, unit: "#{@booking.currency.to_s.upcase} ", format: "%u%n") %>
+<% end %>
 
-View: <%= @booking_url %>
+Logement : <%= @booking.room.name %>
+Dates : <%= I18n.l(@booking.start_date) %> → <%= I18n.l(@booking.end_date) %>
+
+Voir : <%= @booking_url %>

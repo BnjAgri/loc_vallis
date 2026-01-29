@@ -1,14 +1,15 @@
 <% content_for :preheader do %>
-  Réservation #<%= @booking.id %> approuvée — paiement requis.
+  Bonne nouvelle, le propriétaire a accepté votre réservation — paiement requis.
 <% end %>
 
-<h1 style="margin:0 0 10px 0; font-size:20px; line-height:1.25;">Réservation approuvée</h1>
-<p style="margin:0 0 14px 0; color:#6B7280;">Paiement requis sous 48h.</p>
+<h1 style="margin:0 0 10px 0; font-size:20px; line-height:1.25;">Bonne nouvelle, le propriétaire a accepté votre réservation</h1>
+<p style="margin:0 0 10px 0; color:#6B7280; text-align:right;">Réservation #<%= @booking.id %></p>
+<p style="margin:0 0 14px 0; color:#6B7280;">Vous disposez de 48h pour régler et finaliser votre séjour.</p>
 
 <% if @deadline_formatted.present? %>
   <p style="margin:0 0 12px 0;"><strong>Date limite :</strong> <%= @deadline_formatted %></p>
 <% end %>
 
-<%= render "shared/email_button", url: @booking_url, label: "Payer et voir la réservation" %>
+<%= render "shared/email_button", url: @booking_url, label: "Régler et Finaliser" %>
 
 <p style="margin:14px 0 0 0; color:#6B7280; font-size:13px;">Si le paiement n’est pas effectué à temps, la réservation expirera automatiquement.</p>

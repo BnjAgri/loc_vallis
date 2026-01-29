@@ -1,6 +1,8 @@
-Réservation #<%= @booking.id %> expired because payment was not completed in time.
+Réservation #<%= @booking.id %>
 
-Room: <%= @booking.room.name %>
-Dates: <%= @booking.start_date %> → <%= @booking.end_date %>
+Le règlement de votre séjour ne nous est malheureusement pas parvenu dans le délai prévu. Nous sommes au regret de devoir annuler votre réservation. N'hésitez pas à revenir vers nous !
 
-View: <%= @booking_url %>
+Logement : <%= @booking.room.name %>
+Dates : <%= I18n.l(@booking.start_date) %> → <%= I18n.l(@booking.end_date) %>
+
+Voir : <%= @booking_url %>

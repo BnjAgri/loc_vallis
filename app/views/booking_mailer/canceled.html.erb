@@ -3,10 +3,20 @@
 <% end %>
 
 <h1 style="margin:0 0 10px 0; font-size:20px; line-height:1.25;">Réservation annulée</h1>
-<p style="margin:0 0 14px 0; color:#6B7280;">Réservation #<%= @booking.id %></p>
+<p style="margin:0 0 14px 0; color:#6B7280; text-align:right;">Réservation #<%= @booking.id %></p>
+
+<p style="margin:0 0 14px 0; color:#6B7280;">
+  Votre réservation a malheureusement été annulée. Vous trouverez le détail de cette opération ci-dessous.
+  Conformément à nos conditions générales de vente, vous serez intégralement remboursé du montant versé si cette opération intervient plus de 7 jours avant le début de votre réservation.
+  Dans le cas contraire, une retenue de 30% sera appliquée.
+</p>
 
 <p style="margin:0 0 10px 0;"><strong>Annulée par :</strong> <%= @canceled_by || "unknown" %></p>
 <p style="margin:0 0 10px 0;"><strong>Logement :</strong> <%= @booking.room.name %></p>
 <p style="margin:0 0 14px 0;"><strong>Dates :</strong> <%= I18n.l(@booking.start_date) %> → <%= I18n.l(@booking.end_date) %></p>
+
+<% if @booking.stripe_payment_intent_id.present? %>
+  <p style="margin:0 0 14px 0;"><strong>Montant réglé :</strong> <%= number_to_currency(@booking.total_price_cents.to_i / 100.0, unit: "#{@booking.currency.to_s.upcase} ", format: "%u%n") %></p>
+<% end %>
 
 <%= render "shared/email_button", url: @booking_url, label: "Voir la réservation" %>
