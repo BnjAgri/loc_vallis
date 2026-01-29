@@ -7,6 +7,7 @@ class ApplicationController < ActionController::Base
   before_action :configure_permitted_parameters, if: :devise_controller?
   before_action :set_owner_unread_conversations_count, if: :owner_signed_in?
   before_action :set_user_unread_conversations_count, if: :user_signed_in?
+  before_action :set_login_notifications_dropdown, if: -> { owner_signed_in? || user_signed_in? }
 
   rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
   rescue_from ActionController::InvalidAuthenticityToken, with: :handle_invalid_authenticity_token
@@ -121,9 +122,15 @@ class ApplicationController < ActionController::Base
 
     notifications.compact!
     resource.update_column(:notifications_last_seen_at, now)
+    session[:login_notifications] = notifications.presence
     return if notifications.empty?
 
     flash[:notice] = view_context.render(partial: "shared/login_notifications", locals: { notifications: notifications }).html_safe
+  end
+
+  def set_login_notifications_dropdown
+    @login_notifications = Array(session[:login_notifications])
+    @login_notifications_count = @login_notifications.size
   end
 
   def http_basic_auth_enabled?

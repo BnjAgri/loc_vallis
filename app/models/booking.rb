@@ -42,6 +42,8 @@ class Booking < ApplicationRecord
   validates :total_price_cents, numericality: { only_integer: true, greater_than_or_equal_to: 0 }, allow_nil: true
   validates :currency, presence: true, if: -> { total_price_cents.present? }
 
+  before_save :set_status_changed_at
+
   validates :stripe_checkout_session_id, uniqueness: true, allow_nil: true
   validates :stripe_payment_intent_id, uniqueness: true, allow_nil: true
   validates :stripe_refund_id, uniqueness: true, allow_nil: true
@@ -281,5 +283,11 @@ class Booking < ApplicationRecord
 
   def validate_selected_optional_services?
     new_record? || will_save_change_to_selected_optional_services? || will_save_change_to_room_id?
+  end
+
+  def set_status_changed_at
+    return unless will_save_change_to_status? || status_changed_at.blank?
+
+    self.status_changed_at = Time.current
   end
 end

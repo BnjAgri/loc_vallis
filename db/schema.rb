@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2026_01_20_184751) do
+ActiveRecord::Schema[7.1].define(version: 2026_01_29_190001) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -71,10 +71,12 @@ ActiveRecord::Schema[7.1].define(version: 2026_01_20_184751) do
     t.datetime "owner_last_read_at"
     t.datetime "user_last_read_at"
     t.jsonb "selected_optional_services", default: [], null: false
+    t.datetime "status_changed_at"
     t.index ["owner_last_read_at"], name: "index_bookings_on_owner_last_read_at"
     t.index ["room_id", "start_date", "end_date"], name: "index_bookings_on_room_id_and_start_date_and_end_date"
     t.index ["room_id"], name: "index_bookings_on_room_id"
     t.index ["status"], name: "index_bookings_on_status"
+    t.index ["status_changed_at"], name: "index_bookings_on_status_changed_at"
     t.index ["stripe_checkout_session_id"], name: "index_bookings_on_stripe_checkout_session_id", unique: true
     t.index ["stripe_payment_intent_id"], name: "index_bookings_on_stripe_payment_intent_id", unique: true
     t.index ["stripe_refund_id"], name: "index_bookings_on_stripe_refund_id", unique: true
@@ -119,7 +121,9 @@ ActiveRecord::Schema[7.1].define(version: 2026_01_20_184751) do
     t.string "guesthouse_name"
     t.text "postal_address"
     t.string "phone"
+    t.datetime "notifications_last_seen_at"
     t.index ["email"], name: "index_owners_on_email", unique: true
+    t.index ["notifications_last_seen_at"], name: "index_owners_on_notifications_last_seen_at"
     t.index ["reset_password_token"], name: "index_owners_on_reset_password_token", unique: true
   end
 
@@ -158,7 +162,9 @@ ActiveRecord::Schema[7.1].define(version: 2026_01_20_184751) do
     t.string "phone"
     t.string "first_name"
     t.string "last_name"
+    t.datetime "notifications_last_seen_at"
     t.index ["email"], name: "index_users_on_email", unique: true
+    t.index ["notifications_last_seen_at"], name: "index_users_on_notifications_last_seen_at"
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 

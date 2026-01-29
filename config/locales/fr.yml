@@ -203,6 +203,15 @@ fr:
       invalid_credentials: "Email ou mot de passe invalide"
       logged_out: "Déconnecté"
 
+  notifications:
+    login:
+      title: "Nouveautés depuis votre dernière visite"
+      new_booking: "Nouvelle réservation #%{id}."
+      booking_status_changed: "Le statut de la réservation #%{id} a changé : %{status}."
+      new_message: "Nouveau message pour la réservation #%{id}."
+      actions:
+        open: "Ouvrir"
+
   unified_sessions:
     new:
       title: "Se connecter"
