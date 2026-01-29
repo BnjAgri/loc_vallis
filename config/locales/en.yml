@@ -229,6 +229,13 @@ en:
         created: "Room created."
         updated: "Room updated."
         deleted: "Room deleted."
+      photos:
+        existing_title: "Existing photos"
+        delete_button: "Delete"
+        delete_confirm: "Delete this photo permanently?"
+        flash:
+          deleted: "Photo deleted."
+          not_found: "Photo not found."
     opening_periods:
       flash:
         added: "Opening period added."

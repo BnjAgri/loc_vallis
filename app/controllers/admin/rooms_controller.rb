@@ -77,6 +77,20 @@ module Admin
       end
     end
 
+    def destroy_photo
+      @room = policy_scope(Room).find(params[:id])
+      authorize @room, :update?
+
+      attachment = @room.photos.attachments.find_by(id: params[:photo_id])
+      unless attachment
+        redirect_to edit_admin_room_path(id: @room), alert: t("admin.rooms.photos.flash.not_found")
+        return
+      end
+
+      attachment.purge
+      redirect_to edit_admin_room_path(id: @room), notice: t("admin.rooms.photos.flash.deleted")
+    end
+
     def destroy
       @room = policy_scope(Room).find(params[:id])
       authorize @room
@@ -99,7 +113,7 @@ module Admin
     private
 
     def room_params
-      params.require(:room).permit(
+      permitted = params.require(:room).permit(
         :name,
         :description,
         :capacity,
@@ -107,6 +121,23 @@ module Admin
         photos: [],
         optional_services: %i[name price_eur]
       )
+
+      # IMPORTANT: A multi-file input can submit an empty array / empty string when no file is selected.
+      # If we pass that through to `@room.update`, Active Storage treats it as a replacement and removes
+      # existing attachments. We only keep `photos` when at least one real upload is present.
+      photos = Array(permitted[:photos]).reject(&:blank?)
+      if photos.any?
+        permitted[:photos] = photos
+      else
+        permitted.delete(:photos)
+      end
+
+      # Same idea for URLs: keep existing value unless a non-blank value is submitted.
+      if permitted.key?(:room_url) && permitted[:room_url].to_s.strip.blank?
+        permitted.delete(:room_url)
+      end
+
+      permitted
     end
   end
 end

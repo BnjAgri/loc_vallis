@@ -224,6 +224,13 @@ fr:
         created: "Chambre créée."
         updated: "Chambre mise à jour."
         deleted: "Chambre supprimée."
+      photos:
+        existing_title: "Photos existantes"
+        delete_button: "Supprimer"
+        delete_confirm: "Supprimer cette photo définitivement ?"
+        flash:
+          deleted: "Photo supprimée."
+          not_found: "Photo introuvable."
       show:
         calendar_title: "Calendrier des disponibilités"
         legend_open: "Ouvert"
