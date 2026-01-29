@@ -89,6 +89,34 @@
       <% end %>
 
       <ul class="navbar-nav ms-auto">
+        <% if (owner_signed_in? || user_signed_in?) && @login_notifications_count.to_i.positive? %>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle d-inline-flex align-items-center position-relative" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="<%= t('notifications.login.title') %>">
+              <i class="fa-solid fa-bell" aria-hidden="true"></i>
+              <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill text-bg-danger">
+                <%= @login_notifications_count %>
+              </span>
+            </a>
+            <ul class="dropdown-menu dropdown-menu-end" style="min-width: 320px;">
+              <li class="dropdown-header"><%= t("notifications.login.title") %></li>
+              <% @login_notifications.each do |notification| %>
+                <li class="px-3 py-2">
+                  <div class="small"><%= notification["text"] || notification[:text] %></div>
+                  <% url = notification["url"] || notification[:url] %>
+                  <% if url.present? %>
+                    <%= link_to(
+                      (notification["action_label"] || notification[:action_label] || t("notifications.login.actions.open")),
+                      mark_notifications_read_path(redirect_to: url),
+                      class: "btn btn-sm btn-outline-primary mt-2"
+                    ) %>
+                  <% end %>
+                </li>
+                <li><hr class="dropdown-divider"></li>
+              <% end %>
+            </ul>
+          </li>
+        <% end %>
+
         <li class="nav-item d-flex flex-column">
           <%= link_to switch_locale_path(nil), class: ["nav-link", "py-0", "d-inline-flex", "align-items-center", "gap-1", (I18n.locale == :fr ? "active" : nil)].compact.join(" "), aria: { label: "Français" } do %>
             <%= image_tag "flags/fr.svg", class: "lv-locale-flag", alt: "FR", width: 18, height: 12, loading: "lazy" %>
