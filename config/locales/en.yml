@@ -251,16 +251,13 @@ en:
 
     clients:
       index:
-        cancellations: "Cancellations"
-
-    clients:
-      index:
         title: "Customers"
         empty: "No customers yet."
         client: "Customer"
         email: "Email"
         next_booking: "Next booking"
         total_bookings: "Bookings"
+        cancellations: "Cancellations"
         no_upcoming: "Upcoming: —"
       show:
         back: "Back"

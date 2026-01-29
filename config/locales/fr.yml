@@ -324,16 +324,13 @@ fr:
 
     clients:
       index:
-        cancellations: "Annulations"
-
-    clients:
-      index:
         title: "Clients"
         empty: "Aucun client pour le moment."
         client: "Client"
         email: "Email"
         next_booking: "Prochaine réservation"
         total_bookings: "Réservations"
+        cancellations: "Annulations"
         no_upcoming: "A venir : —"
       show:
         back: "Retour"

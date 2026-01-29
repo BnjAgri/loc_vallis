@@ -14,9 +14,9 @@
             <tr>
               <th><%= t("admin.clients.index.client") %></th>
               <th><%= t("admin.clients.index.email") %></th>
-              <th><%= t("admin.clients.index.next_booking") %></th>
-              <th><%= t("admin.clients.index.total_bookings") %></th>
-              <th><%= t("admin.clients.index.cancellations") %></th>
+              <th class="text-center"><%= t("admin.clients.index.next_booking") %></th>
+              <th class="text-center"><%= t("admin.clients.index.total_bookings") %></th>
+              <th class="text-center"><%= t("admin.clients.index.cancellations") %></th>
             </tr>
           </thead>
           <tbody>
@@ -26,18 +26,26 @@
                   <%= link_to client.display_name, admin_client_path(id: client), class: "text-decoration-none" %>
                 </td>
                 <td class="text-muted"><%= client.email %></td>
-                <td>
+                <td class="text-center">
                   <% if client.respond_to?(:next_booking_start_date) && client.next_booking_start_date.present? %>
-                    <span class="badge text-bg-success"><%= l(client.next_booking_start_date.to_date) %></span>
+                    <div class="d-flex justify-content-center">
+                      <span class="badge text-bg-success"><%= l(client.next_booking_start_date.to_date) %></span>
+                    </div>
                   <% else %>
-                    <span class="text-muted"><%= t("admin.clients.index.no_upcoming") %></span>
+                    <div class="d-flex justify-content-center">
+                      <span class="text-muted"><%= t("admin.clients.index.no_upcoming") %></span>
+                    </div>
                   <% end %>
                 </td>
-                <td>
-                  <span class="badge text-bg-secondary"><%= client.respond_to?(:bookings_count) ? client.bookings_count.to_i : client.bookings.size %></span>
+                <td class="text-center">
+                  <div class="d-flex justify-content-center">
+                    <span class="badge text-bg-secondary"><%= client.respond_to?(:bookings_count) ? client.bookings_count.to_i : client.bookings.size %></span>
+                  </div>
                 </td>
-                <td>
-                  <span class="badge text-bg-warning"><%= client.respond_to?(:cancellations_count) ? client.cancellations_count.to_i : 0 %></span>
+                <td class="text-center">
+                  <div class="d-flex justify-content-center">
+                    <span class="badge text-bg-warning"><%= client.respond_to?(:cancellations_count) ? client.cancellations_count.to_i : 0 %></span>
+                  </div>
                 </td>
               </tr>
             <% end %>
