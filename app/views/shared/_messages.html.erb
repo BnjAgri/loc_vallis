@@ -14,7 +14,13 @@ end %>
   elsif message.sender_type == "Owner"
     t("messages.sender.host")
   else
-    t("messages.sender.traveler")
+    sender = message.sender
+    if sender.is_a?(User)
+      full_name = [sender.first_name, sender.last_name].map { |s| s.to_s.strip.presence }.compact.join(" ").presence
+      full_name || t("messages.sender.traveler")
+    else
+      t("messages.sender.traveler")
+    end
   end
 end %>
 
