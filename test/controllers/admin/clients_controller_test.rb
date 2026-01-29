@@ -83,5 +83,43 @@ module Admin
       get admin_clients_path
       assert_response :redirect
     end
+
+    test "destroy is blocked when client has active bookings" do
+      owner = Owner.create!(email: "owner_clients_destroy_blocked@test.local", password: "password")
+      room = Room.new(owner:, name: "Owner room")
+      room.save!(validate: false)
+      OpeningPeriod.create!(room:, start_date: Date.current - 30, end_date: Date.current + 60, nightly_price_cents: 10_00, currency: "EUR")
+
+      user = User.create!(email: "client_destroy_blocked@test.local", password: "password", first_name: "Blocked")
+      Booking.create!(room:, user:, start_date: Date.current + 3, end_date: Date.current + 5, status: "requested")
+
+      sign_in owner
+
+      assert_no_difference("User.count") do
+        delete admin_client_path(id: user)
+      end
+
+      assert_redirected_to admin_client_path(id: user)
+      assert_equal "Des réservations sont actives pour cet utilisateur. Veuillez les annuler d'abord.", flash[:alert]
+    end
+
+    test "destroy deletes client when no active bookings" do
+      owner = Owner.create!(email: "owner_clients_destroy_ok@test.local", password: "password")
+      room = Room.new(owner:, name: "Owner room")
+      room.save!(validate: false)
+      OpeningPeriod.create!(room:, start_date: Date.current - 30, end_date: Date.current + 60, nightly_price_cents: 10_00, currency: "EUR")
+
+      user = User.create!(email: "client_destroy_ok@test.local", password: "password", first_name: "Ok")
+      Booking.create!(room:, user:, start_date: Date.current + 3, end_date: Date.current + 5, status: "canceled")
+
+      sign_in owner
+
+      assert_difference("User.count", -1) do
+        delete admin_client_path(id: user)
+      end
+
+      assert_redirected_to admin_clients_path
+      assert_equal "Profil utilisateur supprimé.", flash[:notice]
+    end
   end
 end

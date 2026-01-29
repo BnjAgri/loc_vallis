@@ -75,7 +75,7 @@ Rails.application.routes.draw do
         end
       end
 
-      resources :clients, only: %i[index show]
+      resources :clients, only: %i[index show destroy]
     end
   end
 end

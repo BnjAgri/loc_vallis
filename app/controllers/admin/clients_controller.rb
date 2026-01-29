@@ -68,6 +68,28 @@ module Admin
         .order(created_at: :desc)
     end
 
+    def destroy
+      @client = policy_scope(User).find(params[:id])
+      authorize @client
+
+      bookings_scope = policy_scope(Booking)
+
+      active_bookings_exist = bookings_scope
+        .where(user_id: @client.id, status: NEXT_BOOKING_STATUSES)
+        .where("end_date > ?", Date.current)
+        .exists?
+
+      if active_bookings_exist
+        redirect_to admin_client_path(id: @client), alert: t("admin.clients.flash.active_bookings")
+        return
+      end
+
+      @client.destroy!
+      redirect_to admin_clients_path, notice: t("admin.clients.flash.deleted")
+    rescue ActiveRecord::RecordNotDestroyed => e
+      redirect_to admin_client_path(id: @client), alert: e.message
+    end
+
     private
 
     def expire_overdue_bookings

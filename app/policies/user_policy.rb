@@ -7,6 +7,10 @@ class UserPolicy < ApplicationPolicy
     user.is_a?(Owner)
   end
 
+  def destroy?
+    user.is_a?(Owner)
+  end
+
   class Scope < Scope
     def resolve
       return scope.none unless user.is_a?(Owner)

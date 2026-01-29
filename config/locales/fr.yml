@@ -323,6 +323,9 @@ fr:
         updated: "Période d'ouverture mise à jour."
 
     clients:
+      flash:
+        deleted: "Profil utilisateur supprimé."
+        active_bookings: "Des réservations sont actives pour cet utilisateur. Veuillez les annuler d'abord."
       index:
         title: "Clients"
         empty: "Aucun client pour le moment."
@@ -334,6 +337,9 @@ fr:
         no_upcoming: "A venir : —"
       show:
         back: "Retour"
+        ban: "Bannir"
+        ban_cancel: "Annuler"
+        ban_confirm: "Cette opération est irréversible, voulez vous effacer le profil de cet utilisateur ?"
         profile: "Profil"
         full_name: "Nom"
         phone: "Téléphone"

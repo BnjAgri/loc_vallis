@@ -1,0 +1,13 @@
+<%= button_to t("admin.clients.show.ban"),
+      admin_client_path(id: client),
+      method: :delete,
+      form: {
+        data: {
+          controller: "confirm-delete",
+          action: "submit->confirm-delete#confirm",
+          "confirm-delete-message-value": t("admin.clients.show.ban_confirm"),
+          "confirm-delete-cancel-text-value": t("admin.clients.show.ban_cancel"),
+          "confirm-delete-confirm-text-value": t("admin.clients.show.ban")
+        }
+      },
+      class: "btn btn-danger" %>

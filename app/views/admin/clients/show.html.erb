@@ -5,6 +5,7 @@
       <div class="text-muted"><%= @client.email %></div>
     </div>
     <div class="d-flex gap-2">
+      <%= render "ban_button", client: @client %>
       <%= link_to t("admin.clients.show.back"), admin_clients_path, class: "btn btn-link" %>
     </div>
   </div>
