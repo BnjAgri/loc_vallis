@@ -1,0 +1,49 @@
+<div class="container py-4">
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <h1 class="h3 mb-0"><%= t("admin.clients.index.title") %></h1>
+    <%= link_to t("shared.nav.dashboard"), admin_bookings_path, class: "btn btn-outline-primary" %>
+  </div>
+
+  <% if @clients.empty? %>
+    <p class="text-muted"><%= t("admin.clients.index.empty") %></p>
+  <% else %>
+    <div class="card">
+      <div class="table-responsive">
+        <table class="table mb-0 align-middle">
+          <thead>
+            <tr>
+              <th><%= t("admin.clients.index.client") %></th>
+              <th><%= t("admin.clients.index.email") %></th>
+              <th><%= t("admin.clients.index.next_booking") %></th>
+              <th><%= t("admin.clients.index.total_bookings") %></th>
+              <th><%= t("admin.clients.index.cancellations") %></th>
+            </tr>
+          </thead>
+          <tbody>
+            <% @clients.each do |client| %>
+              <tr>
+                <td class="fw-semibold">
+                  <%= link_to client.display_name, admin_client_path(id: client), class: "text-decoration-none" %>
+                </td>
+                <td class="text-muted"><%= client.email %></td>
+                <td>
+                  <% if client.respond_to?(:next_booking_start_date) && client.next_booking_start_date.present? %>
+                    <span class="badge text-bg-success"><%= l(client.next_booking_start_date.to_date) %></span>
+                  <% else %>
+                    <span class="text-muted"><%= t("admin.clients.index.no_upcoming") %></span>
+                  <% end %>
+                </td>
+                <td>
+                  <span class="badge text-bg-secondary"><%= client.respond_to?(:bookings_count) ? client.bookings_count.to_i : client.bookings.size %></span>
+                </td>
+                <td>
+                  <span class="badge text-bg-warning"><%= client.respond_to?(:cancellations_count) ? client.cancellations_count.to_i : 0 %></span>
+                </td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  <% end %>
+</div>

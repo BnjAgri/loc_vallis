@@ -60,6 +60,7 @@ en:
       dashboard: "Dashboard"
       accommodations: "Accommodations"
       planning: "Planning"
+      clients: "Customers"
       login: "Log in"
     authorization:
       not_authorized: "You are not authorized to perform this action."
@@ -247,6 +248,43 @@ en:
         declined: "Booking declined."
         canceled: "Booking canceled."
         refund_initiated: "Refund initiated."
+
+    clients:
+      index:
+        cancellations: "Cancellations"
+
+    clients:
+      index:
+        title: "Customers"
+        empty: "No customers yet."
+        client: "Customer"
+        email: "Email"
+        next_booking: "Next booking"
+        total_bookings: "Bookings"
+        no_upcoming: "Upcoming: —"
+      show:
+        back: "Back"
+        profile: "Profile"
+        full_name: "Name"
+        phone: "Phone"
+        address: "Address"
+        next_booking: "Next booking"
+        no_upcoming: "No upcoming booking."
+        open_booking: "Open"
+        booking_history: "Booking history"
+        no_bookings: "No bookings yet."
+        dates: "Dates"
+        room: "Room"
+        status: "Status"
+        open: "Open"
+        messages: "Messages"
+        no_messages: "No messages yet."
+        more_messages: "+%{count} messages"
+        reviews: "Reviews"
+        no_reviews: "No reviews yet."
+        rating:
+          one: "%{count} star"
+          other: "%{count} stars"
 
   rooms:
     show:

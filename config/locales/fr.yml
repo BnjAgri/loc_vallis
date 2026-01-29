@@ -84,6 +84,7 @@ fr:
       dashboard: "Tableau de bord"
       accommodations: "Hébergements"
       planning: "Planning"
+      clients: "Clients"
       login: "Se connecter"
     authorization:
       not_authorized: "Vous n'êtes pas autorisé à effectuer cette action."
@@ -320,6 +321,43 @@ fr:
         added: "Période d'ouverture ajoutée."
         removed: "Période d'ouverture supprimée."
         updated: "Période d'ouverture mise à jour."
+
+    clients:
+      index:
+        cancellations: "Annulations"
+
+    clients:
+      index:
+        title: "Clients"
+        empty: "Aucun client pour le moment."
+        client: "Client"
+        email: "Email"
+        next_booking: "Prochaine réservation"
+        total_bookings: "Réservations"
+        no_upcoming: "A venir : —"
+      show:
+        back: "Retour"
+        profile: "Profil"
+        full_name: "Nom"
+        phone: "Téléphone"
+        address: "Adresse"
+        next_booking: "Prochaine réservation"
+        no_upcoming: "Aucune réservation à venir."
+        open_booking: "Ouvrir"
+        booking_history: "Historique des réservations"
+        no_bookings: "Aucune réservation pour le moment."
+        dates: "Dates"
+        room: "Chambre"
+        status: "Statut"
+        open: "Ouvrir"
+        messages: "Messages"
+        no_messages: "Aucun message pour le moment."
+        more_messages: "+%{count} messages"
+        reviews: "Avis"
+        no_reviews: "Aucun avis pour le moment."
+        rating:
+          one: "%{count} étoile"
+          other: "%{count} étoiles"
 
   rooms:
     show:

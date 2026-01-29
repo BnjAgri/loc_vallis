@@ -1,0 +1,157 @@
+<div class="container py-4">
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <div>
+      <h1 class="h3 mb-0"><%= @client.display_name %></h1>
+      <div class="text-muted"><%= @client.email %></div>
+    </div>
+    <div class="d-flex gap-2">
+      <%= link_to t("admin.clients.show.back"), admin_clients_path, class: "btn btn-link" %>
+    </div>
+  </div>
+
+  <div class="row g-3">
+    <div class="col-12 col-lg-4">
+      <div class="card h-100">
+        <div class="card-body">
+          <div class="fw-semibold mb-2"><%= t("admin.clients.show.profile") %></div>
+
+          <div class="small text-muted"><%= t("admin.clients.show.full_name") %></div>
+          <div class="mb-2"><%= [@client.first_name, @client.last_name].compact.join(" ").presence || "—" %></div>
+
+          <div class="small text-muted"><%= t("admin.clients.show.phone") %></div>
+          <div class="mb-2"><%= @client.phone.presence || "—" %></div>
+
+          <div class="small text-muted"><%= t("admin.clients.show.address") %></div>
+          <div><%= simple_format(@client.postal_address.presence || "—") %></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-12 col-lg-8">
+      <div class="card mb-3">
+        <div class="card-body">
+          <div class="d-flex justify-content-between align-items-center">
+            <div class="fw-semibold"><%= t("admin.clients.show.next_booking") %></div>
+            <% if @next_booking.present? %>
+              <%= link_to t("admin.clients.show.open_booking"), admin_booking_path(id: @next_booking), class: "btn btn-sm btn-outline-primary" %>
+            <% end %>
+          </div>
+
+          <% if @next_booking.present? %>
+            <div class="mt-2">
+              <div>
+                <span class="badge text-bg-success"><%= l(@next_booking.start_date) %> → <%= l(@next_booking.end_date) %></span>
+                <span class="badge text-bg-secondary"><%= @next_booking.status %></span>
+              </div>
+              <div class="mt-2 text-muted">
+                <%= @next_booking.room&.name %>
+              </div>
+            </div>
+          <% else %>
+            <div class="mt-2 text-muted"><%= t("admin.clients.show.no_upcoming") %></div>
+          <% end %>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-body">
+          <div class="fw-semibold mb-2"><%= t("admin.clients.show.booking_history") %></div>
+
+          <% if @bookings.empty? %>
+            <div class="text-muted"><%= t("admin.clients.show.no_bookings") %></div>
+          <% else %>
+            <div class="table-responsive">
+              <table class="table mb-0 align-middle">
+                <thead>
+                  <tr>
+                    <th><%= t("admin.clients.show.dates") %></th>
+                    <th><%= t("admin.clients.show.room") %></th>
+                    <th><%= t("admin.clients.show.status") %></th>
+                    <th></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <% @bookings.each do |booking| %>
+                    <tr>
+                      <td><%= l(booking.start_date) %> → <%= l(booking.end_date) %></td>
+                      <td><%= booking.room&.name %></td>
+                      <td><span class="badge text-bg-secondary"><%= booking.status %></span></td>
+                      <td class="text-end">
+                        <%= link_to t("admin.clients.show.open"), admin_booking_path(id: booking), class: "btn btn-sm btn-outline-primary" %>
+                      </td>
+                    </tr>
+                  <% end %>
+                </tbody>
+              </table>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row g-3 mt-0">
+    <div class="col-12 col-lg-6">
+      <div class="card h-100">
+        <div class="card-body">
+          <div class="fw-semibold mb-2"><%= t("admin.clients.show.messages") %></div>
+
+          <% if @messages.empty? %>
+            <div class="text-muted"><%= t("admin.clients.show.no_messages") %></div>
+          <% else %>
+            <% @messages.group_by(&:booking).each do |booking, messages| %>
+              <div class="mb-3">
+                <div class="d-flex justify-content-between align-items-center">
+                  <div class="small text-muted">
+                    <%= booking.room&.name %> — <%= l(booking.start_date) %> → <%= l(booking.end_date) %>
+                  </div>
+                  <%= link_to t("admin.clients.show.open"), admin_booking_path(id: booking), class: "btn btn-sm btn-link" %>
+                </div>
+
+                <div class="mt-2">
+                  <% messages.first(8).each do |message| %>
+                    <div class="border rounded p-2 mb-2">
+                      <div class="d-flex justify-content-between">
+                        <div class="small fw-semibold"><%= message.sender.respond_to?(:display_name) ? message.sender.display_name : message.sender_type %></div>
+                        <div class="small text-muted"><%= l(message.created_at, format: :short) %></div>
+                      </div>
+                      <div><%= simple_format(message.body) %></div>
+                    </div>
+                  <% end %>
+
+                  <% if messages.size > 8 %>
+                    <div class="small text-muted"><%= t("admin.clients.show.more_messages", count: messages.size - 8) %></div>
+                  <% end %>
+                </div>
+              </div>
+            <% end %>
+          <% end %>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-12 col-lg-6">
+      <div class="card h-100">
+        <div class="card-body">
+          <div class="fw-semibold mb-2"><%= t("admin.clients.show.reviews") %></div>
+
+          <% if @reviews.empty? %>
+            <div class="text-muted"><%= t("admin.clients.show.no_reviews") %></div>
+          <% else %>
+            <% @reviews.each do |review| %>
+              <div class="border rounded p-2 mb-2">
+                <div class="d-flex justify-content-between">
+                  <div class="small text-muted">
+                    <%= review.booking.room&.name %> — <%= l(review.booking.start_date) %>
+                  </div>
+                  <span class="badge text-bg-primary"><%= t("admin.clients.show.rating", count: review.rating) %></span>
+                </div>
+                <div class="mt-2"><%= simple_format(review.comment) %></div>
+              </div>
+            <% end %>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

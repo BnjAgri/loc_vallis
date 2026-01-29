@@ -20,6 +20,9 @@
         <li class="nav-item">
           <%= link_to t("shared.nav.planning"), admin_rooms_path, class: ["nav-link", (request.path.start_with?(admin_rooms_path) ? "active" : nil)].compact.join(" ") %>
         </li>
+        <li class="nav-item">
+          <%= link_to t("shared.nav.clients"), admin_clients_path, class: ["nav-link", (request.path.start_with?(admin_clients_path) ? "active" : nil)].compact.join(" ") %>
+        </li>
       </ul>
     <% end %>
 
@@ -44,6 +47,9 @@
           </li>
           <li class="nav-item">
             <%= link_to t("shared.nav.planning"), admin_rooms_path, class: ["nav-link", (current_path.start_with?(admin_rooms_path) ? "active" : nil)].compact.join(" ") %>
+          </li>
+          <li class="nav-item">
+            <%= link_to t("shared.nav.clients"), admin_clients_path, class: ["nav-link", (current_path.start_with?(admin_clients_path) ? "active" : nil)].compact.join(" ") %>
           </li>
         </ul>
 

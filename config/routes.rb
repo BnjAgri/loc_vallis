@@ -74,6 +74,8 @@ Rails.application.routes.draw do
           post :refund
         end
       end
+
+      resources :clients, only: %i[index show]
     end
   end
 end
