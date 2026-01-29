@@ -89,7 +89,7 @@ module Admin
 
       @booking.mark_owner_read!
 
-      @messages = @booking.messages.includes(:sender).order(:created_at)
+      @messages = @booking.messages.includes(:sender).order(created_at: :desc)
       @message = Message.new
     end
 

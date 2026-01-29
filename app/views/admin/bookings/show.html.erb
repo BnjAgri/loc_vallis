@@ -35,7 +35,11 @@
 
           <hr class="my-3 lv-divider" />
 
-          <%= render "shared/messages", booking: @booking, messages: @messages %>
+          <%= render "shared/messages",
+            booking: @booking,
+            messages: @messages,
+            composer_position: :top,
+            scroll_behavior: :none %>
         </div>
       </div>
     </div>
