@@ -1,4 +1,5 @@
 class ApplicationController < ActionController::Base
+  require "set"
   include Pundit::Authorization
 
   before_action :http_basic_authenticate, if: :http_basic_auth_enabled?
@@ -18,6 +19,11 @@ class ApplicationController < ActionController::Base
 
   protected
 
+  def after_sign_in_path_for(resource)
+    set_login_notifications_flash(resource)
+    super
+  end
+
   def configure_permitted_parameters
     keys = %i[first_name last_name]
 
@@ -33,6 +39,92 @@ class ApplicationController < ActionController::Base
   end
 
   private
+
+  def set_login_notifications_flash(resource)
+    return unless resource.respond_to?(:notifications_last_seen_at)
+
+    since = resource.notifications_last_seen_at || Time.at(0)
+    now = Time.current
+
+    notifications = []
+    seen_booking_ids = Set.new
+
+    if resource.is_a?(Owner)
+      bookings_scope = Booking.joins(:room).where(rooms: { owner_id: resource.id })
+
+      if (booking = bookings_scope.where("bookings.created_at > ?", since).order(created_at: :desc).first)
+        seen_booking_ids << booking.id
+        notifications << {
+          text: I18n.t("notifications.login.new_booking", id: booking.id),
+          url: admin_booking_path(id: booking),
+          action_label: I18n.t("notifications.login.actions.open")
+        }
+      end
+
+      if (booking = bookings_scope.where("bookings.status_changed_at > ?", since).where.not(id: seen_booking_ids.to_a).order(status_changed_at: :desc).first)
+        seen_booking_ids << booking.id
+        notifications << {
+          text: I18n.t("notifications.login.booking_status_changed", id: booking.id, status: view_context.booking_status_label(booking.status)),
+          url: admin_booking_path(id: booking),
+          action_label: I18n.t("notifications.login.actions.open")
+        }
+      end
+
+      if (message = Message
+            .joins(:booking)
+            .merge(bookings_scope)
+            .where(sender_type: "User")
+            .where("messages.created_at > COALESCE(bookings.owner_last_read_at, ?)", Time.at(0))
+            .order(created_at: :desc)
+            .first)
+        notifications << {
+          text: I18n.t("notifications.login.new_message", id: message.booking_id),
+          url: admin_booking_path(id: message.booking_id),
+          action_label: I18n.t("notifications.login.actions.open")
+        }
+      end
+    elsif resource.is_a?(User)
+      bookings_scope = Booking.where(user_id: resource.id)
+
+      if (booking = bookings_scope.where("bookings.created_at > ?", since).order(created_at: :desc).first)
+        seen_booking_ids << booking.id
+        notifications << {
+          text: I18n.t("notifications.login.new_booking", id: booking.id),
+          url: booking_path(id: booking),
+          action_label: I18n.t("notifications.login.actions.open")
+        }
+      end
+
+      if (booking = bookings_scope.where("bookings.status_changed_at > ?", since).where.not(id: seen_booking_ids.to_a).order(status_changed_at: :desc).first)
+        seen_booking_ids << booking.id
+        notifications << {
+          text: I18n.t("notifications.login.booking_status_changed", id: booking.id, status: view_context.booking_status_label(booking.status)),
+          url: booking_path(id: booking),
+          action_label: I18n.t("notifications.login.actions.open")
+        }
+      end
+
+      if (message = Message
+            .joins(:booking)
+            .where(bookings: { user_id: resource.id })
+            .where(sender_type: "Owner")
+            .where("messages.created_at > COALESCE(bookings.user_last_read_at, ?)", Time.at(0))
+            .order(created_at: :desc)
+            .first)
+        notifications << {
+          text: I18n.t("notifications.login.new_message", id: message.booking_id),
+          url: booking_path(id: message.booking_id),
+          action_label: I18n.t("notifications.login.actions.open")
+        }
+      end
+    end
+
+    notifications.compact!
+    resource.update_column(:notifications_last_seen_at, now)
+    return if notifications.empty?
+
+    flash[:notice] = view_context.render(partial: "shared/login_notifications", locals: { notifications: notifications }).html_safe
+  end
 
   def http_basic_auth_enabled?
     ENV["BASIC_AUTH_USER"].present? && ENV["BASIC_AUTH_PASSWORD"].present?
