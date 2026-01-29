@@ -3,34 +3,6 @@
   <%= f.input :description, as: :text, label: "Description", hint: "Décrivez la chambre, ses équipements, etc." %>
   <%= f.input :capacity, label: "Capacité", hint: "Optionnel" %>
 
-  <% if room.photos.attached? %>
-    <div class="mb-3">
-      <label class="form-label"><%= t("admin.rooms.photos.existing_title") %></label>
-      <div class="d-flex flex-wrap gap-2">
-        <% room.photos.each do |photo| %>
-          <div class="card" style="width: 140px;">
-            <%= image_tag url_for(photo), class: "card-img-top", style: "width: 100%; height: 100px; object-fit: cover;" %>
-            <div class="card-body p-2">
-              <%= button_to t("admin.rooms.photos.delete_button"),
-                    photo_admin_room_path(id: room, photo_id: photo.id),
-                    method: :delete,
-                    class: "btn btn-sm btn-outline-danger w-100",
-                    form: {
-                      data: {
-                        controller: "confirm-delete",
-                        action: "submit->confirm-delete#confirm",
-                        "confirm-delete-message-value": t("admin.rooms.photos.delete_confirm"),
-                        "confirm-delete-cancel-text-value": t("shared.actions.cancel"),
-                        "confirm-delete-confirm-text-value": t("admin.rooms.photos.delete_button")
-                      }
-                    } %>
-            </div>
-          </div>
-        <% end %>
-      </div>
-    </div>
-  <% end %>
-
   <%= f.input :photos,
               as: :file,
               input_html: { multiple: true, accept: "image/jpeg,image/png,image/gif" },
