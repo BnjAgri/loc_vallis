@@ -2,6 +2,18 @@
   width: 100%;
 }
 
+// Center the inline Flatpickr calendar inside the sidebar column.
+.room-show-datepicker .flatpickr-calendar.inline {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.room-show-datepicker .flatpickr-calendar.inline,
+.room-show-datepicker .flatpickr-innerContainer,
+.room-show-datepicker .flatpickr-rContainer {
+  max-width: 100%;
+}
+
 @media (min-width: 992px) {
   .room-show-datepicker-col {
     margin-right: calc(-1 * var(--bs-gutter-x) / 2);
