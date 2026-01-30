@@ -12,12 +12,13 @@
 # - appelle l'API Stripe (création refund)
 # - passe la booking à `refunded` et stocke `stripe_refund_id` + `refunded_at`
 class StripeRefundCreator
-  def self.call(booking:)
-    new(booking:).call
+  def self.call(booking:, amount_cents: nil)
+    new(booking:, amount_cents:).call
   end
 
-  def initialize(booking:)
+  def initialize(booking:, amount_cents: nil)
     @booking = booking
+    @amount_cents = amount_cents
   end
 
   def call
@@ -26,7 +27,19 @@ class StripeRefundCreator
     raise StandardError, "Missing Stripe payment_intent" if booking.stripe_payment_intent_id.blank?
     raise StandardError, "Already refunded" if booking.stripe_refund_id.present? || booking.status == "refunded"
 
-    refund = Stripe::Refund.create(payment_intent: booking.stripe_payment_intent_id)
+    if amount_cents.present?
+      raise StandardError, "Invalid refund amount" unless amount_cents.is_a?(Integer)
+      raise StandardError, "Invalid refund amount" unless amount_cents.positive?
+
+      max = booking.total_price_cents.to_i
+      raise StandardError, "Invalid refund amount" if max <= 0
+      raise StandardError, "Refund amount exceeds total" if amount_cents > max
+    end
+
+    payload = { payment_intent: booking.stripe_payment_intent_id }
+    payload[:amount] = amount_cents if amount_cents.present?
+
+    refund = Stripe::Refund.create(payload)
 
     booking.update!(
       status: "refunded",
@@ -40,4 +53,6 @@ class StripeRefundCreator
   private
 
   attr_reader :booking
+
+  attr_reader :amount_cents
 end

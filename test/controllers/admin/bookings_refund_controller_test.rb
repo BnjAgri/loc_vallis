@@ -27,19 +27,47 @@ class Admin::BookingsRefundControllerTest < ActionDispatch::IntegrationTest
     sign_in @owner
   end
 
-  test "refund sets status to refunded and stores refund metadata" do
+  test "refund (full) sets status to refunded and stores refund metadata" do
     refund = OpenStruct.new(id: "re_test_123")
+    captured_args = nil
 
     original = Stripe::Refund.method(:create)
-    Stripe::Refund.define_singleton_method(:create) { |_args| refund }
+    Stripe::Refund.define_singleton_method(:create) do |args|
+      captured_args = args
+      refund
+    end
 
     post refund_admin_booking_path(id: @booking)
     assert_response :redirect
+
+    assert_equal({ payment_intent: "pi_test_999" }, captured_args)
 
     @booking.reload
     assert_equal "refunded", @booking.status
     assert_equal "re_test_123", @booking.stripe_refund_id
     assert_not_nil @booking.refunded_at
+  ensure
+    Stripe::Refund.define_singleton_method(:create, original)
+  end
+
+  test "refund (partial) passes amount to Stripe" do
+    refund = OpenStruct.new(id: "re_test_456")
+    captured_args = nil
+
+    original = Stripe::Refund.method(:create)
+    Stripe::Refund.define_singleton_method(:create) do |args|
+      captured_args = args
+      refund
+    end
+
+    post refund_admin_booking_path(id: @booking), params: { amount_cents: 12_34 }
+    assert_response :redirect
+
+    assert_equal({ payment_intent: "pi_test_999", amount: 12_34 }, captured_args)
+
+    @booking.reload
+    assert_equal "refunded", @booking.status
+    assert_equal "re_test_456", @booking.stripe_refund_id
   ensure
     Stripe::Refund.define_singleton_method(:create, original)
   end

@@ -126,7 +126,10 @@ module Admin
       @booking = Booking.find(params[:id])
       authorize @booking, :refund?
 
-      StripeRefundCreator.call(booking: @booking)
+      amount_cents = params[:amount_cents].presence
+      amount_cents = amount_cents.to_i if amount_cents
+
+      StripeRefundCreator.call(booking: @booking, amount_cents: amount_cents)
       BookingMailer.with(booking: @booking).refunded.deliver_later
       redirect_to admin_booking_path(id: @booking), notice: t("admin.bookings.flash.refund_initiated")
     rescue StandardError => e

@@ -5,18 +5,16 @@
       <% room.image_urls.each_with_index do |url, index| %>
         <div class="position-relative" style="width: 140px;">
           <%= image_tag url, class: "img-thumbnail", style: "width: 100%; height: 100px; object-fit: cover;" %>
-          <%= button_to url_admin_room_path(id: room, url_index: index),
-                method: :delete,
+          <%= link_to url_admin_room_path(id: room, url_index: index),
                 class: "position-absolute top-0 end-0 btn btn-sm btn-danger rounded-circle d-flex align-items-center justify-content-center",
                 style: "width: 24px; height: 24px; font-size: 12px; padding: 0; border: none;",
-                form: {
-                  data: {
-                    controller: "confirm-delete",
-                    action: "submit->confirm-delete#confirm",
-                    "confirm-delete-message-value": t("admin.rooms.urls.delete_confirm"),
-                    "confirm-delete-cancel-text-value": t("shared.actions.cancel"),
-                    "confirm-delete-confirm-text-value": t("admin.rooms.urls.delete_button")
-                  }
+                data: {
+                  turbo_method: :delete,
+                  controller: "confirm-delete",
+                  action: "click->confirm-delete#confirm",
+                  "confirm-delete-message-value": t("admin.rooms.urls.delete_confirm"),
+                  "confirm-delete-cancel-text-value": t("shared.actions.cancel"),
+                  "confirm-delete-confirm-text-value": t("admin.rooms.urls.delete_button")
                 } do %>
             <i class="fa fa-times"></i>
           <% end %>
