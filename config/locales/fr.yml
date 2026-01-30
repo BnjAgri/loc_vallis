@@ -295,6 +295,13 @@ fr:
         flash:
           deleted: "Photo supprimée."
           not_found: "Photo introuvable."
+      urls:
+        existing_title: "URLs d'images existantes"
+        delete_button: "Supprimer"
+        delete_confirm: "Supprimer cette URL d'image ?"
+        flash:
+          deleted: "URL supprimée."
+          not_found: "URL introuvable."
       show:
         calendar_title: "Calendrier des disponibilités"
         legend_open: "Ouvert"

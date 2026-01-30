@@ -83,12 +83,44 @@ module Admin
 
       attachment = @room.photos.attachments.find_by(id: params[:photo_id])
       unless attachment
-        redirect_to edit_admin_room_path(id: @room), alert: t("admin.rooms.photos.flash.not_found")
+        respond_to do |format|
+          format.html { redirect_to edit_admin_room_path(id: @room), alert: t("admin.rooms.photos.flash.not_found") }
+          format.turbo_stream { render turbo_stream: turbo_stream.replace("existing-photos", partial: "existing_photos", locals: { room: @room }) }
+        end
         return
       end
 
       attachment.purge
-      redirect_to edit_admin_room_path(id: @room), notice: t("admin.rooms.photos.flash.deleted")
+
+      respond_to do |format|
+        format.html { redirect_to edit_admin_room_path(id: @room), notice: t("admin.rooms.photos.flash.deleted") }
+        format.turbo_stream { render turbo_stream: turbo_stream.replace("existing-photos", partial: "existing_photos", locals: { room: @room }) }
+      end
+    end
+
+    def destroy_url
+      @room = policy_scope(Room).find(params[:id])
+      authorize @room, :update?
+
+      urls = @room.image_urls
+      index = params[:url_index].to_i
+
+      if index < 0 || index >= urls.size
+        respond_to do |format|
+          format.html { redirect_to edit_admin_room_path(id: @room), alert: t("admin.rooms.urls.flash.not_found") }
+          format.turbo_stream { render turbo_stream: turbo_stream.replace("existing-url-photos", partial: "existing_url_photos", locals: { room: @room }) }
+        end
+        return
+      end
+
+      urls.delete_at(index)
+      @room.room_url = urls.join("\n")
+      @room.save
+
+      respond_to do |format|
+        format.html { redirect_to edit_admin_room_path(id: @room), notice: t("admin.rooms.urls.flash.deleted") }
+        format.turbo_stream { render turbo_stream: turbo_stream.replace("existing-url-photos", partial: "existing_url_photos", locals: { room: @room }) }
+      end
     end
 
     def destroy
