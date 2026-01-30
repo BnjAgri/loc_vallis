@@ -20,6 +20,8 @@ class Room < ApplicationRecord
   validate :mvp_room_limit, on: :create
   validate :validate_photos
 
+  validate :disallow_angle_brackets_in_text_fields
+
   before_validation :normalize_optional_services
   validate :validate_optional_services
 
@@ -31,9 +33,32 @@ class Room < ApplicationRecord
       .split(/\r?\n|,/)
       .map(&:strip)
       .reject(&:blank?)
+      .select { |value| valid_http_url?(value) }
   end
 
   private
+
+  FORBIDDEN_TEXT_CHARS_REGEX = /[<>]/.freeze
+
+  def valid_http_url?(value)
+    uri = URI.parse(value.to_s)
+    uri.is_a?(URI::HTTP) || uri.is_a?(URI::HTTPS)
+  rescue URI::InvalidURIError
+    false
+  end
+
+  def disallow_angle_brackets_in_text_fields
+    {
+      name: name,
+      description: description,
+      room_url: room_url
+    }.each do |attr, value|
+      next if value.blank?
+      next unless value.to_s.match?(FORBIDDEN_TEXT_CHARS_REGEX)
+
+      errors.add(attr, "ne doit pas contenir < ou >")
+    end
+  end
 
   def normalize_optional_services
     raw = optional_services
@@ -86,6 +111,11 @@ class Room < ApplicationRecord
 
       if name.blank?
         errors.add(:optional_services, "nom manquant")
+        next
+      end
+
+      if name.match?(FORBIDDEN_TEXT_CHARS_REGEX)
+        errors.add(:optional_services, "ne doit pas contenir < ou >")
         next
       end
 
