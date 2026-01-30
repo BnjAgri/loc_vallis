@@ -1,0 +1,10 @@
+Réservation #<%= @booking.id %>
+
+Nouvelle demande de réservation.
+
+Logement : <%= @booking.room.name %>
+Voyageur : <%= @booking.user.email %>
+Dates : <%= I18n.l(@booking.start_date) %> → <%= I18n.l(@booking.end_date) %> (<%= @booking.nights %> <%= @booking.nights.to_i == 1 ? "nuit" : "nuits" %>)
+Total : <%= number_to_currency(@booking.total_price_cents.to_i / 100.0, unit: "#{@booking.currency.to_s.upcase} ", format: "%u%n") %>
+
+Voir (admin) : <%= @admin_booking_url %>

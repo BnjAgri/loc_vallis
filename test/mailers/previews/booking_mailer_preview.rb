@@ -5,6 +5,10 @@ class BookingMailerPreview < ActionMailer::Preview
     BookingMailer.with(booking: PreviewData.booking(status: "requested")).requested
   end
 
+  def requested_owner
+    BookingMailer.with(booking: PreviewData.booking(status: "requested")).requested_owner
+  end
+
   def approved
     BookingMailer.with(booking: PreviewData.booking(status: "approved_pending_payment")).approved
   end

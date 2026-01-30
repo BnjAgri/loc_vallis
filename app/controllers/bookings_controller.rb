@@ -81,6 +81,7 @@ class BookingsController < ApplicationController
 
     if @booking.valid?(:user_request) && @booking.save
       BookingMailer.with(booking: @booking).requested.deliver_later
+      BookingMailer.with(booking: @booking).requested_owner.deliver_later
       redirect_to @booking, notice: t("bookings.flash.request_sent")
     else
       render :new, status: :unprocessable_content
