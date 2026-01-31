@@ -1,4 +1,7 @@
 class PagesController < ApplicationController
+  def host
+  end
+
   def legal
     load_publisher_info
   end

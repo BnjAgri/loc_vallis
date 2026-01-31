@@ -74,6 +74,7 @@ fr:
       en: "EN"
     nav:
       rooms: "Chambres"
+      host: "Votre hôte"
       blog: "Anglès et ses environs"
       my_bookings: "Mes réservations"
       profile: "Mon profil"
@@ -115,6 +116,16 @@ fr:
         optional_services: "Services optionnels"
 
   pages:
+    host:
+      title: "Votre hôte"
+      section_title: "En toute simplicité"
+      image_alt: "Photo de votre hôte"
+      body:
+        p1: "Installé depuis toujours à Anglès, au cœur du Tarn, Claude est un jeune retraité encore animé par l’énergie de sa première vie : celle d’un restaurateur passionné. Amoureux de nature, marcheur infatigable et profondément engagé dans la vie de son village, il aime partager ce qui fait la force de son territoire : la convivialité, la simplicité et ce lien intime avec les paysages qui l’entourent."
+        p2: "Toujours plein d’idées pour enrichir le séjour de ses visiteurs, Claude connaît les chemins secrets, les points de vue confidentiels, les anecdotes locales et les bonnes adresses du coin. Il guide, conseille, raconte — toujours avec enthousiasme."
+        p3: "En cuisine, il prépare sur demande des dîners maison, inspirés du terroir. Des plats simples, sincères, pensés pour favoriser l’échange autour d’une table chaleureuse."
+        p4: "C’est cet esprit qui anime aussi son gîte : un lieu sans chichi, accueillant, où l’on se sent immédiatement « chez soi ». Que vous souhaitiez partager des moments conviviaux ou privilégier la tranquillité, Claude saura offrir l’équilibre parfait pour un séjour authentique et apaisant."
+      coming_soon: "Contenu à venir."
     legal:
       title: "Mentions légales"
       not_provided: "Non renseigné"

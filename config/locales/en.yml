@@ -49,6 +49,7 @@ en:
       en: "EN"
     nav:
       rooms: "Rooms"
+      host: "Your host"
       blog: "Anglès & surroundings"
       my_bookings: "My bookings"
       profile: "My profile"
@@ -91,6 +92,16 @@ en:
         optional_services: "Optional services"
 
   pages:
+    host:
+      title: "Your host"
+      section_title: "Simply and sincerely"
+      image_alt: "Photo of your host"
+      body:
+        p1: "Born and raised in Anglès, in the heart of Tarn, Claude is a young retiree still driven by the energy of his first life: a passionate restaurateur. A nature lover, tireless walker, and deeply involved in village life, he enjoys sharing what makes his region special—conviviality, simplicity, and an intimate connection with the surrounding landscapes."
+        p2: "Always full of ideas to enrich his guests’ stay, Claude knows the hidden trails, quiet viewpoints, local stories, and the best addresses nearby. He guides, advises, and tells tales—always with enthusiasm."
+        p3: "In the kitchen, he can prepare homemade dinners on request, inspired by local produce. Simple, sincere dishes designed to encourage conversation around a warm table."
+        p4: "That same spirit also lives in his guesthouse: a welcoming place with no fuss, where you immediately feel “at home.” Whether you’re looking for friendly moments or a quieter retreat, Claude will offer the perfect balance for an authentic, soothing stay."
+      coming_soon: "Content coming soon."
     legal:
       title: "Legal notice"
       not_provided: "Not provided"

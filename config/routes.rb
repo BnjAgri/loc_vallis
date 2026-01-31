@@ -36,6 +36,7 @@ Rails.application.routes.draw do
 
     get "legal", to: "pages#legal"
     get "cgv", to: "pages#cgv"
+    get "host", to: "pages#host", as: :host
 
     resource :profile, only: %i[edit update destroy]
 

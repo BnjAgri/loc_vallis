@@ -59,6 +59,10 @@
           </li>
 
           <li class="nav-item">
+            <%= link_to t("shared.nav.host"), host_path, class: ["nav-link", (current_path == host_path ? "active" : nil)].compact.join(" ") %>
+          </li>
+
+          <li class="nav-item">
             <%= link_to t("shared.nav.blog"), articles_path, class: ["nav-link", (current_path.start_with?(articles_path) ? "active" : nil)].compact.join(" ") %>
           </li>
         </ul>
@@ -66,6 +70,10 @@
         <ul class="navbar-nav me-auto gap-2">
           <li class="nav-item">
             <%= link_to t("shared.nav.rooms"), rooms_path, class: ["nav-link", (current_path == rooms_path ? "active" : nil)].compact.join(" ") %>
+          </li>
+
+          <li class="nav-item">
+            <%= link_to t("shared.nav.host"), host_path, class: ["nav-link", (current_path == host_path ? "active" : nil)].compact.join(" ") %>
           </li>
 
           <li class="nav-item">
