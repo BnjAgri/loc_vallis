@@ -19,8 +19,18 @@ production:
     queue: default
     schedule: every 5 minutes
 
+  cancel_overdue_requested_bookings:
+    class: CancelOverdueRequestedBookingsJob
+    queue: default
+    schedule: every 5 minutes
+
 development:
   expire_overdue_bookings:
     class: ExpireOverdueBookingsJob
+    queue: default
+    schedule: every 5 minutes
+
+  cancel_overdue_requested_bookings:
+    class: CancelOverdueRequestedBookingsJob
     queue: default
     schedule: every 5 minutes

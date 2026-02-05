@@ -171,6 +171,18 @@ class Booking < ApplicationRecord
       end
   end
 
+  def self.cancel_overdue_requested!(as_of: Date.current)
+    where(status: "requested")
+      .where("start_date < ?", as_of)
+      .find_each do |booking|
+        begin
+          booking.update!(status: "canceled")
+        rescue ActiveRecord::RecordInvalid => e
+          Rails.logger.error("Booking##{booking.id} auto-cancel failed: #{e.message}")
+        end
+      end
+  end
+
   private
 
   def default_status
