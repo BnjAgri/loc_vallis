@@ -26,7 +26,16 @@ class Admin::BookingsRefundControllerTest < ActionDispatch::IntegrationTest
       currency: "EUR"
     )
 
+    @original_payment_intent_retrieve = Stripe::PaymentIntent.method(:retrieve)
+    Stripe::PaymentIntent.define_singleton_method(:retrieve) do |_id|
+      OpenStruct.new(amount_received: 20_000)
+    end
+
     sign_in @owner
+  end
+
+  teardown do
+    Stripe::PaymentIntent.define_singleton_method(:retrieve, @original_payment_intent_retrieve)
   end
 
   test "refund (full) sets status to refunded and stores refund metadata" do
@@ -170,5 +179,25 @@ class Admin::BookingsRefundControllerTest < ActionDispatch::IntegrationTest
     assert_equal false, called
   ensure
     Stripe::Refund.define_singleton_method(:create, original)
+  end
+
+  test "refund cannot exceed amount actually paid" do
+    @booking.update!(total_price_cents: 50_000)
+
+    original = Stripe::PaymentIntent.method(:retrieve)
+    Stripe::PaymentIntent.define_singleton_method(:retrieve) do |_id|
+      OpenStruct.new(amount_received: 10_000)
+    end
+
+    post refund_admin_booking_path(id: @booking), params: { amount_cents: 12_000 }, headers: { "HTTP_REFERER" => admin_booking_path(id: @booking) }
+    assert_response :redirect
+    assert_redirected_to admin_booking_path(id: @booking)
+    assert_equal "Refund amount exceeds amount paid", flash[:alert]
+
+    @booking.reload
+    assert_equal "confirmed_paid", @booking.status
+    assert_nil @booking.stripe_refund_id
+  ensure
+    Stripe::PaymentIntent.define_singleton_method(:retrieve, original)
   end
 end
