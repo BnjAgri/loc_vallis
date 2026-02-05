@@ -6,8 +6,8 @@
   <%= f.input :photos,
               as: :file,
               input_html: { multiple: true, accept: "image/jpeg,image/png,image/gif" },
-              label: "Photos",
-              hint: "Importer une ou plusieurs images (JPEG, PNG, GIF · 3 Mo max)" %>
+              label: "Photos (maximum 8)",
+              hint: "Importer une ou plusieurs images (JPEG, PNG, GIF · 3 Mo max · 8 max)" %>
   <%= turbo_frame_tag "existing-photos" do %>
     <%= render "existing_photos", room: room %>
   <% end %>

@@ -6,6 +6,8 @@
 # - Les disponibilités et le pricing sont portés par `OpeningPeriod`.
 # - Règle MVP : limitation volontaire à 2 rooms max (validation on create).
 class Room < ApplicationRecord
+  MAX_PHOTOS = 8
+
   belongs_to :owner
 
   has_many_attached :photos
@@ -147,6 +149,11 @@ class Room < ApplicationRecord
   end
 
   def validate_photos
+    if photos.attachments.size > MAX_PHOTOS
+      errors.add(:photos, "maximum #{MAX_PHOTOS}")
+      return
+    end
+
     return unless photos.attached?
 
     allowed_types = %w[image/jpeg image/png image/gif]

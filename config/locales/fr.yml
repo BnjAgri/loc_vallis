@@ -306,6 +306,7 @@ fr:
         flash:
           deleted: "Photo supprimée."
           not_found: "Photo introuvable."
+          too_many: "Maximum %{max} photos par chambre."
       urls:
         existing_title: "URLs d'images existantes"
         delete_button: "Supprimer"

@@ -50,11 +50,26 @@ module Admin
     end
 
     def create
-      @room = Room.new(room_params)
+      attributes = room_params
+      new_photos = Array(attributes.delete(:photos))
+
+      if new_photos.size > Room::MAX_PHOTOS
+        redirect_to new_admin_room_path, alert: t("admin.rooms.photos.flash.too_many", max: Room::MAX_PHOTOS)
+        return
+      end
+
+      @room = Room.new(attributes)
       @room.owner = current_owner
       authorize @room
 
-      if @room.save
+      saved = false
+      Room.transaction do
+        @room.photos.attach(new_photos) if new_photos.any?
+        saved = @room.save
+        raise ActiveRecord::Rollback unless saved
+      end
+
+      if saved
         redirect_to admin_room_path(id: @room), notice: t("admin.rooms.flash.created")
       else
         render :new, status: :unprocessable_content
@@ -70,7 +85,27 @@ module Admin
       @room = policy_scope(Room).find(params[:id])
       authorize @room
 
-      if @room.update(room_params)
+      attributes = room_params
+      new_photos = Array(attributes.delete(:photos))
+
+      if new_photos.any?
+        proposed_total = @room.photos.count + new_photos.size
+        if proposed_total > Room::MAX_PHOTOS
+          redirect_to edit_admin_room_path(id: @room), alert: t("admin.rooms.photos.flash.too_many", max: Room::MAX_PHOTOS)
+          return
+        end
+      end
+
+      @room.assign_attributes(attributes)
+
+      saved = false
+      Room.transaction do
+        @room.photos.attach(new_photos) if new_photos.any?
+        saved = @room.save
+        raise ActiveRecord::Rollback unless saved
+      end
+
+      if saved
         redirect_to admin_room_path(id: @room), notice: t("admin.rooms.flash.updated")
       else
         render :edit, status: :unprocessable_content
