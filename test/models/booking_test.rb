@@ -13,9 +13,17 @@ class BookingTest < ActiveSupport::TestCase
       nightly_price_cents: 10_000,
       currency: "EUR"
     )
+
+    OpeningPeriod.create!(
+      room: @room,
+      start_date: Date.new(2026, 1, 20),
+      end_date: Date.new(2026, 1, 25),
+      nightly_price_cents: 20_000,
+      currency: "EUR"
+    )
   end
 
-  test "booking must be fully inside one opening period" do
+  test "booking must be fully covered by opening periods" do
     booking = Booking.new(
       room: @room,
       user: @user,
@@ -24,7 +32,7 @@ class BookingTest < ActiveSupport::TestCase
     )
 
     assert_not booking.valid?
-    assert_includes booking.errors.full_messages.join(" "), "inside one opening period"
+    assert_includes booking.errors.full_messages.join(" "), I18n.t("booking_quote.errors.dates_not_covered")
   end
 
   test "booking populates total price from opening period" do
@@ -39,6 +47,19 @@ class BookingTest < ActiveSupport::TestCase
     assert_equal 30_000, booking.total_price_cents
     assert_equal "EUR", booking.currency
     assert_equal "requested", booking.status
+  end
+
+  test "booking can span multiple contiguous opening periods" do
+    booking = Booking.create!(
+      room: @room,
+      user: @user,
+      start_date: Date.new(2026, 1, 18),
+      end_date: Date.new(2026, 1, 22)
+    )
+
+    assert_equal 4, booking.nights
+    assert_equal 60_000, booking.total_price_cents
+    assert_equal "EUR", booking.currency
   end
 
   test "booking request cannot overlap reserved bookings" do
@@ -58,7 +79,7 @@ class BookingTest < ActiveSupport::TestCase
     )
 
     assert_not overlapping.valid?
-    assert_includes overlapping.errors.full_messages.join(" "), "overlap"
+    assert_includes overlapping.errors.full_messages.join(" "), I18n.t("booking_quote.errors.dates_overlap_booking")
   end
 
   test "missing persisted pricing is backfilled on update" do

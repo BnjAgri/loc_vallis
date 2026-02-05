@@ -13,6 +13,14 @@ class BookingQuoteTest < ActiveSupport::TestCase
       nightly_price_cents: 10_000,
       currency: "EUR"
     )
+
+    OpeningPeriod.create!(
+      room: @room,
+      start_date: Date.new(2026, 1, 20),
+      end_date: Date.new(2026, 1, 25),
+      nightly_price_cents: 20_000,
+      currency: "EUR"
+    )
   end
 
   test "returns total and currency for valid range" do
@@ -42,7 +50,35 @@ class BookingQuoteTest < ActiveSupport::TestCase
     result = BookingQuote.call(room: @room, start_date: Date.new(2026, 1, 9), end_date: Date.new(2026, 1, 12))
 
     assert_not result.ok?
-    assert_includes result.error, "opening period"
+    assert_equal I18n.t("booking_quote.errors.dates_not_covered"), result.error
+  end
+
+  test "supports a range spanning multiple contiguous opening periods" do
+    result = BookingQuote.call(room: @room, start_date: Date.new(2026, 1, 18), end_date: Date.new(2026, 1, 22))
+
+    assert result.ok?
+    assert_equal 4, result.nights
+    assert_equal "EUR", result.currency
+    assert_equal 60_000, result.total_price_cents
+    assert_nil result.nightly_price_cents, "Expected nightly_price_cents to be nil when multiple rates apply"
+    assert_equal 2, result.opening_periods.size
+  end
+
+  test "rejects a range with a gap between opening periods" do
+    OpeningPeriod.where(room: @room).where(start_date: Date.new(2026, 1, 20)).delete_all
+
+    OpeningPeriod.create!(
+      room: @room,
+      start_date: Date.new(2026, 1, 21),
+      end_date: Date.new(2026, 1, 25),
+      nightly_price_cents: 20_000,
+      currency: "EUR"
+    )
+
+    result = BookingQuote.call(room: @room, start_date: Date.new(2026, 1, 19), end_date: Date.new(2026, 1, 22))
+
+    assert_not result.ok?
+    assert_equal I18n.t("booking_quote.errors.dates_not_covered"), result.error
   end
 
   test "rejects overlap with reserved booking" do
@@ -57,6 +93,6 @@ class BookingQuoteTest < ActiveSupport::TestCase
     result = BookingQuote.call(room: @room, start_date: Date.new(2026, 1, 13), end_date: Date.new(2026, 1, 15))
 
     assert_not result.ok?
-    assert_includes result.error, "overlap"
+    assert_equal I18n.t("booking_quote.errors.dates_overlap_booking"), result.error
   end
 end

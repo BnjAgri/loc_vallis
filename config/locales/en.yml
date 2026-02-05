@@ -190,6 +190,16 @@ en:
       invalid_credentials: "Invalid email or password"
       logged_out: "Logged out"
 
+  booking_quote:
+    errors:
+      room_required: "Room is required"
+      start_date_required: "Start date is required"
+      end_date_required: "End date is required"
+      end_date_after_start_date: "End date must be after start date"
+      dates_not_covered: "Dates must be fully covered by opening periods"
+      currency_mismatch: "Opening periods must share the same currency"
+      dates_overlap_booking: "Dates overlap an existing booking"
+
   unified_sessions:
     new:
       title: "Log in"
