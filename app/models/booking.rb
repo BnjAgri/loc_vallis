@@ -8,7 +8,7 @@
 # Statuts (machine d'état “simple”, basée sur une string) :
 # - requested -> approved_pending_payment -> confirmed_paid
 # - requested -> declined
-# - requested|approved_pending_payment|confirmed_paid -> canceled
+# - requested|approved_pending_payment -> canceled
 # - approved_pending_payment -> expired (si fenêtre de paiement dépassée)
 # - confirmed_paid -> refunded
 #
@@ -144,7 +144,7 @@ class Booking < ApplicationRecord
   def cancel!(by:)
     raise ArgumentError, "Actor required" if by.nil?
 
-    allowed = %w[requested approved_pending_payment confirmed_paid].include?(status)
+    allowed = %w[requested approved_pending_payment].include?(status)
     return false unless allowed
 
     update!(status: "canceled")

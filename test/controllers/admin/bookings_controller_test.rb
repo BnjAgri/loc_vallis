@@ -60,4 +60,73 @@ class Admin::BookingsControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
     assert_includes response.body, "href=\"/admin/bookings/#{bookings.first.id}\">##{bookings.first.id}"
   end
+
+  test "owner cannot cancel a confirmed_paid booking without refund" do
+    owner = Owner.create!(email: "owner_admin_cancel_paid@test.local", password: "password")
+    user = User.create!(email: "guest_admin_cancel_paid@test.local", password: "password")
+
+    room = Room.new(owner:, name: "Room cancel paid")
+    room.save!(validate: false)
+
+    OpeningPeriod.create!(
+      room:,
+      start_date: Date.current - 30,
+      end_date: Date.current + 365,
+      nightly_price_cents: 10_00,
+      currency: "EUR"
+    )
+
+    booking = Booking.create!(
+      room:,
+      user:,
+      start_date: Date.current + 10,
+      end_date: Date.current + 12,
+      status: "confirmed_paid",
+      total_price_cents: 20_00,
+      currency: "EUR",
+      stripe_payment_intent_id: "pi_test_cancel_paid"
+    )
+
+    sign_in owner
+
+    patch cancel_admin_booking_path(id: booking), headers: { "HTTP_REFERER" => admin_booking_path(id: booking) }
+    assert_response :redirect
+    assert_redirected_to admin_booking_path(id: booking)
+    assert_equal I18n.t("shared.authorization.not_authorized"), flash[:alert]
+
+    booking.reload
+    assert_equal "confirmed_paid", booking.status
+  end
+
+  test "owner can cancel a requested booking" do
+    owner = Owner.create!(email: "owner_admin_cancel_requested@test.local", password: "password")
+    user = User.create!(email: "guest_admin_cancel_requested@test.local", password: "password")
+
+    room = Room.new(owner:, name: "Room cancel requested")
+    room.save!(validate: false)
+
+    OpeningPeriod.create!(
+      room:,
+      start_date: Date.current - 30,
+      end_date: Date.current + 365,
+      nightly_price_cents: 10_00,
+      currency: "EUR"
+    )
+
+    booking = Booking.create!(
+      room:,
+      user:,
+      start_date: Date.current + 20,
+      end_date: Date.current + 22,
+      status: "requested"
+    )
+
+    sign_in owner
+
+    patch cancel_admin_booking_path(id: booking), headers: { "HTTP_REFERER" => admin_booking_path(id: booking) }
+    assert_response :redirect
+
+    booking.reload
+    assert_equal "canceled", booking.status
+  end
 end

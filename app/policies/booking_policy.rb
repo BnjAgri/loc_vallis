@@ -30,9 +30,10 @@ class BookingPolicy < ApplicationPolicy
   def cancel?
     return false unless user.present?
 
-    return true if owner_for_room?
+    # A paid booking must be refunded (full or partial) rather than canceled.
+    return owner_for_room? && %w[requested approved_pending_payment].include?(record.status) if owner_for_room?
 
-    record.user_id == user.id && %w[requested approved_pending_payment confirmed_paid].include?(record.status)
+    record.user_id == user.id && %w[requested approved_pending_payment].include?(record.status)
   end
 
   def approve?
