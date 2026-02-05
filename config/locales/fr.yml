@@ -537,6 +537,16 @@ fr:
         session: "Session :"
         payment_intent: "PaymentIntent :"
 
+  booking_quote:
+    errors:
+      room_required: "La chambre est requise."
+      start_date_required: "La date de début est requise."
+      end_date_required: "La date de fin est requise."
+      end_date_after_start_date: "La date de fin doit être après la date de début."
+      dates_not_covered: "Les dates doivent être couvertes par des périodes d'ouverture sans interruption."
+      currency_mismatch: "Les périodes d'ouverture doivent utiliser la même devise."
+      dates_overlap_booking: "Ces dates chevauchent déjà une réservation."
+
   profiles:
     flash:
       updated: "Profil mis à jour."
