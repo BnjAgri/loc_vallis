@@ -1,0 +1,26 @@
+// Page: “Votre hôte”
+
+.lv-host {
+  // Ensures floated media is contained
+  display: flow-root;
+}
+
+.lv-host__photo {
+  margin: 0 0 1rem 0;
+}
+
+.lv-host__photo img {
+  width: 100%;
+  height: auto;
+  border-radius: 1rem;
+  box-shadow: 0 .5rem 1rem rgba($lv-primary, 0.12);
+}
+
+// Float image + text wrap on md+ (>= 768px)
+@media (min-width: 768px) {
+  .lv-host__photo {
+    float: left;
+    width: 280px;
+    margin: 0 1.25rem 0.75rem 0;
+  }
+}

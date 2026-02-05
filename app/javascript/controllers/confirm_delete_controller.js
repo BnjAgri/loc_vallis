@@ -33,10 +33,15 @@ export default class extends Controller {
 
       this.element.dataset.lvConfirmed = "true"
 
-      if (typeof this.element.requestSubmit === "function") {
-        this.element.requestSubmit()
+      if (this.element.tagName === "FORM") {
+        if (typeof this.element.requestSubmit === "function") {
+          this.element.requestSubmit()
+        } else {
+          this.element.submit()
+        }
       } else {
-        this.element.submit()
+        // For links, trigger a click to let Rails UJS handle the data-method
+        this.element.click()
       }
     })
   }

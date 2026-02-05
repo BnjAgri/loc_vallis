@@ -5,6 +5,121 @@ module Admin
   class RoomsControllerTest < ActionDispatch::IntegrationTest
     include ActionDispatch::TestProcess
 
+    test "create blocks when uploaded photos exceed the max" do
+      owner = Owner.create!(
+        email: "owner_room_create_photos_limit@example.com",
+        password: "password123",
+        first_name: "Claude",
+        last_name: "Owner"
+      )
+
+      sign_in owner
+
+      photos = Array.new(9) { fixture_file_upload("dummy.png", "image/png") }
+
+      assert_no_difference("Room.count") do
+        post admin_rooms_path, params: {
+          room: {
+            name: "Chambre test",
+            capacity: 2,
+            photos:
+          }
+        }
+      end
+
+      assert_redirected_to new_admin_room_path
+      assert_equal "Maximum 8 photos par chambre.", flash[:alert]
+    end
+
+    test "update accepts multiple uploaded photos" do
+      owner = Owner.create!(
+        email: "owner_room_multi_photos@example.com",
+        password: "password123",
+        first_name: "Claude",
+        last_name: "Owner"
+      )
+
+      room = Room.create!(owner:, name: "Chambre test", capacity: 2)
+
+      sign_in owner
+
+      assert_difference("ActiveStorage::Attachment.count", 2) do
+        patch admin_room_path(id: room), params: {
+          room: {
+            name: "Chambre test (maj)",
+            photos: [
+              fixture_file_upload("dummy.png", "image/png"),
+              fixture_file_upload("dummy.png", "image/png")
+            ]
+          }
+        }
+      end
+
+      assert_redirected_to admin_room_path(id: room)
+
+      room.reload
+      assert_equal 2, room.photos.count
+    end
+
+    test "update blocks when uploaded photos would exceed the max" do
+      owner = Owner.create!(
+        email: "owner_room_photos_limit@example.com",
+        password: "password123",
+        first_name: "Claude",
+        last_name: "Owner"
+      )
+
+      room = Room.create!(owner:, name: "Chambre test", capacity: 2)
+      7.times { room.photos.attach(fixture_file_upload("dummy.png", "image/png")) }
+      assert_equal 7, room.photos.count
+
+      sign_in owner
+
+      assert_no_difference("ActiveStorage::Attachment.count") do
+        patch admin_room_path(id: room), params: {
+          room: {
+            photos: [
+              fixture_file_upload("dummy.png", "image/png"),
+              fixture_file_upload("dummy.png", "image/png")
+            ]
+          }
+        }
+      end
+
+      assert_redirected_to edit_admin_room_path(id: room)
+      assert_equal "Maximum 8 photos par chambre.", flash[:alert]
+
+      room.reload
+      assert_equal 7, room.photos.count
+    end
+
+    test "update allows reaching exactly the max" do
+      owner = Owner.create!(
+        email: "owner_room_photos_limit_exact@example.com",
+        password: "password123",
+        first_name: "Claude",
+        last_name: "Owner"
+      )
+
+      room = Room.create!(owner:, name: "Chambre test", capacity: 2)
+      7.times { room.photos.attach(fixture_file_upload("dummy.png", "image/png")) }
+
+      sign_in owner
+
+      assert_difference("ActiveStorage::Attachment.count", 1) do
+        patch admin_room_path(id: room), params: {
+          room: {
+            photos: [fixture_file_upload("dummy.png", "image/png")]
+          }
+        }
+      end
+
+      assert_redirected_to admin_room_path(id: room)
+
+      room.reload
+      assert_equal 8, room.photos.count
+    end
+
     test "update does not wipe photos when no new upload is selected" do
       owner = Owner.create!(
         email: "owner_room_update_photos@example.com",

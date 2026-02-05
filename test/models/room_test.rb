@@ -74,4 +74,45 @@ class RoomTest < ActiveSupport::TestCase
       assert_not_includes messages.downcase, "translation missing"
     end
   end
+
+  test "rejects angle brackets in editable text fields" do
+    owner = Owner.create!(email: "owner_room_angle@test.local", password: "password")
+
+    room = Room.new(
+      owner:,
+      name: "Chambre <b>1</b>",
+      description: "Description > unsafe",
+      room_url: "https://example.com/image.png?<script>"
+    )
+
+    assert_not room.valid?
+    messages = room.errors.full_messages.join(" ")
+    assert_includes messages, "ne doit pas contenir < ou >"
+  end
+
+  test "image_urls filters out non-http(s) values" do
+    owner = Owner.create!(email: "owner_room_urls_filter@test.local", password: "password")
+
+    room = Room.new(
+      owner:,
+      name: "Room",
+      room_url: "https://example.com/a.jpg\n<svg xmlns=\"http://www.w3.org/2000/svg\"></svg>\njavascript:alert(1)\nftp://example.com/a.jpg"
+    )
+
+    assert_equal ["https://example.com/a.jpg"], room.image_urls
+  end
+
+  test "rejects angle brackets in optional service names" do
+    owner = Owner.create!(email: "owner_room_services_angle@test.local", password: "password")
+
+    room = Room.new(
+      owner:,
+      name: "Room",
+      optional_services: [{ "name" => "Petit <dej>", "price_eur" => "5" }]
+    )
+
+    assert_not room.valid?
+    messages = room.errors.full_messages.join(" ")
+    assert_includes messages, "ne doit pas contenir < ou >"
+  end
 end

@@ -3,7 +3,14 @@ class BookingMailer < ApplicationMailer
     @booking = params.fetch(:booking)
     set_booking_brand!
     @booking_url = booking_url_for(@booking)
-    mail(to: recipient_emails_for_booking, subject: brand_subject("Demande de réservation envoyée"))
+    mail(to: @booking.user.email, subject: brand_subject("Demande de réservation envoyée"))
+  end
+
+  def requested_owner
+    @booking = params.fetch(:booking)
+    set_booking_brand!
+    @admin_booking_url = admin_booking_url_for(@booking)
+    mail(to: @booking.room.owner.email, subject: brand_subject("Nouvelle demande de réservation"))
   end
 
   def approved
@@ -67,6 +74,18 @@ class BookingMailer < ApplicationMailer
     return [override] if override
 
     [@booking.user.email, @booking.room.owner.email]
+  end
+
+  def admin_booking_url_for(booking)
+    base = ENV.fetch("APP_BASE_URL", "http://localhost:3000")
+    uri = URI.parse(base)
+
+    admin_booking_url(
+      id: booking,
+      host: uri.host,
+      protocol: uri.scheme,
+      port: uri.port
+    )
   end
 
   def booking_url_for(booking)

@@ -49,6 +49,7 @@ en:
       en: "EN"
     nav:
       rooms: "Rooms"
+      host: "Your host"
       blog: "Anglès & surroundings"
       my_bookings: "My bookings"
       profile: "My profile"
@@ -91,6 +92,16 @@ en:
         optional_services: "Optional services"
 
   pages:
+    host:
+      title: "Your host"
+      section_title: "Simply and sincerely"
+      image_alt: "Photo of your host"
+      body:
+        p1: "Born and raised in Anglès, in the heart of Tarn, Claude is a young retiree still driven by the energy of his first life: a passionate restaurateur. A nature lover, tireless walker, and deeply involved in village life, he enjoys sharing what makes his region special—conviviality, simplicity, and an intimate connection with the surrounding landscapes."
+        p2: "Always full of ideas to enrich his guests’ stay, Claude knows the hidden trails, quiet viewpoints, local stories, and the best addresses nearby. He guides, advises, and tells tales—always with enthusiasm."
+        p3: "In the kitchen, he can prepare homemade dinners on request, inspired by local produce. Simple, sincere dishes designed to encourage conversation around a warm table."
+        p4: "That same spirit also lives in his guesthouse: a welcoming place with no fuss, where you immediately feel “at home.” Whether you’re looking for friendly moments or a quieter retreat, Claude will offer the perfect balance for an authentic, soothing stay."
+      coming_soon: "Content coming soon."
     legal:
       title: "Legal notice"
       not_provided: "Not provided"
@@ -237,6 +248,13 @@ en:
         flash:
           deleted: "Photo deleted."
           not_found: "Photo not found."
+      urls:
+        existing_title: "Existing image URLs"
+        delete_button: "Delete"
+        delete_confirm: "Delete this image URL?"
+        flash:
+          deleted: "URL deleted."
+          not_found: "URL not found."
     opening_periods:
       flash:
         added: "Opening period added."
@@ -335,7 +353,10 @@ en:
         ios_instructions: "On iPhone/iPad: tap Share then “Add to Home Screen”"
       guesthouse_intro:
         title: "A haven of peace in the heart of Tarn"
-        text: "Nestled in the timeless charm of the village of Anglès, our small guesthouse and two B&B rooms welcome you to a place where calm and nature reign. Here, time seems to slow down. Between deep forests, peaceful lakes, and authentic streets, you’ll enjoy a restorative stay—ideal for reconnecting with what matters. Whether you’re coming for a gentle break, a romantic getaway, or a nature-filled escape, Anglès offers the tranquility you’ve been dreaming of."
+        first_sentence: "Nestled in the timeless charm of the village of Anglès, our small guesthouse and two B&B rooms welcome you to a place where calm and nature reign."
+        more_text: "Here, time seems to slow down. Between deep forests, peaceful lakes, and authentic streets, you’ll enjoy a restorative stay—ideal for reconnecting with what matters. Whether you’re coming for a gentle break, a romantic getaway, or a nature-filled escape, Anglès offers the tranquility you’ve been dreaming of."
+        read_more: "Read more"
+        read_less: "Show less"
         signature: "Claude"
       capacity: "Capacity: %{count} people"
       from_price: "From"

@@ -1,0 +1,23 @@
+<div class="container py-4">
+  <%= render "shared/ui/page_header", title: t("pages.host.title") %>
+
+  <div class="card lv-card">
+    <div class="card-body prose lv-host">
+      <figure class="lv-host__photo">
+        <%= image_tag(
+          "https://static.mediapart.fr/etmagine/article_google_discover/files/2024/10/14/portrait-de-ric-zemmour-avril-2022.jpg",
+          class: "img-fluid",
+          alt: t("pages.host.image_alt"),
+          loading: "lazy",
+          decoding: "async"
+        ) %>
+      </figure>
+
+      <h2><%= t("pages.host.section_title") %></h2>
+      <p><%= t("pages.host.body.p1") %></p>
+      <p><%= t("pages.host.body.p2") %></p>
+      <p><%= t("pages.host.body.p3") %></p>
+      <p><%= t("pages.host.body.p4") %></p>
+    </div>
+  </div>
+</div>

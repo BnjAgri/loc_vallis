@@ -1,0 +1,87 @@
+// CSS-only “read more” collapsible text.
+// Desktop: full text visible.
+// Mobile: only the first sentence is shown, with a toggle link that expands smoothly.
+
+.lv-collapsible {
+  .lv-collapsible__toggle {
+    position: absolute;
+    left: -9999px;
+  }
+
+  .lv-collapsible__dots {
+    display: none;
+  }
+
+  .lv-collapsible__content {
+    display: inline;
+    margin-left: 0.25rem;
+  }
+
+  .lv-collapsible__label {
+    display: none;
+  }
+}
+
+// Mobile behaviour (< 768px)
+@media (max-width: 767.98px) {
+  .lv-collapsible {
+    position: relative;
+
+    .lv-collapsible__dots {
+      display: inline;
+      margin-left: 0.15rem;
+    }
+
+    .lv-collapsible__content {
+      display: block;
+      max-height: 0;
+      overflow: hidden;
+      opacity: 0;
+      transform: translateY(-2px);
+      margin-left: 0;
+      transition:
+        max-height 650ms ease,
+        opacity 450ms ease,
+        transform 650ms ease;
+    }
+
+    .lv-collapsible__label {
+      display: inline-flex;
+      align-items: center;
+      margin-top: 0.5rem;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .lv-collapsible__label-less {
+      display: none;
+    }
+
+    .lv-collapsible__toggle:checked ~ .lv-collapsible__dots {
+      display: none;
+    }
+
+    .lv-collapsible__toggle:checked ~ .lv-collapsible__content {
+      max-height: 1000px;
+      opacity: 1;
+      transform: translateY(0);
+      margin-top: 0.35rem;
+    }
+
+    .lv-collapsible__toggle:checked ~ .lv-collapsible__label {
+      .lv-collapsible__label-more {
+        display: none;
+      }
+
+      .lv-collapsible__label-less {
+        display: inline;
+      }
+    }
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lv-collapsible .lv-collapsible__content {
+    transition: none !important;
+  }
+}

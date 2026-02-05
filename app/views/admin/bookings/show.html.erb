@@ -16,7 +16,18 @@
         <% end %>
 
         <% if policy(@booking).refund? %>
-          <%= button_to "Rembourser", refund_admin_booking_path(id: @booking), method: :post, class: "btn btn-warning", data: { turbo_confirm: "Effectuer un remboursement pour cette réservation ?" } %>
+          <%= form_with url: refund_admin_booking_path(id: @booking), method: :post,
+                data: {
+                  controller: "refund-options",
+                  action: "submit->refund-options#confirm",
+                  "refund-options-max-cents-value": @booking.total_price_cents.to_i,
+                  "refund-options-services-cents-value": @booking.selected_optional_services_total_cents.to_i,
+                  "refund-options-currency-value": @booking.currency.to_s
+                },
+                class: "d-inline" do %>
+            <%= hidden_field_tag :amount_cents, "" %>
+            <%= submit_tag "Rembourser", class: "btn btn-warning" %>
+          <% end %>
         <% end %>
       <% end %>
 

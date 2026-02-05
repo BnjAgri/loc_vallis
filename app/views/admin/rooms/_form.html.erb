@@ -6,9 +6,16 @@
   <%= f.input :photos,
               as: :file,
               input_html: { multiple: true, accept: "image/jpeg,image/png,image/gif" },
-              label: "Photos",
-              hint: "Importer une ou plusieurs images (JPEG, PNG, GIF · 3 Mo max)" %>
+              label: "Photos (maximum 8)",
+              hint: "Importer une ou plusieurs images (JPEG, PNG, GIF · 3 Mo max · 8 max)" %>
+  <%= turbo_frame_tag "existing-photos" do %>
+    <%= render "existing_photos", room: room %>
+  <% end %>
+
   <%= f.input :room_url, as: :text, label: "URLs d'images", hint: "Une URL d'image par ligne" %>
+  <%= turbo_frame_tag "existing-url-photos" do %>
+    <%= render "existing_url_photos", room: room %>
+  <% end %>
 
   <div class="mt-4" data-controller="optional-services" data-optional-services-max-value="5">
     <h2 class="h5 mb-3">Services optionnels</h2>

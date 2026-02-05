@@ -10,7 +10,22 @@
     <div class="card-body">
       <div class="text-uppercase lv-muted small">Loc Vallis</div>
       <h2 class="h4 mb-2"><%= t(".guesthouse_intro.title") %></h2>
-      <div class="lv-meta"><%= t(".guesthouse_intro.text") %></div>
+      <div class="lv-meta lv-collapsible">
+        <input
+          type="checkbox"
+          id="guesthouse-intro-toggle"
+          class="lv-collapsible__toggle"
+        />
+
+        <span class="lv-collapsible__lead"><%= t(".guesthouse_intro.first_sentence") %></span>
+        <span class="lv-collapsible__dots" aria-hidden="true">…</span>
+        <span class="lv-collapsible__content"><%= t(".guesthouse_intro.more_text") %></span>
+
+        <label for="guesthouse-intro-toggle" class="lv-collapsible__label btn btn-soft btn-sm">
+          <span class="lv-collapsible__label-more"><%= t(".guesthouse_intro.read_more") %></span>
+          <span class="lv-collapsible__label-less"><%= t(".guesthouse_intro.read_less") %></span>
+        </label>
+      </div>
       <div class="mt-3 text-end" style="font-family: Georgia, 'Times New Roman', serif; font-style: italic;">
         — <%= t(".guesthouse_intro.signature") %>
       </div>

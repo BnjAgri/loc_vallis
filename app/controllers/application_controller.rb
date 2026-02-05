@@ -126,6 +126,7 @@ class ApplicationController < ActionController::Base
     return if notifications.empty?
 
     flash[:notice] = view_context.render(partial: "shared/login_notifications", locals: { notifications: notifications }).html_safe
+    flash[:notice_persistent] = true
   end
 
   def set_login_notifications_dropdown

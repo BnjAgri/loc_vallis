@@ -50,11 +50,26 @@ module Admin
     end
 
     def create
-      @room = Room.new(room_params)
+      attributes = room_params
+      new_photos = Array(attributes.delete(:photos))
+
+      if new_photos.size > Room::MAX_PHOTOS
+        redirect_to new_admin_room_path, alert: t("admin.rooms.photos.flash.too_many", max: Room::MAX_PHOTOS)
+        return
+      end
+
+      @room = Room.new(attributes)
       @room.owner = current_owner
       authorize @room
 
-      if @room.save
+      saved = false
+      Room.transaction do
+        @room.photos.attach(new_photos) if new_photos.any?
+        saved = @room.save
+        raise ActiveRecord::Rollback unless saved
+      end
+
+      if saved
         redirect_to admin_room_path(id: @room), notice: t("admin.rooms.flash.created")
       else
         render :new, status: :unprocessable_content
@@ -70,7 +85,27 @@ module Admin
       @room = policy_scope(Room).find(params[:id])
       authorize @room
 
-      if @room.update(room_params)
+      attributes = room_params
+      new_photos = Array(attributes.delete(:photos))
+
+      if new_photos.any?
+        proposed_total = @room.photos.count + new_photos.size
+        if proposed_total > Room::MAX_PHOTOS
+          redirect_to edit_admin_room_path(id: @room), alert: t("admin.rooms.photos.flash.too_many", max: Room::MAX_PHOTOS)
+          return
+        end
+      end
+
+      @room.assign_attributes(attributes)
+
+      saved = false
+      Room.transaction do
+        @room.photos.attach(new_photos) if new_photos.any?
+        saved = @room.save
+        raise ActiveRecord::Rollback unless saved
+      end
+
+      if saved
         redirect_to admin_room_path(id: @room), notice: t("admin.rooms.flash.updated")
       else
         render :edit, status: :unprocessable_content
@@ -83,12 +118,44 @@ module Admin
 
       attachment = @room.photos.attachments.find_by(id: params[:photo_id])
       unless attachment
-        redirect_to edit_admin_room_path(id: @room), alert: t("admin.rooms.photos.flash.not_found")
+        respond_to do |format|
+          format.html { redirect_to edit_admin_room_path(id: @room), alert: t("admin.rooms.photos.flash.not_found") }
+          format.turbo_stream { render turbo_stream: turbo_stream.replace("existing-photos", partial: "existing_photos", locals: { room: @room }) }
+        end
         return
       end
 
       attachment.purge
-      redirect_to edit_admin_room_path(id: @room), notice: t("admin.rooms.photos.flash.deleted")
+
+      respond_to do |format|
+        format.html { redirect_to edit_admin_room_path(id: @room), notice: t("admin.rooms.photos.flash.deleted") }
+        format.turbo_stream { render turbo_stream: turbo_stream.replace("existing-photos", partial: "existing_photos", locals: { room: @room }) }
+      end
+    end
+
+    def destroy_url
+      @room = policy_scope(Room).find(params[:id])
+      authorize @room, :update?
+
+      urls = @room.image_urls
+      index = params[:url_index].to_i
+
+      if index < 0 || index >= urls.size
+        respond_to do |format|
+          format.html { redirect_to edit_admin_room_path(id: @room), alert: t("admin.rooms.urls.flash.not_found") }
+          format.turbo_stream { render turbo_stream: turbo_stream.replace("existing-url-photos", partial: "existing_url_photos", locals: { room: @room }) }
+        end
+        return
+      end
+
+      urls.delete_at(index)
+      @room.room_url = urls.join("\n")
+      @room.save
+
+      respond_to do |format|
+        format.html { redirect_to edit_admin_room_path(id: @room), notice: t("admin.rooms.urls.flash.deleted") }
+        format.turbo_stream { render turbo_stream: turbo_stream.replace("existing-url-photos", partial: "existing_url_photos", locals: { room: @room }) }
+      end
     end
 
     def destroy
