@@ -59,6 +59,7 @@ class StripeBookingFlowTest < ActionDispatch::IntegrationTest
       session_obj = OpenStruct.new(
         id: "cs_test_123",
         payment_intent: "pi_test_123",
+        payment_status: "paid",
         metadata: OpenStruct.new(booking_id: @booking.id)
       )
 
@@ -94,6 +95,7 @@ class StripeBookingFlowTest < ActionDispatch::IntegrationTest
       session_obj = OpenStruct.new(
         id: "cs_test_999",
         payment_intent: "pi_test_999",
+        payment_status: "paid",
         metadata: OpenStruct.new(booking_id: @booking.id)
       )
 

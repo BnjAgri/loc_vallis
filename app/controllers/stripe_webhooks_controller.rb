@@ -47,6 +47,9 @@ class StripeWebhooksController < ApplicationController
   end
 
   def handle_checkout_completed(session)
+    payment_status = session.respond_to?(:payment_status) ? session.payment_status : nil
+    return unless payment_status == "paid"
+
     booking_id = session.metadata&.booking_id || session.metadata&.[]("booking_id")
 
     booking = booking_id.present? ? Booking.find_by(id: booking_id) : Booking.find_by(stripe_checkout_session_id: session.id)

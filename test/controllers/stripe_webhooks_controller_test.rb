@@ -34,6 +34,7 @@ class StripeWebhooksControllerTest < ActionDispatch::IntegrationTest
       session = OpenStruct.new(
         id: "cs_test_123",
         payment_intent: "pi_test_123",
+        payment_status: "paid",
         metadata: OpenStruct.new(booking_id: @booking.id)
       )
 
@@ -54,6 +55,41 @@ class StripeWebhooksControllerTest < ActionDispatch::IntegrationTest
       assert_equal "confirmed_paid", @booking.status
       assert_equal "cs_test_123", @booking.stripe_checkout_session_id
       assert_equal "pi_test_123", @booking.stripe_payment_intent_id
+    end
+  ensure
+    Stripe::Webhook.define_singleton_method(:construct_event, original) if original
+    ENV["STRIPE_WEBHOOK_SECRET"] = previous_secret
+  end
+
+  test "checkout.session.completed does not confirm when payment_status is not paid" do
+    previous_secret = ENV["STRIPE_WEBHOOK_SECRET"]
+    original = nil
+
+    travel_to Time.zone.parse("2026-01-06 10:00:00") do
+      session = OpenStruct.new(
+        id: "cs_test_456",
+        payment_intent: "pi_test_456",
+        payment_status: "unpaid",
+        metadata: OpenStruct.new(booking_id: @booking.id)
+      )
+
+      event = OpenStruct.new(
+        type: "checkout.session.completed",
+        data: OpenStruct.new(object: session)
+      )
+
+      ENV["STRIPE_WEBHOOK_SECRET"] = "whsec_test"
+
+      original = Stripe::Webhook.method(:construct_event)
+      Stripe::Webhook.define_singleton_method(:construct_event) { |_payload, _sig_header, _secret| event }
+
+      post "/stripe/webhook", headers: { "HTTP_STRIPE_SIGNATURE" => "sig" }, params: "{}"
+      assert_response :ok
+
+      @booking.reload
+      assert_equal "approved_pending_payment", @booking.status
+      assert_nil @booking.stripe_checkout_session_id
+      assert_nil @booking.stripe_payment_intent_id
     end
   ensure
     Stripe::Webhook.define_singleton_method(:construct_event, original) if original

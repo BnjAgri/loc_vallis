@@ -132,6 +132,8 @@ module Admin
       StripeRefundCreator.call(booking: @booking, amount_cents: amount_cents)
       BookingMailer.with(booking: @booking).refunded.deliver_later
       redirect_to admin_booking_path(id: @booking), notice: t("admin.bookings.flash.refund_initiated")
+    rescue Pundit::NotAuthorizedError
+      raise
     rescue StandardError => e
       redirect_to admin_booking_path(id: @booking), alert: e.message
     end
