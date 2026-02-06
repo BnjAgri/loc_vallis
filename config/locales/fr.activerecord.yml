@@ -40,3 +40,13 @@ fr:
             image_url:
               blank: "doit être renseignée"
               invalid_image_url: "doit être une URL http(s) vers une image JPG, PNG ou GIF"
+
+        host_page:
+          attributes:
+            title:
+              blank: "doit être renseigné"
+            content:
+              blank: "doit être renseigné"
+            image_url:
+              blank: "doit être renseignée"
+              invalid_image_url: "doit être une URL http(s) vers une image JPG, PNG ou GIF"

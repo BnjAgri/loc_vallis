@@ -184,6 +184,14 @@ en:
       subtitle: "Update the content and image."
       back: "Back"
 
+  host_page:
+    edit:
+      title: "Edit Host page"
+      subtitle: "Update the title, content and image."
+      back: "Back"
+    update:
+      success: "Host page updated."
+
   sessions:
     flash:
       missing_credentials: "Email and password are required"

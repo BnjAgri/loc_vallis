@@ -208,6 +208,14 @@ fr:
       subtitle: "Mettez à jour le contenu et l’image."
       back: "Retour"
 
+  host_page:
+    edit:
+      title: "Modifier la page Hôte"
+      subtitle: "Mettez à jour le titre, le contenu et l’image."
+      back: "Retour"
+    update:
+      success: "Page Hôte mise à jour."
+
   sessions:
     flash:
       missing_credentials: "Email et mot de passe requis"

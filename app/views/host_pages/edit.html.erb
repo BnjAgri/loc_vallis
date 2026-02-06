@@ -1,0 +1,8 @@
+<div class="container py-4">
+  <%= render "shared/ui/page_header",
+    title: t("host_page.edit.title"),
+    subtitle: t("host_page.edit.subtitle"),
+    actions: link_to(t("host_page.edit.back"), host_path, class: "btn btn-soft") %>
+
+  <%= render "form", host_page: @host_page %>
+</div>

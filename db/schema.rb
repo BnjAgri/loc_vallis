@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2026_02_06_090000) do
+ActiveRecord::Schema[7.1].define(version: 2026_02_06_170000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -84,6 +84,14 @@ ActiveRecord::Schema[7.1].define(version: 2026_02_06_090000) do
     t.index ["stripe_refund_id"], name: "index_bookings_on_stripe_refund_id", unique: true
     t.index ["user_id"], name: "index_bookings_on_user_id"
     t.index ["user_last_read_at"], name: "index_bookings_on_user_last_read_at"
+  end
+
+  create_table "host_pages", force: :cascade do |t|
+    t.string "title"
+    t.text "content"
+    t.string "image_url"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "messages", force: :cascade do |t|
