@@ -18,6 +18,11 @@
 
 // Float image + text wrap on md+ (>= 768px)
 @media (min-width: 768px) {
+  .lv-host {
+    max-width: 60rem;
+    margin-inline: auto;
+  }
+
   .lv-host__photo {
     float: left;
     width: 280px;

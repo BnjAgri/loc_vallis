@@ -1,0 +1,36 @@
+<div class="container py-4">
+  <%= render "shared/ui/page_header",
+    title: (@host_page&.title.presence || t("pages.host.title")),
+    actions: (owner_signed_in? ? link_to("Modifier", edit_host_path, class: "btn btn-outline-primary") : nil) %>
+
+  <% current_image_src =
+    if @host_page&.image&.attached?
+      url_for(@host_page.image)
+    else
+      @host_page&.safe_image_url
+    end
+  %>
+
+  <div class="card lv-card">
+    <div class="card-body prose lv-host">
+      <figure class="lv-host__photo">
+        <%= image_tag(
+          current_image_src.presence || HostPagesController::DEFAULT_IMAGE_URL,
+          class: "img-fluid",
+          alt: t("pages.host.image_alt"),
+          loading: "lazy",
+          decoding: "async"
+        ) %>
+      </figure>
+
+      <% if @host_page&.content.present? %>
+        <%= simple_format(@host_page.content) %>
+      <% else %>
+        <p><%= t("pages.host.body.p1") %></p>
+        <p><%= t("pages.host.body.p2") %></p>
+        <p><%= t("pages.host.body.p3") %></p>
+        <p><%= t("pages.host.body.p4") %></p>
+      <% end %>
+    </div>
+  </div>
+</div>
