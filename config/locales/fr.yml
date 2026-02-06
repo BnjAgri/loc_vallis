@@ -471,6 +471,7 @@ fr:
       requested: "Demande"
       approved_pending_payment: "En attente de paiement"
       confirmed_paid: "Payée"
+      completed: "Terminée"
       declined: "Refusée"
       canceled: "Annulée"
       expired: "Expirée"

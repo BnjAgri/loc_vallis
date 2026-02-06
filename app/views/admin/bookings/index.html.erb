@@ -146,7 +146,8 @@
               <% end %>
             </td>
                       <td><%= booking.start_date.strftime("%d/%m/%Y") %> → <%= booking.end_date.strftime("%d/%m/%Y") %></td>
-                      <td><span class="badge <%= booking_status_badge_class(booking.status) %>"><%= booking_status_label(booking.status) %></span></td>
+            <% effective_status = booking_effective_status(booking) %>
+            <td><span class="badge <%= booking_status_badge_class(effective_status) %>"><%= booking_status_label(effective_status) %></span></td>
                     </tr>
                   <% end %>
                 </tbody>

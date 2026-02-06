@@ -56,6 +56,8 @@ module ApplicationHelper
 
 	def booking_status_badge_class(status)
 		case status.to_s
+		when "completed"
+			"text-bg-light text-muted border"
 		when "requested"
 			"text-bg-secondary"
 		when "approved_pending_payment"
@@ -74,6 +76,16 @@ module ApplicationHelper
 	def booking_status_label(status)
 		key = "bookings.statuses.#{status}"
 		I18n.t(key, default: status.to_s.tr("_", " "))
+	end
+
+	def booking_effective_status(booking)
+		return booking.status.to_s if booking.nil?
+
+		status = booking.status.to_s
+		return status unless status == "confirmed_paid"
+		return status if booking.end_date.blank?
+
+		Date.current >= booking.end_date ? "completed" : status
 	end
 
 	def sortable_table_header(label, sort:, current_sort:, current_direction:, reset_page_param: nil)

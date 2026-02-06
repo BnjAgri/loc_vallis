@@ -398,6 +398,7 @@ en:
       requested: "Requested"
       approved_pending_payment: "Pending payment"
       confirmed_paid: "Paid"
+      completed: "Completed"
       declined: "Declined"
       canceled: "Canceled"
       expired: "Expired"
