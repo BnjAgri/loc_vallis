@@ -143,9 +143,9 @@ class Room < ApplicationRecord
   end
 
   def mvp_room_limit
-    return unless Room.count >= 2
+    return unless Room.count >= 3
 
-    errors.add(:base, "MVP limit reached: maximum 2 rooms")
+    errors.add(:base, "MVP limit reached: maximum 3 rooms")
   end
 
   def validate_photos

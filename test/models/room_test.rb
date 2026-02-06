@@ -1,16 +1,16 @@
 require "test_helper"
 
 class RoomTest < ActiveSupport::TestCase
-  test "enforces MVP hard limit of 2 rooms" do
+  test "enforces MVP hard limit of 3 rooms" do
     owner = Owner.create!(email: "owner_room@test.local", password: "password")
 
-    while Room.count < 2
+    while Room.count < 3
       Room.create!(owner:, name: "Room #{Room.count + 1}")
     end
 
-    third = Room.new(owner:, name: "Room 3")
-    assert_not third.valid?
-    assert_includes third.errors.full_messages.join(" "), "maximum 2 rooms"
+    fourth = Room.new(owner:, name: "Room 4")
+    assert_not fourth.valid?
+    assert_includes fourth.errors.full_messages.join(" "), "maximum 3 rooms"
   end
 
   test "normalizes optional services (name + price_eur -> price_cents)" do
