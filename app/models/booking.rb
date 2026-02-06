@@ -183,6 +183,38 @@ class Booking < ApplicationRecord
       end
   end
 
+  def self.send_review_requests_after_stay!(as_of: Date.current)
+    target_end_date = as_of - 1.day
+
+    left_outer_joins(:review)
+      .where(status: %w[confirmed_paid refunded])
+      .where(end_date: target_end_date)
+      .where(review_request_sent_at: nil)
+      .where(reviews: { id: nil })
+      .includes(:user, room: :owner)
+      .find_each do |booking|
+        begin
+          booking.enqueue_review_request_email!
+        rescue StandardError => e
+          Rails.logger.error("Booking##{booking.id} review_request enqueue failed: #{e.class}: #{e.message}")
+        end
+      end
+  end
+
+  def enqueue_review_request_email!
+    return false if review&.persisted?
+
+    now = Time.current
+    updated = self.class
+      .where(id: id, review_request_sent_at: nil)
+      .update_all(review_request_sent_at: now, updated_at: now)
+
+    return false unless updated == 1
+
+    BookingMailer.with(booking: self).review_request.deliver_later
+    true
+  end
+
   private
 
   def default_status
