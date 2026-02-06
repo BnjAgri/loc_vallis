@@ -75,4 +75,13 @@ module ApplicationHelper
 		key = "bookings.statuses.#{status}"
 		I18n.t(key, default: status.to_s.tr("_", " "))
 	end
+
+	def sortable_table_header(label, sort:, current_sort:, current_direction:, reset_page_param: nil)
+		next_direction = (current_sort.to_s == sort.to_s && current_direction.to_s == "asc") ? "desc" : "asc"
+
+		overrides = { sort: sort, direction: next_direction }
+		overrides[reset_page_param] = 1 if reset_page_param.present?
+
+		link_to label, url_for(overrides), class: "text-decoration-none"
+	end
 end

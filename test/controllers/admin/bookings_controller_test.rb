@@ -61,6 +61,36 @@ class Admin::BookingsControllerTest < ActionDispatch::IntegrationTest
     assert_includes response.body, "href=\"/admin/bookings/#{bookings.first.id}\">##{bookings.first.id}"
   end
 
+  test "index sorts bookings by client name" do
+    owner = Owner.create!(email: "owner_admin_bookings_sort@test.local", password: "password")
+    room = Room.new(owner:, name: "Room admin bookings sort")
+    room.save!(validate: false)
+
+    OpeningPeriod.create!(
+      room:,
+      start_date: Date.current - 30,
+      end_date: Date.current + 365,
+      nightly_price_cents: 10_00,
+      currency: "EUR"
+    )
+
+    user_b = User.create!(email: "b_user@test.local", password: "password", first_name: "Zoé", last_name: "Bailly")
+    user_a = User.create!(email: "a_user@test.local", password: "password", first_name: "Alice", last_name: "Armand")
+
+    booking_b = Booking.create!(room:, user: user_b, start_date: Date.current + 10, end_date: Date.current + 11, status: "requested")
+    booking_a = Booking.create!(room:, user: user_a, start_date: Date.current + 12, end_date: Date.current + 13, status: "requested")
+
+    sign_in owner
+
+    get admin_bookings_path(sort: "client", direction: "asc")
+    assert_response :success
+
+    pos_a = response.body.index("href=\"/admin/bookings/#{booking_a.id}\">##{booking_a.id}")
+    pos_b = response.body.index("href=\"/admin/bookings/#{booking_b.id}\">##{booking_b.id}")
+    assert pos_a && pos_b
+    assert_operator pos_a, :<, pos_b
+  end
+
   test "owner cannot cancel a confirmed_paid booking without refund" do
     owner = Owner.create!(email: "owner_admin_cancel_paid@test.local", password: "password")
     user = User.create!(email: "guest_admin_cancel_paid@test.local", password: "password")
