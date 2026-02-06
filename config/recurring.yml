@@ -14,8 +14,18 @@ production:
     command: "SolidQueue::Job.clear_finished_in_batches(sleep_between_batches: 0.3)"
     schedule: every hour at minute 12
 
+  send_post_stay_review_requests:
+    class: SendPostStayReviewRequestsJob
+    queue: default
+    schedule: at 9am every day
+
   expire_overdue_bookings:
     class: ExpireOverdueBookingsJob
+    queue: default
+    schedule: every 5 minutes
+
+  cancel_overdue_requested_bookings:
+    class: CancelOverdueRequestedBookingsJob
     queue: default
     schedule: every 5 minutes
 
@@ -24,3 +34,13 @@ development:
     class: ExpireOverdueBookingsJob
     queue: default
     schedule: every 5 minutes
+
+  cancel_overdue_requested_bookings:
+    class: CancelOverdueRequestedBookingsJob
+    queue: default
+    schedule: every 5 minutes
+
+  send_post_stay_review_requests:
+    class: SendPostStayReviewRequestsJob
+    queue: default
+    schedule: at 9am every day

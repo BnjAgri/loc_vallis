@@ -54,8 +54,37 @@ module ApplicationHelper
 		end
 	end
 
+	def stripe_dashboard_base_url
+		base = (ENV["STRIPE_DASHBOARD_URL"].presence || "https://dashboard.stripe.com").to_s
+		base.sub(%r{/\z}, "")
+	end
+
+	def stripe_dashboard_url
+		stripe_dashboard_base_url
+	end
+
+	def stripe_payment_intent_dashboard_url(payment_intent_id)
+		return nil if payment_intent_id.blank?
+
+		"#{stripe_dashboard_base_url}/payments/#{payment_intent_id}"
+	end
+
+	def stripe_refund_dashboard_url(refund_id)
+		return nil if refund_id.blank?
+
+		"#{stripe_dashboard_base_url}/refunds/#{refund_id}"
+	end
+
+	def stripe_checkout_session_dashboard_url(session_id)
+		return nil if session_id.blank?
+
+		"#{stripe_dashboard_base_url}/checkout/sessions/#{session_id}"
+	end
+
 	def booking_status_badge_class(status)
 		case status.to_s
+		when "completed"
+			"text-bg-light text-muted border"
 		when "requested"
 			"text-bg-secondary"
 		when "approved_pending_payment"
@@ -74,5 +103,24 @@ module ApplicationHelper
 	def booking_status_label(status)
 		key = "bookings.statuses.#{status}"
 		I18n.t(key, default: status.to_s.tr("_", " "))
+	end
+
+	def booking_effective_status(booking)
+		return booking.status.to_s if booking.nil?
+
+		status = booking.status.to_s
+		return status unless status == "confirmed_paid"
+		return status if booking.end_date.blank?
+
+		Date.current >= booking.end_date ? "completed" : status
+	end
+
+	def sortable_table_header(label, sort:, current_sort:, current_direction:, reset_page_param: nil)
+		next_direction = (current_sort.to_s == sort.to_s && current_direction.to_s == "asc") ? "desc" : "asc"
+
+		overrides = { sort: sort, direction: next_direction }
+		overrides[reset_page_param] = 1 if reset_page_param.present?
+
+		link_to label, url_for(overrides), class: "text-decoration-none"
 	end
 end

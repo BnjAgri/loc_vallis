@@ -151,5 +151,105 @@ module Admin
 
       assert_redirected_to admin_room_path(id: room)
     end
+
+    test "block splits opening period when removing a middle range" do
+      owner = Owner.create!(email: "owner_op_split@example.com", password: "password123")
+      room = Room.create!(owner:, name: "Chambre OP split", capacity: 2)
+
+      opening_period = OpeningPeriod.create!(
+        room:,
+        start_date: Date.current + 10,
+        end_date: Date.current + 20,
+        nightly_price_cents: 10_00,
+        currency: "EUR"
+      )
+
+      sign_in owner
+
+      assert_difference("OpeningPeriod.count", 1) do
+        patch block_admin_room_opening_period_path(room_id: room, id: opening_period), params: {
+          block: {
+            start_date: (Date.current + 12).to_s,
+            end_date: (Date.current + 15).to_s
+          }
+        }
+      end
+
+      assert_redirected_to admin_room_path(id: room)
+
+      periods = room.opening_periods.order(:start_date).to_a
+      assert_equal 2, periods.size
+      assert_equal (Date.current + 10), periods[0].start_date
+      assert_equal (Date.current + 12), periods[0].end_date
+      assert_equal (Date.current + 15), periods[1].start_date
+      assert_equal (Date.current + 20), periods[1].end_date
+      assert_equal 10_00, periods[0].nightly_price_cents
+      assert_equal 10_00, periods[1].nightly_price_cents
+    end
+
+    test "block shortens opening period when removing from the start" do
+      owner = Owner.create!(email: "owner_op_shorten_start@example.com", password: "password123")
+      room = Room.create!(owner:, name: "Chambre OP shorten start", capacity: 2)
+
+      opening_period = OpeningPeriod.create!(
+        room:,
+        start_date: Date.current + 10,
+        end_date: Date.current + 20,
+        nightly_price_cents: 10_00,
+        currency: "EUR"
+      )
+
+      sign_in owner
+
+      assert_no_difference("OpeningPeriod.count") do
+        patch block_admin_room_opening_period_path(room_id: room, id: opening_period), params: {
+          block: {
+            start_date: (Date.current + 10).to_s,
+            end_date: (Date.current + 12).to_s
+          }
+        }
+      end
+
+      assert_redirected_to admin_room_path(id: room)
+      opening_period.reload
+      assert_equal (Date.current + 12), opening_period.start_date
+      assert_equal (Date.current + 20), opening_period.end_date
+    end
+
+    test "block is rejected when range overlaps an upcoming requested booking" do
+      owner = Owner.create!(email: "owner_op_block_overlap@example.com", password: "password123")
+      user = User.create!(email: "user_op_block_overlap@example.com", password: "password123")
+      room = Room.create!(owner:, name: "Chambre OP overlap", capacity: 2)
+
+      opening_period = OpeningPeriod.create!(
+        room:,
+        start_date: Date.current + 10,
+        end_date: Date.current + 20,
+        nightly_price_cents: 10_00,
+        currency: "EUR"
+      )
+
+      Booking.create!(
+        room:,
+        user:,
+        start_date: Date.current + 13,
+        end_date: Date.current + 14,
+        status: "requested"
+      )
+
+      sign_in owner
+
+      assert_no_difference("OpeningPeriod.count") do
+        patch block_admin_room_opening_period_path(room_id: room, id: opening_period), params: {
+          block: {
+            start_date: (Date.current + 12).to_s,
+            end_date: (Date.current + 15).to_s
+          }
+        }
+      end
+
+      assert_redirected_to edit_admin_room_opening_period_path(room_id: room, id: opening_period)
+      assert_match(/overlapping an existing booking/i, flash[:alert].to_s)
+    end
   end
 end

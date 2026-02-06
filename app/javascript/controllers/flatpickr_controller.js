@@ -4,11 +4,20 @@ import "flatpickr/dist/l10n/fr.js"
 
 export default class extends Controller {
   static values = {
-    openRanges: Array
+    openRanges: Array,
+    bookedRanges: Array,
+    pendingRanges: Array,
+    disableOpenRanges: Boolean
   }
 
   connect() {
     this.openRanges = this.normalizeRanges(this.openRangesValue || [])
+
+    this.bookedRanges = this.normalizeRanges(this.bookedRangesValue || [])
+    this.pendingRanges = this.normalizeRanges(this.pendingRangesValue || [])
+
+    const shouldDisableOpen = this.disableOpenRangesValue !== undefined ? this.disableOpenRangesValue : true
+    const disableRanges = shouldDisableOpen ? this.openRanges : []
 
     flatpickr(this.element, {
       allowInput: true,
@@ -18,7 +27,9 @@ export default class extends Controller {
       altInputClass: "form-control",
       locale: "fr",
       disableMobile: true,
-      disable: this.openRanges,
+      minDate: this.element.getAttribute("min") || null,
+      maxDate: this.element.getAttribute("max") || null,
+      disable: disableRanges,
       onDayCreate: (_selectedDates, _dateStr, _instance, dayElem) => {
         this.decorateDayElement(dayElem)
       }
@@ -31,12 +42,25 @@ export default class extends Controller {
 
     const dateKey = this.formatDateKey(date)
 
-    dayElem.classList.remove("lv-open-day")
+    dayElem.classList.remove("lv-open-day", "lv-pending-day", "lv-booked-day")
     dayElem.removeAttribute("title")
+
+    if (this.isInAnyRange(dateKey, this.bookedRanges)) {
+      dayElem.classList.add("lv-booked-day")
+      dayElem.title = "Réservé"
+      return
+    }
+
+    if (this.isInAnyRange(dateKey, this.pendingRanges)) {
+      dayElem.classList.add("lv-pending-day")
+      dayElem.title = "Demande (requested)"
+      return
+    }
 
     if (this.isInAnyRange(dateKey, this.openRanges)) {
       dayElem.classList.add("lv-open-day")
-      dayElem.title = "Déjà ouvert"
+      const shouldDisableOpen = this.disableOpenRangesValue !== undefined ? this.disableOpenRangesValue : true
+      dayElem.title = shouldDisableOpen ? "Déjà ouvert" : "Ouvert"
     }
   }
 

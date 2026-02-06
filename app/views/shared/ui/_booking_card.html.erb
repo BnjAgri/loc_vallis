@@ -18,7 +18,7 @@ end %>
           <div class="lv-meta"><%= booking.room&.name %></div>
         </div>
         <div class="text-end">
-          <%= render "shared/ui/status_badge", status: booking.status, size: :sm %>
+          <%= render "shared/ui/status_badge", booking: booking, size: :sm %>
         </div>
       </div>
 

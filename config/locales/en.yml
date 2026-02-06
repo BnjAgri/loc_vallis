@@ -270,12 +270,48 @@ en:
         added: "Opening period added."
         removed: "Opening period removed."
         updated: "Opening period updated."
+        blocked: "Opening period updated (dates removed)."
     bookings:
       flash:
         approved: "Booking approved."
         declined: "Booking declined."
         canceled: "Booking canceled."
         refund_initiated: "Refund initiated."
+      index:
+        title: "Dashboard"
+        subtitle: "Messages, bookings and room management"
+        unread_badge: "%{count} unread"
+        stripe_dashboard: "Stripe"
+        manage_rooms: "Manage rooms"
+        manage_rooms_subtitle: "Create, edit, pricing & opening periods"
+        planning: "Planning"
+        create_room: "Create a room"
+        messages_title: "Messages"
+        no_messages: "No messages yet."
+        transactions_title: "Transactions"
+        open_stripe: "Open Stripe"
+        no_transactions: "No transactions yet."
+        transactions:
+          columns:
+            date: "Date"
+            booking: "Booking"
+            client: "Customer"
+            amount: "Amount"
+            status: "Status"
+            stripe: "Stripe"
+          links:
+            payment: "Payment %{short_id}"
+            checkout: "Checkout %{short_id}"
+            refund: "Refund %{short_id}"
+        reservations_title: "Bookings"
+        manage_reservations: "Manage bookings"
+        no_reservations: "No bookings yet."
+        no_rooms: "No rooms yet."
+        room: "Room"
+        planning_button: "Planning"
+        edit_button: "Edit"
+        delete_button: "Delete"
+        delete_confirm: "Delete this room?"
 
     clients:
       flash:
@@ -398,6 +434,7 @@ en:
       requested: "Requested"
       approved_pending_payment: "Pending payment"
       confirmed_paid: "Paid"
+      completed: "Completed"
       declined: "Declined"
       canceled: "Canceled"
       expired: "Expired"

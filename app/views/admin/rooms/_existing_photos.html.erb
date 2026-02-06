@@ -1,4 +1,4 @@
-<% if room.photos.attached? %>
+<% if room.persisted? && room.photos.attached? %>
   <div class="mb-3">
     <label class="form-label"><%= t("admin.rooms.photos.existing_title") %></label>
     <div class="d-flex flex-wrap gap-2">

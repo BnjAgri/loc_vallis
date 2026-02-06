@@ -8,7 +8,7 @@
 # Statuts (machine d'état “simple”, basée sur une string) :
 # - requested -> approved_pending_payment -> confirmed_paid
 # - requested -> declined
-# - requested|approved_pending_payment|confirmed_paid -> canceled
+# - requested|approved_pending_payment -> canceled
 # - approved_pending_payment -> expired (si fenêtre de paiement dépassée)
 # - confirmed_paid -> refunded
 #
@@ -144,7 +144,7 @@ class Booking < ApplicationRecord
   def cancel!(by:)
     raise ArgumentError, "Actor required" if by.nil?
 
-    allowed = %w[requested approved_pending_payment confirmed_paid].include?(status)
+    allowed = %w[requested approved_pending_payment].include?(status)
     return false unless allowed
 
     update!(status: "canceled")
@@ -169,6 +169,50 @@ class Booking < ApplicationRecord
           Rails.logger.error("Booking##{booking.id} expire failed: #{e.message}")
         end
       end
+  end
+
+  def self.cancel_overdue_requested!(as_of: Date.current)
+    where(status: "requested")
+      .where("start_date < ?", as_of)
+      .find_each do |booking|
+        begin
+          booking.update!(status: "canceled")
+        rescue ActiveRecord::RecordInvalid => e
+          Rails.logger.error("Booking##{booking.id} auto-cancel failed: #{e.message}")
+        end
+      end
+  end
+
+  def self.send_review_requests_after_stay!(as_of: Date.current)
+    target_end_date = as_of - 1.day
+
+    left_outer_joins(:review)
+      .where(status: %w[confirmed_paid refunded])
+      .where(end_date: target_end_date)
+      .where(review_request_sent_at: nil)
+      .where(reviews: { id: nil })
+      .includes(:user, room: :owner)
+      .find_each do |booking|
+        begin
+          booking.enqueue_review_request_email!
+        rescue StandardError => e
+          Rails.logger.error("Booking##{booking.id} review_request enqueue failed: #{e.class}: #{e.message}")
+        end
+      end
+  end
+
+  def enqueue_review_request_email!
+    return false if review&.persisted?
+
+    now = Time.current
+    updated = self.class
+      .where(id: id, review_request_sent_at: nil)
+      .update_all(review_request_sent_at: now, updated_at: now)
+
+    return false unless updated == 1
+
+    BookingMailer.with(booking: self).review_request.deliver_later
+    true
   end
 
   private

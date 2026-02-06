@@ -46,6 +46,38 @@ class BookingWorkflowTest < ActiveSupport::TestCase
     end
   end
 
+  test "cancel_overdue_requested! cancels requested bookings whose start_date is in the past" do
+    overdue = Booking.create!(
+      room: @room,
+      user: @user,
+      start_date: Date.new(2026, 1, 10),
+      end_date: Date.new(2026, 1, 12),
+      status: "requested"
+    )
+
+    starts_today = Booking.create!(
+      room: @room,
+      user: @user,
+      start_date: Date.new(2026, 1, 15),
+      end_date: Date.new(2026, 1, 16),
+      status: "requested"
+    )
+
+    future = Booking.create!(
+      room: @room,
+      user: @user,
+      start_date: Date.new(2026, 1, 16),
+      end_date: Date.new(2026, 1, 18),
+      status: "requested"
+    )
+
+    Booking.cancel_overdue_requested!(as_of: Date.new(2026, 1, 15))
+
+    assert_equal "canceled", overdue.reload.status
+    assert_equal "requested", starts_today.reload.status
+    assert_equal "requested", future.reload.status
+  end
+
   test "cannot approve two overlapping bookings for the same room" do
     other_user = User.create!(email: "guest_flow2@test.local", password: "password")
 

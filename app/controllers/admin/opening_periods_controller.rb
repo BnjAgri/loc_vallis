@@ -54,6 +54,22 @@ module Admin
         .where.not(id: @opening_period.id)
         .order(:start_date)
         .map { |p| { from: p.start_date, to: (p.end_date - 1.day) } }
+
+      @open_ranges = @room.opening_periods
+        .order(:start_date)
+        .map { |p| { from: p.start_date, to: (p.end_date - 1.day) } }
+
+      overlapping_bookings = @room.bookings
+        .where("start_date < ? AND end_date > ?", @opening_period.end_date, @opening_period.start_date)
+        .order(:start_date)
+
+      @booked_ranges = overlapping_bookings
+        .where(status: Booking::RESERVED_STATUSES)
+        .map { |b| { from: b.start_date, to: (b.end_date - 1.day) } }
+
+      @pending_ranges = overlapping_bookings
+        .where(status: "requested")
+        .map { |b| { from: b.start_date, to: (b.end_date - 1.day) } }
     end
 
     def update
@@ -70,10 +86,32 @@ module Admin
       end
     end
 
+    def block
+      room = policy_scope(Room).find(params[:room_id])
+      authorize room, :update?
+
+      opening_period = room.opening_periods.find(params[:id])
+      authorize opening_period, :update?
+
+      OpeningPeriodBlocker.call(
+        opening_period:,
+        start_date: block_params[:start_date],
+        end_date: block_params[:end_date]
+      )
+
+      redirect_to admin_room_path(id: room), notice: t("admin.opening_periods.flash.blocked")
+    rescue StandardError => e
+      redirect_to edit_admin_room_opening_period_path(room_id: room, id: opening_period), alert: e.message
+    end
+
     private
 
     def opening_period_params
       params.require(:opening_period).permit(:start_date, :end_date, :nightly_price_euros, :currency)
+    end
+
+    def block_params
+      params.require(:block).permit(:start_date, :end_date)
     end
   end
 end

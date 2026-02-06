@@ -67,7 +67,11 @@ Rails.application.routes.draw do
           delete "photos/:photo_id", to: "rooms#destroy_photo", as: :photo
           delete "urls/:url_index", to: "rooms#destroy_url", as: :url
         end
-        resources :opening_periods, only: %i[create edit update destroy]
+        resources :opening_periods, only: %i[create edit update destroy] do
+          member do
+            patch :block
+          end
+        end
       end
 
       resources :bookings, only: %i[index show] do

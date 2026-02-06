@@ -6,6 +6,14 @@ module Admin
     def index
       bookings_scope = policy_scope(Booking)
 
+    sort = params[:sort].to_s
+    direction = params[:direction].to_s
+    sort = "reservation" unless %w[reservation room client dates status].include?(sort)
+    direction = "desc" unless %w[asc desc].include?(direction)
+
+    @current_sort = sort
+    @current_direction = direction
+
       @bookings = bookings_scope
       if params[:date].present?
         begin
@@ -48,11 +56,12 @@ module Admin
       @bookings_page = @bookings_total_pages if @bookings_page > @bookings_total_pages
 
       bookings_offset = (@bookings_page - 1) * per_page
-      @bookings = filtered_bookings
-        .includes(:room, :user)
-        .order(created_at: :desc)
-        .limit(per_page)
-        .offset(bookings_offset)
+
+		sorted_bookings = apply_sort(filtered_bookings, sort: sort, direction: direction)
+		@bookings = sorted_bookings
+			.includes(:room, :user)
+			.limit(per_page)
+			.offset(bookings_offset)
 
       @rooms = policy_scope(Room).includes(:opening_periods).order(created_at: :desc)
 
@@ -63,6 +72,17 @@ module Admin
         .distinct
 
       @unread_conversations_count = unread_bookings_scope.count
+
+      transactions_scope = bookings_scope
+        .where(status: %w[confirmed_paid refunded])
+        .where.not(total_price_cents: nil)
+        .where.not(currency: nil)
+        .where("stripe_payment_intent_id IS NOT NULL OR stripe_checkout_session_id IS NOT NULL OR stripe_refund_id IS NOT NULL")
+        .order(status_changed_at: :desc, id: :desc)
+
+      @recent_transactions = transactions_scope
+        .includes(:room, :user)
+        .limit(5)
 
       recent_messages_scope = Message
         .joins(:booking)
@@ -132,11 +152,41 @@ module Admin
       StripeRefundCreator.call(booking: @booking, amount_cents: amount_cents)
       BookingMailer.with(booking: @booking).refunded.deliver_later
       redirect_to admin_booking_path(id: @booking), notice: t("admin.bookings.flash.refund_initiated")
+    rescue Pundit::NotAuthorizedError
+      raise
     rescue StandardError => e
       redirect_to admin_booking_path(id: @booking), alert: e.message
     end
 
     private
+
+    def apply_sort(relation, sort:, direction:)
+      dir_sym = direction.to_s == "asc" ? :asc : :desc
+      dir_sql = dir_sym == :asc ? "ASC" : "DESC"
+
+      case sort.to_s
+      when "room"
+        relation
+          .joins(:room)
+          .order(Arel.sql("LOWER(rooms.name) #{dir_sql}, bookings.id DESC"))
+      when "client"
+        relation
+          .joins(:user)
+          .order(
+            Arel.sql(
+              "LOWER(COALESCE(users.last_name, '')) #{dir_sql}, " \
+              "LOWER(COALESCE(users.first_name, '')) #{dir_sql}, " \
+              "LOWER(users.email) #{dir_sql}, bookings.id DESC"
+            )
+          )
+      when "dates"
+        relation.order(start_date: dir_sym, end_date: dir_sym, id: :desc)
+      when "status"
+        relation.order(status: dir_sym, start_date: :desc, id: :desc)
+      else
+        relation.order(id: dir_sym)
+      end
+    end
 
     def expire_overdue_bookings
       Booking.expire_overdue!

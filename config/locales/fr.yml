@@ -279,12 +279,28 @@ fr:
         title: "Tableau de bord"
         subtitle: "Messages, réservations et gestion des chambres"
         unread_badge: "%{count} non lu(s)"
+        stripe_dashboard: "Stripe"
         manage_rooms: "Gérer les chambres"
         manage_rooms_subtitle: "Créer, éditer, tarifs & périodes d'ouverture"
         planning: "Planning"
         create_room: "Créer une chambre"
         messages_title: "Messages"
         no_messages: "Aucun message pour le moment."
+        transactions_title: "Transactions"
+        open_stripe: "Ouvrir Stripe"
+        no_transactions: "Aucune transaction pour le moment."
+        transactions:
+          columns:
+            date: "Date"
+            booking: "Réservation"
+            client: "Client"
+            amount: "Montant"
+            status: "Statut"
+            stripe: "Stripe"
+          links:
+            payment: "Paiement %{short_id}"
+            checkout: "Checkout %{short_id}"
+            refund: "Remboursement %{short_id}"
         reservations_title: "Réservations"
         manage_reservations: "Gérer les réservations"
         no_reservations: "Aucune réservation pour le moment."
@@ -349,6 +365,7 @@ fr:
         added: "Période d'ouverture ajoutée."
         removed: "Période d'ouverture supprimée."
         updated: "Période d'ouverture mise à jour."
+        blocked: "Période d'ouverture mise à jour (jours retirés)."
 
     clients:
       flash:
@@ -471,6 +488,7 @@ fr:
       requested: "Demande"
       approved_pending_payment: "En attente de paiement"
       confirmed_paid: "Payée"
+      completed: "Terminée"
       declined: "Refusée"
       canceled: "Annulée"
       expired: "Expirée"
