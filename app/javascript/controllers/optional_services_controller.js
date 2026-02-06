@@ -6,6 +6,43 @@ export default class extends Controller {
 
   connect() {
     this.toggleAddLink()
+
+    this.onSubmit = this.onSubmit.bind(this)
+
+    const form = this.element.closest("form")
+    if (form) form.addEventListener("submit", this.onSubmit)
+  }
+
+  disconnect() {
+    const form = this.element.closest("form")
+    if (form && this.onSubmit) form.removeEventListener("submit", this.onSubmit)
+  }
+
+  onSubmit(event) {
+    // Clear any previous custom validity.
+    this.itemTargets.forEach((row) => {
+      const priceInput = row.querySelector("input[name$='[price_eur]']")
+      if (priceInput) priceInput.setCustomValidity("")
+    })
+
+    for (const row of this.itemTargets) {
+      const nameInput = row.querySelector("input[name$='[name]']")
+      const priceInput = row.querySelector("input[name$='[price_eur]']")
+      if (!nameInput || !priceInput) continue
+
+      const name = nameInput.value?.trim?.() || ""
+      const price = priceInput.value?.trim?.() || ""
+
+      // Match server-side rule: if name is present, price is required.
+      if (name.length > 0 && price.length === 0) {
+        priceInput.setCustomValidity("Prix requis")
+        priceInput.reportValidity()
+        event.preventDefault()
+        event.stopPropagation()
+        priceInput.focus()
+        return
+      }
+    }
   }
 
   add(event) {
