@@ -156,6 +156,30 @@ module Admin
       assert_equal "https://res.cloudinary.com/demo/image/upload/sample.jpg", room.room_url
     end
 
+    test "update with invalid optional service price returns 422 (no 500)" do
+      owner = Owner.create!(
+        email: "owner_room_optional_services_invalid@example.com",
+        password: "password123",
+        first_name: "Claude",
+        last_name: "Owner"
+      )
+
+      room = Room.create!(owner:, name: "Chambre test", capacity: 2)
+
+      sign_in owner
+
+      patch admin_room_path(id: room), params: {
+        room: {
+          name: "Chambre test",
+          optional_services: [
+            { name: "Petit-déjeuner", price_eur: "12,3x" }
+          ]
+        }
+      }
+
+      assert_response :unprocessable_content
+    end
+
     test "destroy_photo removes a single attached photo" do
       owner = Owner.create!(
         email: "owner_room_delete_photo@example.com",
