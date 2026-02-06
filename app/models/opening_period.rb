@@ -43,7 +43,7 @@ class OpeningPeriod < ApplicationRecord
     return if start_date.blank? || end_date.blank?
     return if end_date > start_date
 
-    errors.add(:end_date, "must be after start_date")
+    errors.add(:end_date, :after_start_date)
   end
 
   def no_overlapping_periods
