@@ -5,6 +5,9 @@ fr:
         current_password: "Mot de passe actuel"
       owner:
         current_password: "Mot de passe actuel"
+      opening_period:
+        start_date: "Date de début"
+        end_date: "Date de fin"
       room:
         name: "Nom"
         description: "Description"
@@ -24,6 +27,10 @@ fr:
               after_start_date: "doit être après la date de début"
             base:
               dates_overlap_existing_booking: "Ces dates chevauchent une réservation existante"
+        opening_period:
+          attributes:
+            end_date:
+              after_start_date: "doit être après la date de début"
         article:
           attributes:
             title:

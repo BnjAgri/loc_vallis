@@ -49,8 +49,18 @@
                       <%= booking.room&.name %>
                     </strong>
                     <span class="text-muted">·</span>
+                    <% user = booking.user %>
+                    <% full_name = [user&.first_name, user&.last_name].map { |v| v.to_s.strip }.reject(&:blank?).join(" ") %>
                     <span class="text-muted text-truncate" style="max-width: 360px;">
-                      <%= booking.user&.email %>
+                      <% if full_name.present? %>
+                        <%= full_name %>
+                        <% if user&.email.present? %>
+                          <span class="text-muted">·</span>
+                          <%= user.email %>
+                        <% end %>
+                      <% else %>
+                        <%= user&.email %>
+                      <% end %>
                     </span>
                     <span class="text-muted">·</span>
                     <span class="text-muted"><%= t("inbox.booking_ref", id: booking.id) %></span>

@@ -1,7 +1,6 @@
 class ApplicationController < ActionController::Base
   include Pundit::Authorization
 
-  before_action :http_basic_authenticate, if: :http_basic_auth_enabled?
   before_action :set_locale
   before_action :configure_permitted_parameters, if: :devise_controller?
   before_action :set_owner_unread_conversations_count, if: :owner_signed_in?
@@ -131,22 +130,6 @@ class ApplicationController < ActionController::Base
   def set_login_notifications_dropdown
     @login_notifications = Array(session[:login_notifications])
     @login_notifications_count = @login_notifications.size
-  end
-
-  def http_basic_auth_enabled?
-    ENV["BASIC_AUTH_USER"].present? && ENV["BASIC_AUTH_PASSWORD"].present?
-  end
-
-  def http_basic_authenticate
-    return if request.path == "/stripe/webhook" || request.path == "/up"
-
-    authenticate_or_request_with_http_basic("Loc Vallis") do |username, password|
-      expected_username = ENV.fetch("BASIC_AUTH_USER").to_s
-      expected_password = ENV.fetch("BASIC_AUTH_PASSWORD").to_s
-
-      ActiveSupport::SecurityUtils.secure_compare(username.to_s, expected_username) &
-        ActiveSupport::SecurityUtils.secure_compare(password.to_s, expected_password)
-    end
   end
 
   def set_locale

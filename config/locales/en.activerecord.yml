@@ -5,6 +5,9 @@ en:
         current_password: "Current password"
       owner:
         current_password: "Current password"
+      opening_period:
+        start_date: "Start date"
+        end_date: "End date"
     errors:
       models:
         booking:
@@ -15,6 +18,10 @@ en:
               after_start_date: "must be after the start date"
             base:
               dates_overlap_existing_booking: "Dates overlap an existing booking"
+        opening_period:
+          attributes:
+            end_date:
+              after_start_date: "must be after the start date"
         article:
           attributes:
             title:
