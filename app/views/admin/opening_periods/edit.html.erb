@@ -20,7 +20,12 @@
                         label: "Date de début",
                         input_html: {
                           type: "text",
-                          data: { controller: "flatpickr", "flatpickr-open-ranges-value": (@other_open_ranges || []).to_json }
+                          data: {
+                            controller: "flatpickr",
+                            "flatpickr-open-ranges-value": (@other_open_ranges || []).to_json,
+                            "flatpickr-booked-ranges-value": (@booked_ranges || []).to_json,
+                            "flatpickr-pending-ranges-value": (@pending_ranges || []).to_json
+                          }
                         } %>
           </div>
 
@@ -30,7 +35,12 @@
                         label: "Date de fin",
                         input_html: {
                           type: "text",
-                          data: { controller: "flatpickr", "flatpickr-open-ranges-value": (@other_open_ranges || []).to_json }
+                          data: {
+                            controller: "flatpickr",
+                            "flatpickr-open-ranges-value": (@other_open_ranges || []).to_json,
+                            "flatpickr-booked-ranges-value": (@booked_ranges || []).to_json,
+                            "flatpickr-pending-ranges-value": (@pending_ranges || []).to_json
+                          }
                         } %>
           </div>
 
@@ -66,10 +76,15 @@
           <input
             id="block_start_date"
             name="block[start_date]"
-            type="date"
+            type="text"
             class="form-control"
             min="<%= @opening_period.start_date %>"
             max="<%= (@opening_period.end_date - 1.day) %>"
+            data-controller="flatpickr"
+            data-flatpickr-disable-open-ranges-value="false"
+            data-flatpickr-open-ranges-value="<%= (@open_ranges || []).to_json %>"
+            data-flatpickr-booked-ranges-value="<%= (@booked_ranges || []).to_json %>"
+            data-flatpickr-pending-ranges-value="<%= (@pending_ranges || []).to_json %>"
             required
           />
         </div>
@@ -79,10 +94,15 @@
           <input
             id="block_end_date"
             name="block[end_date]"
-            type="date"
+            type="text"
             class="form-control"
             min="<%= (@opening_period.start_date + 1.day) %>"
             max="<%= @opening_period.end_date %>"
+            data-controller="flatpickr"
+            data-flatpickr-disable-open-ranges-value="false"
+            data-flatpickr-open-ranges-value="<%= (@open_ranges || []).to_json %>"
+            data-flatpickr-booked-ranges-value="<%= (@booked_ranges || []).to_json %>"
+            data-flatpickr-pending-ranges-value="<%= (@pending_ranges || []).to_json %>"
             required
           />
         </div>

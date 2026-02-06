@@ -54,6 +54,22 @@ module Admin
         .where.not(id: @opening_period.id)
         .order(:start_date)
         .map { |p| { from: p.start_date, to: (p.end_date - 1.day) } }
+
+      @open_ranges = @room.opening_periods
+        .order(:start_date)
+        .map { |p| { from: p.start_date, to: (p.end_date - 1.day) } }
+
+      overlapping_bookings = @room.bookings
+        .where("start_date < ? AND end_date > ?", @opening_period.end_date, @opening_period.start_date)
+        .order(:start_date)
+
+      @booked_ranges = overlapping_bookings
+        .where(status: Booking::RESERVED_STATUSES)
+        .map { |b| { from: b.start_date, to: (b.end_date - 1.day) } }
+
+      @pending_ranges = overlapping_bookings
+        .where(status: "requested")
+        .map { |b| { from: b.start_date, to: (b.end_date - 1.day) } }
     end
 
     def update
