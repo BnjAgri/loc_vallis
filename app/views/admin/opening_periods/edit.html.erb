@@ -52,4 +52,47 @@
       <% end %>
     </div>
   </div>
+
+  <div class="card mt-4" id="delete-days">
+    <div class="card-body">
+      <h2 class="h6 mb-1">Supprimer des jours de la période</h2>
+      <div class="text-muted small mb-3">
+        La plage supprimée sera fermée (la période sera raccourcie ou scindée).
+      </div>
+
+      <%= form_with url: block_admin_room_opening_period_path(room_id: @room, id: @opening_period), method: :patch, class: "d-flex flex-wrap gap-3 align-items-end" do %>
+        <div class="flex-grow-1" style="min-width: 180px;">
+          <label class="form-label" for="block_start_date">Du</label>
+          <input
+            id="block_start_date"
+            name="block[start_date]"
+            type="date"
+            class="form-control"
+            min="<%= @opening_period.start_date %>"
+            max="<%= (@opening_period.end_date - 1.day) %>"
+            required
+          />
+        </div>
+
+        <div class="flex-grow-1" style="min-width: 180px;">
+          <label class="form-label" for="block_end_date">Au</label>
+          <input
+            id="block_end_date"
+            name="block[end_date]"
+            type="date"
+            class="form-control"
+            min="<%= (@opening_period.start_date + 1.day) %>"
+            max="<%= @opening_period.end_date %>"
+            required
+          />
+        </div>
+
+        <div class="flex-shrink-0" style="min-width: 180px;">
+          <button type="submit" class="btn btn-outline-danger w-100">Supprimer</button>
+        </div>
+      <% end %>
+
+      <div class="form-text mt-2">Date de fin exclue (comme une réservation).</div>
+    </div>
+  </div>
 </div>

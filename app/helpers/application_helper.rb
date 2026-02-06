@@ -54,6 +54,33 @@ module ApplicationHelper
 		end
 	end
 
+	def stripe_dashboard_base_url
+		base = (ENV["STRIPE_DASHBOARD_URL"].presence || "https://dashboard.stripe.com").to_s
+		base.sub(%r{/\z}, "")
+	end
+
+	def stripe_dashboard_url
+		stripe_dashboard_base_url
+	end
+
+	def stripe_payment_intent_dashboard_url(payment_intent_id)
+		return nil if payment_intent_id.blank?
+
+		"#{stripe_dashboard_base_url}/payments/#{payment_intent_id}"
+	end
+
+	def stripe_refund_dashboard_url(refund_id)
+		return nil if refund_id.blank?
+
+		"#{stripe_dashboard_base_url}/refunds/#{refund_id}"
+	end
+
+	def stripe_checkout_session_dashboard_url(session_id)
+		return nil if session_id.blank?
+
+		"#{stripe_dashboard_base_url}/checkout/sessions/#{session_id}"
+	end
+
 	def booking_status_badge_class(status)
 		case status.to_s
 		when "completed"

@@ -10,7 +10,9 @@
       </div>
     </div>
 
-    <div class="d-flex gap-2"></div>
+    <div class="d-flex gap-2">
+      <%= link_to t("admin.bookings.index.stripe_dashboard"), stripe_dashboard_url, class: "btn btn-outline-secondary btn-sm", target: "_blank", rel: "noopener" %>
+    </div>
   </div>
 
   <div class="row g-4">
@@ -106,6 +108,97 @@
                   </div>
                 </div>
               <% end %>
+            </div>
+          <% end %>
+        </div>
+      </div>
+
+      <div class="card mb-4">
+        <div class="card-body">
+          <div class="d-flex justify-content-between align-items-center mb-3">
+            <h2 class="h5 mb-0"><%= t("admin.bookings.index.transactions_title") %></h2>
+            <%= link_to t("admin.bookings.index.open_stripe"), stripe_dashboard_url, class: "btn btn-outline-secondary btn-sm", target: "_blank", rel: "noopener" %>
+          </div>
+
+          <% if @recent_transactions.blank? %>
+            <p class="text-muted mb-0"><%= t("admin.bookings.index.no_transactions") %></p>
+          <% else %>
+            <div class="table-responsive">
+              <table class="table table-sm align-middle mb-0">
+                <thead>
+                  <tr>
+                    <th><%= t("admin.bookings.index.transactions.columns.date") %></th>
+                    <th><%= t("admin.bookings.index.transactions.columns.booking") %></th>
+                    <th><%= t("admin.bookings.index.transactions.columns.client") %></th>
+                    <th class="text-end pe-4"><%= t("admin.bookings.index.transactions.columns.amount") %></th>
+                    <th><%= t("admin.bookings.index.transactions.columns.status") %></th>
+                    <th><%= t("admin.bookings.index.transactions.columns.stripe") %></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <% @recent_transactions.each do |booking| %>
+                    <% payment_intent_short = booking.stripe_payment_intent_id.to_s.last(6).presence %>
+                    <% checkout_session_short = booking.stripe_checkout_session_id.to_s.last(6).presence %>
+                    <% refund_short = booking.stripe_refund_id.to_s.last(6).presence %>
+                    <tr>
+                      <td class="text-nowrap">
+                        <%= booking.status_changed_at.present? ? l(booking.status_changed_at.to_date) : "—" %>
+                      </td>
+                      <td class="text-nowrap"><%= link_to "##{booking.id}", admin_booking_path(id: booking) %></td>
+                      <td class="text-truncate" style="max-width: 220px;">
+                        <div class="fw-semibold"><%= booking.user&.display_name %></div>
+                        <% if booking.user&.email.present? %>
+                          <div class="text-muted small"><%= booking.user.email %></div>
+                        <% end %>
+                      </td>
+                      <td class="text-end text-nowrap pe-4"><%= format_price(booking.total_price_cents, currency: booking.currency) %></td>
+                      <td class="text-nowrap">
+                        <span class="badge <%= booking_status_badge_class(booking.status) %>"><%= booking_status_label(booking.status) %></span>
+                      </td>
+                      <td class="text-nowrap">
+                        <% if booking.stripe_payment_intent_id.present? %>
+                          <div class="small">
+                            <%= link_to(
+                              t("admin.bookings.index.transactions.links.payment", short_id: payment_intent_short ? "…#{payment_intent_short}" : ""),
+                              stripe_payment_intent_dashboard_url(booking.stripe_payment_intent_id),
+                              target: "_blank",
+                              rel: "noopener",
+                              class: "text-decoration-none",
+                              title: booking.stripe_payment_intent_id
+                            ) %>
+                          </div>
+                        <% elsif booking.stripe_checkout_session_id.present? %>
+                          <div class="small">
+                            <%= link_to(
+                              t("admin.bookings.index.transactions.links.checkout", short_id: checkout_session_short ? "…#{checkout_session_short}" : ""),
+                              stripe_checkout_session_dashboard_url(booking.stripe_checkout_session_id),
+                              target: "_blank",
+                              rel: "noopener",
+                              class: "text-decoration-none",
+                              title: booking.stripe_checkout_session_id
+                            ) %>
+                          </div>
+                        <% else %>
+                          <div class="small text-muted">—</div>
+                        <% end %>
+
+                        <% if booking.stripe_refund_id.present? %>
+                          <div class="small">
+                            <%= link_to(
+                              t("admin.bookings.index.transactions.links.refund", short_id: refund_short ? "…#{refund_short}" : ""),
+                              stripe_refund_dashboard_url(booking.stripe_refund_id),
+                              target: "_blank",
+                              rel: "noopener",
+                              class: "text-decoration-none",
+                              title: booking.stripe_refund_id
+                            ) %>
+                          </div>
+                        <% end %>
+                      </td>
+                    </tr>
+                  <% end %>
+                </tbody>
+              </table>
             </div>
           <% end %>
         </div>

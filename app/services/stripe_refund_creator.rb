@@ -28,13 +28,14 @@ class StripeRefundCreator
     raise StandardError, "Already refunded" if booking.stripe_refund_id.present? || booking.status == "refunded"
 
     payment_intent = Stripe::PaymentIntent.retrieve(booking.stripe_payment_intent_id)
-    paid_cents = if payment_intent.respond_to?(:amount_received) && payment_intent.amount_received.present?
-      payment_intent.amount_received.to_i
-    elsif payment_intent.respond_to?(:amount)
-      payment_intent.amount.to_i
-    else
-      0
-    end
+    paid_cents =
+      if payment_intent.respond_to?(:amount_received) && payment_intent.amount_received.present?
+        payment_intent.amount_received.to_i
+      elsif payment_intent.respond_to?(:amount)
+        payment_intent.amount.to_i
+      else
+        0
+      end
     raise StandardError, "Missing Stripe paid amount" if paid_cents <= 0
 
     if amount_cents.present?

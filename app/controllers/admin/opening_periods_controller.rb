@@ -70,10 +70,32 @@ module Admin
       end
     end
 
+    def block
+      room = policy_scope(Room).find(params[:room_id])
+      authorize room, :update?
+
+      opening_period = room.opening_periods.find(params[:id])
+      authorize opening_period, :update?
+
+      OpeningPeriodBlocker.call(
+        opening_period:,
+        start_date: block_params[:start_date],
+        end_date: block_params[:end_date]
+      )
+
+      redirect_to admin_room_path(id: room), notice: t("admin.opening_periods.flash.blocked")
+    rescue StandardError => e
+      redirect_to edit_admin_room_opening_period_path(room_id: room, id: opening_period), alert: e.message
+    end
+
     private
 
     def opening_period_params
       params.require(:opening_period).permit(:start_date, :end_date, :nightly_price_euros, :currency)
+    end
+
+    def block_params
+      params.require(:block).permit(:start_date, :end_date)
     end
   end
 end

@@ -1,5 +1,4 @@
 class ApplicationController < ActionController::Base
-  require "set"
   include Pundit::Authorization
 
   before_action :http_basic_authenticate, if: :http_basic_auth_enabled?

@@ -73,6 +73,17 @@ module Admin
 
       @unread_conversations_count = unread_bookings_scope.count
 
+      transactions_scope = bookings_scope
+        .where(status: %w[confirmed_paid refunded])
+        .where.not(total_price_cents: nil)
+        .where.not(currency: nil)
+        .where("stripe_payment_intent_id IS NOT NULL OR stripe_checkout_session_id IS NOT NULL OR stripe_refund_id IS NOT NULL")
+        .order(status_changed_at: :desc, id: :desc)
+
+      @recent_transactions = transactions_scope
+        .includes(:room, :user)
+        .limit(5)
+
       recent_messages_scope = Message
         .joins(:booking)
         .merge(bookings_scope)
