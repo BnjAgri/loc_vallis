@@ -434,7 +434,7 @@ fr:
       per_night_suffix: "/nuit"
       select_dates_hint: "Sélectionnez vos dates pour afficher le total et réserver."
       availability_calendar_aria: "Calendrier de disponibilités"
-      book_button: "Réserver"
+      book_button: "Demande de réservation"
       summary:
         nightly_rate: "Tarif / nuit"
         nights: "Nombre de nuits"

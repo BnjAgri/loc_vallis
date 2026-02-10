@@ -380,7 +380,7 @@ en:
       per_night_suffix: "/night"
       select_dates_hint: "Select your dates to see the total and book."
       availability_calendar_aria: "Availability calendar"
-      book_button: "Book"
+      book_button: "Booking request"
       summary:
         nightly_rate: "Nightly rate"
         nights: "Nights"
