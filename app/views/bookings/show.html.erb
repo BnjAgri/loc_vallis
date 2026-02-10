@@ -1,7 +1,11 @@
 <div class="container py-4">
+  <% requested = @booking.status == "requested" %>
+  <% title_key = requested ? ".title_requested" : ".title" %>
   <%= render "shared/ui/page_header",
-    title: t(".title", id: @booking.id),
-    subtitle: @booking.room.name %>
+    title: t(title_key, id: @booking.id),
+    subtitle: (requested ? t(".requested_subtitle") : @booking.room.name) %>
+
+  <%= render "shared/ui/booking_metro", booking: @booking %>
 
   <div class="row g-4 mt-1">
     <div class="col-12 col-lg-5">

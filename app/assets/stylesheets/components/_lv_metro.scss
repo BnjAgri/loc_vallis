@@ -1,0 +1,80 @@
+.lv-metro {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.lv-metro__inner {
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: center;
+  gap: 0.75rem;
+  padding-bottom: 0.25rem;
+}
+
+.lv-metro__step {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  white-space: nowrap;
+}
+
+.lv-metro__dot {
+  width: 28px;
+  height: 28px;
+  border-radius: 999px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  font-size: 0.85rem;
+  flex: 0 0 auto;
+}
+
+.lv-metro__dot--done {
+  background: $lv-accent;
+  border: 1px solid $lv-accent;
+  color: #fff;
+}
+
+.lv-metro__dot--current {
+  background: rgba($lv-primary, 0.10);
+  border: 1px solid $lv-primary;
+  color: $lv-primary;
+}
+
+.lv-metro__dot--todo {
+  background: $lv-surface;
+  border: 1px solid $lv-divider;
+  color: $lv-muted;
+}
+
+.lv-metro__label {
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  font-size: 0.75rem;
+}
+
+.lv-metro__label--done {
+  color: $lv-accent;
+}
+
+.lv-metro__label--current {
+  color: $lv-primary;
+}
+
+.lv-metro__label--todo {
+  color: $lv-muted;
+}
+
+.lv-metro__line {
+  height: 3px;
+  min-width: 40px;
+  flex: 1 0 40px;
+  border-radius: 999px;
+  background: rgba($lv-muted, 0.18);
+  align-self: center;
+}
+
+.lv-metro__line--done {
+  background: rgba($lv-accent, 0.35);
+}

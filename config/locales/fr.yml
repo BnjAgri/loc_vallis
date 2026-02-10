@@ -507,6 +507,10 @@ fr:
       unable_to_cancel: "Impossible d'annuler la réservation."
     new:
       title: "Demande de réservation pour %{room}"
+      process_hint: "Votre demande va être transmise à votre hôte qui vous contactera dans les 24 heures afin de valider votre réservation !"
+      important: "Important"
+      no_payment_notice: "Aucun paiement ne vous sera demandé à ce stade."
+      room_preview_alt: "Aperçu de %{room}"
       start_date: "Date de début"
       end_date: "Date de fin"
       submit: "Envoyer la demande"
@@ -518,6 +522,13 @@ fr:
 
     show:
       title: "Votre réservation #%{id}"
+      title_requested: "Votre demande a bien été transmise, réservation n°%{id}"
+      requested_subtitle: "Votre hôte a été informé de votre demande. Il vous contacte dans les 24 heures afin de valider votre séjour. Si vous souhaitez lui adresser un petit message, notre Chat est à votre disposition !"
+      metro:
+        request: "Demande"
+        approved: "Accord"
+        payment: "Paiement"
+        waiting: "On vous attend"
       actions:
         pay_now: "Payer maintenant"
       cancel_confirm:
