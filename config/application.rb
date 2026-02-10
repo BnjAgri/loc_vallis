@@ -34,5 +34,13 @@ module LocVallis
     config.i18n.default_locale = :fr
     config.i18n.available_locales = [:fr, :en]
     config.i18n.fallbacks = true
+
+    # Single-owner setup.
+    # - Local/dev: owner@locvallis.demo
+    # - Production: bernaldez@orange.fr
+    # Can be overridden with PRIMARY_OWNER_EMAIL.
+    config.x.primary_owner_email = ENV.fetch("PRIMARY_OWNER_EMAIL") do
+      Rails.env.production? ? "bernaldez@orange.fr" : "owner@locvallis.demo"
+    end
   end
 end
