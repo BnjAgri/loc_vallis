@@ -118,6 +118,7 @@ en:
         name: "Name:"
         address: "Address:"
         phone: "Phone:"
+        contact: "Contact:"
       ip:
         title: "Intellectual property"
         body: "This website content (texts, images, logos, graphic elements) is protected. Any reproduction, representation or distribution, in whole or in part, without prior authorization is prohibited."
@@ -279,6 +280,7 @@ en:
         removed: "Opening period removed."
         updated: "Opening period updated."
         blocked: "Opening period updated (dates removed)."
+        cannot_block_overlapping_booking: "Cannot block dates overlapping an existing booking."
     bookings:
       flash:
         approved: "Booking approved."
@@ -380,7 +382,7 @@ en:
       per_night_suffix: "/night"
       select_dates_hint: "Select your dates to see the total and book."
       availability_calendar_aria: "Availability calendar"
-      book_button: "Book"
+      book_button: "Booking request"
       summary:
         nightly_rate: "Nightly rate"
         nights: "Nights"
@@ -453,6 +455,10 @@ en:
       unable_to_cancel: "Unable to cancel booking."
     new:
       title: "Booking request for %{room}"
+      process_hint: "Your request will be sent to your host, who will contact you within 24 hours to confirm your booking."
+      important: "Important"
+      no_payment_notice: "No payment will be requested at this stage."
+      room_preview_alt: "%{room} preview"
       start_date: "Start date"
       end_date: "End date"
       submit: "Send request"
@@ -464,6 +470,13 @@ en:
 
     show:
       title: "Your booking #%{id}"
+      title_requested: "Your request has been sent, booking #%{id}"
+      requested_subtitle: "Your host has been notified of your request. They will contact you within 24 hours to confirm your stay. If you’d like to send them a quick message, our chat is available!"
+      metro:
+        request: "Request"
+        approved: "Approved"
+        payment: "Payment"
+        waiting: "See you soon"
       actions:
         pay_now: "Pay now"
       cancel_confirm:

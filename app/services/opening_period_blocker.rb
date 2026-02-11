@@ -40,7 +40,7 @@ class OpeningPeriodBlocker
       .where("start_date < ? AND end_date > ?", block_end, block_start)
       .exists?
 
-    raise StandardError, "Cannot block dates overlapping an existing booking" if has_blocking_booking
+    raise StandardError, I18n.t("admin.opening_periods.flash.cannot_block_overlapping_booking") if has_blocking_booking
 
     old_start = opening_period.start_date
     old_end = opening_period.end_date

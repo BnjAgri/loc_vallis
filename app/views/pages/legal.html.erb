@@ -8,15 +8,19 @@
         <li><strong><%= t("pages.legal.publisher.name") %></strong> <%= @publisher_name.presence || t("pages.legal.not_provided") %></li>
         <li><strong><%= t("pages.legal.publisher.address") %></strong> <%= @publisher_address.presence || t("pages.legal.not_provided") %></li>
         <li><strong><%= t("pages.legal.publisher.email") %></strong> <%= @publisher_email.presence || t("pages.legal.not_provided") %></li>
-        <li><strong><%= t("pages.legal.publisher.phone") %></strong> <%= @publisher_phone.presence || t("pages.legal.not_provided") %></li>
-        <li><strong><%= t("pages.legal.publisher.siret") %></strong> <%= @publisher_siret.presence || t("pages.legal.not_provided") %></li>
       </ul>
 
       <h2><%= t("pages.legal.host.title") %></h2>
       <ul>
-        <li><strong><%= t("pages.legal.host.name") %></strong> <%= @host_name.presence || t("pages.legal.not_provided") %></li>
-        <li><strong><%= t("pages.legal.host.address") %></strong> <%= @host_address.presence || t("pages.legal.not_provided") %></li>
-        <li><strong><%= t("pages.legal.host.phone") %></strong> <%= @host_phone.presence || t("pages.legal.not_provided") %></li>
+        <li><strong><%= t("pages.legal.host.name") %></strong> Heroku</li>
+        <li><strong><%= t("pages.legal.host.address") %></strong> <%= safe_join([
+          "Salesforce",
+          "415 Mission Street",
+          "Suite 300",
+          "San Francisco, CA",
+          "94105"
+        ], tag.br) %></li>
+        <li><strong><%= t("pages.legal.host.contact") %></strong> <%= link_to("https://www.heroku.com/contact/", "https://www.heroku.com/contact/", target: "_blank", rel: "noopener") %></li>
       </ul>
 
       <h2><%= t("pages.legal.ip.title") %></h2>

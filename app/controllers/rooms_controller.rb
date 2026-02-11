@@ -26,29 +26,29 @@ class RoomsController < ApplicationController
     @room = Room.find(params[:id])
 
     today = Date.current
-    @enabled_ranges = @room.opening_periods
-      .pluck(:start_date, :end_date)
-      .map do |start_date, end_date|
-        start_date = [start_date, today].max
-        next if end_date <= start_date
 
-        {
-          from: start_date.to_s,
-          to: (end_date - 1.day).to_s
-        }
-      end
-      .compact
+    open_pairs = @room.opening_periods.pluck(:start_date, :end_date).filter_map do |start_date, end_date|
+      start_date = [start_date, today].max
+      # Opening periods are end-exclusive in DB; Flatpickr uses inclusive ranges.
+      to = end_date - 1.day
+      next if to < start_date
 
-    reserved_statuses = %w[approved_pending_payment confirmed_paid]
-    @disabled_ranges = @room.bookings
-      .where(status: reserved_statuses)
-      .pluck(:start_date, :end_date)
-      .map do |start_date, end_date|
-        {
-          from: start_date.to_s,
-          to: (end_date - 1.day).to_s
-        }
-      end
+      [start_date, to]
+    end
+
+    open_set = DateRangeSet.from_pairs(open_pairs)
+    booked_set = DateRangeSet.from_records(
+      @room.bookings.where(status: Booking::RESERVED_STATUSES),
+      start_attr: :start_date,
+      end_attr: :end_date,
+      end_exclusive: true
+    )
+
+    available_set = open_set.subtract(booked_set)
+
+    @enabled_ranges = available_set.to_range_hashes.map { |r| { from: r[:from].to_s, to: r[:to].to_s } }
+    # Keep disabled empty to avoid any precedence quirks between Flatpickr enable/disable.
+    @disabled_ranges = []
 
     reviews = @room.reviews.includes(:user).order(created_at: :desc)
     @average_rating = reviews.average(:rating)&.to_f

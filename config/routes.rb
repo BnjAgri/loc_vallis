@@ -7,7 +7,7 @@ Rails.application.routes.draw do
   get "up" => "rails/health#show", as: :rails_health_check
 
   scope "(:locale)", locale: /fr|en/ do
-    devise_for :owners, skip: [:sessions]
+    devise_for :owners, skip: [:sessions, :registrations]
     devise_for :users, skip: [:sessions]
 
     # Devise expects session route helpers (e.g. new_user_session_path) even if

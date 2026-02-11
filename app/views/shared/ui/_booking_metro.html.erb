@@ -1,0 +1,49 @@
+<%# locals: booking: %>
+<%
+  steps = [
+    { key: :requested, label: I18n.t("bookings.show.metro.request") },
+    { key: :approved, label: I18n.t("bookings.show.metro.approved") },
+    { key: :payment, label: I18n.t("bookings.show.metro.payment") },
+    { key: :waiting, label: I18n.t("bookings.show.metro.waiting") }
+  ]
+
+  current_index =
+    case booking.status
+    when "requested"
+      0
+    when "approved_pending_payment"
+      2
+    when "confirmed_paid", "completed", "refunded"
+      3
+    else
+      0
+    end
+%>
+
+<div class="card lv-card lv-card--soft mt-3">
+  <div class="card-body">
+    <div class="lv-metro">
+      <div class="lv-metro__inner">
+        <% steps.each_with_index do |step, idx| %>
+          <% state = if idx < current_index
+              :done
+            elsif idx == current_index
+              :current
+            else
+              :todo
+            end %>
+
+          <div class="lv-metro__step">
+            <div class="lv-metro__dot lv-metro__dot--<%= state %>"><%= idx + 1 %></div>
+            <div class="lv-metro__label lv-metro__label--<%= state %>"><%= step[:label] %></div>
+          </div>
+
+          <% if idx < steps.length - 1 %>
+            <% line_state = idx < current_index ? :done : :todo %>
+            <div class="lv-metro__line lv-metro__line--<%= line_state %>"></div>
+          <% end %>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>

@@ -16,6 +16,26 @@ export default class extends Controller {
     window.addEventListener("resize", this.onResize, { passive: true })
 
     this.deferredPrompt = null
+    this.iosEligible = false
+    this.userEngaged = false
+
+    this.engagementTimeoutId = window.setTimeout(() => this.#markUserEngaged(), 30_000)
+    this.onScroll = () => {
+      // Consider the user engaged after a meaningful scroll.
+      if ((window.scrollY || 0) >= 80) this.#markUserEngaged()
+    }
+    this.onPointerDown = () => this.#markUserEngaged()
+    this.onKeyDown = (event) => {
+      // Ignore modifier-only keys.
+      const ignored = ["Shift", "Control", "Alt", "Meta"]
+      if (ignored.includes(event?.key)) return
+      this.#markUserEngaged()
+    }
+
+    window.addEventListener("scroll", this.onScroll, { passive: true })
+    window.addEventListener("pointerdown", this.onPointerDown, { passive: true })
+    window.addEventListener("keydown", this.onKeyDown)
+
     this.beforeInstallPromptHandler = (event) => this.#onBeforeInstallPrompt(event)
     this.appInstalledHandler = () => this.#onAppInstalled()
 
@@ -23,7 +43,8 @@ export default class extends Controller {
     window.addEventListener("appinstalled", this.appInstalledHandler)
 
     if (this.#shouldShowIOSInstallHelp()) {
-      this.#showIOS()
+      this.iosEligible = true
+      this.#maybeShowInstallPrompt()
     }
   }
 
@@ -31,6 +52,14 @@ export default class extends Controller {
     window.removeEventListener("beforeinstallprompt", this.beforeInstallPromptHandler)
     window.removeEventListener("appinstalled", this.appInstalledHandler)
     window.removeEventListener("resize", this.onResize)
+    window.removeEventListener("scroll", this.onScroll)
+    window.removeEventListener("pointerdown", this.onPointerDown)
+    window.removeEventListener("keydown", this.onKeyDown)
+
+    if (this.engagementTimeoutId) {
+      window.clearTimeout(this.engagementTimeoutId)
+      this.engagementTimeoutId = null
+    }
   }
 
   async install(event) {
@@ -62,13 +91,46 @@ export default class extends Controller {
     event.preventDefault()
 
     this.deferredPrompt = event
-    this.#showAndroid()
+    this.#maybeShowInstallPrompt()
   }
 
   #onAppInstalled() {
     this.deferredPrompt = null
     this.#hide()
     this.#rememberDismiss()
+  }
+
+  #markUserEngaged() {
+    if (this.userEngaged) return
+    this.userEngaged = true
+    this.#maybeShowInstallPrompt()
+
+    // We only need these until the first interaction.
+    window.removeEventListener("scroll", this.onScroll)
+    window.removeEventListener("pointerdown", this.onPointerDown)
+    window.removeEventListener("keydown", this.onKeyDown)
+
+    if (this.engagementTimeoutId) {
+      window.clearTimeout(this.engagementTimeoutId)
+      this.engagementTimeoutId = null
+    }
+  }
+
+  #maybeShowInstallPrompt() {
+    if (!this.userEngaged) return
+    if (this.#dismissedRecently()) return
+    if (this.#isInStandaloneMode()) return
+
+    // Android/Chrome: show only if the browser has given us a deferred prompt.
+    if (this.deferredPrompt) {
+      this.#showAndroid()
+      return
+    }
+
+    // iOS/Safari: show help banner once engaged.
+    if (this.iosEligible) {
+      this.#showIOS()
+    }
   }
 
   #showAndroid() {
