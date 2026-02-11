@@ -142,6 +142,7 @@ fr:
         name: "Nom :"
         address: "Adresse :"
         phone: "Téléphone :"
+        contact: "Contact :"
       ip:
         title: "Propriété intellectuelle"
         body: "Le contenu de ce site (textes, images, logos, éléments graphiques) est protégé. Toute reproduction, représentation ou diffusion, totale ou partielle, sans autorisation préalable est interdite."
@@ -374,6 +375,7 @@ fr:
         removed: "Période d'ouverture supprimée."
         updated: "Période d'ouverture mise à jour."
         blocked: "Période d'ouverture mise à jour (jours retirés)."
+        cannot_block_overlapping_booking: "Impossible de bloquer des dates qui chevauchent une réservation existante."
 
     clients:
       flash:

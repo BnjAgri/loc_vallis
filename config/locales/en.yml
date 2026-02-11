@@ -118,6 +118,7 @@ en:
         name: "Name:"
         address: "Address:"
         phone: "Phone:"
+        contact: "Contact:"
       ip:
         title: "Intellectual property"
         body: "This website content (texts, images, logos, graphic elements) is protected. Any reproduction, representation or distribution, in whole or in part, without prior authorization is prohibited."
@@ -279,6 +280,7 @@ en:
         removed: "Opening period removed."
         updated: "Opening period updated."
         blocked: "Opening period updated (dates removed)."
+        cannot_block_overlapping_booking: "Cannot block dates overlapping an existing booking."
     bookings:
       flash:
         approved: "Booking approved."
