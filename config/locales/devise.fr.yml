@@ -2,6 +2,14 @@
 
 fr:
   devise:
+    shared:
+      links:
+        sign_in: "Se connecter"
+        sign_up: "S’inscrire"
+        forgot_password: "Mot de passe oublié ?"
+        confirmation_instructions: "Vous n’avez pas reçu les instructions de confirmation ?"
+        unlock_instructions: "Vous n’avez pas reçu les instructions de déverrouillage ?"
+        sign_in_with: "Se connecter avec %{provider}"
     passwords:
       no_token: "Vous ne pouvez pas accéder à cette page sans passer par l’e-mail de réinitialisation. Veuillez utiliser le lien complet reçu par e-mail."
       send_instructions: "Vous allez recevoir dans quelques minutes un e-mail avec les instructions pour réinitialiser votre mot de passe."
