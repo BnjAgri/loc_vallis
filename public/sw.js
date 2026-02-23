@@ -6,7 +6,7 @@
  * and can leak authenticated HTML across sessions on the same device.
  */
 
-const CACHE_NAME = "loc-vallis-v2";
+const CACHE_NAME = "loc-vallis-v3";
 const PRECACHE_URLS = [
   "/manifest.json",
   "/icons/icon-192.png",
@@ -44,6 +44,13 @@ self.addEventListener("fetch", (event) => {
 
   const url = new URL(request.url);
   if (url.origin !== self.location.origin) return;
+
+  // Never cache auth / identity checks.
+  // Chrome may serve a cached JSON response and incorrectly block login.
+  if (url.pathname.includes("/login/email_exists")) {
+    event.respondWith(fetch(request));
+    return;
+  }
 
   // For navigation (HTML), always go to network.
   // This avoids "random logout" UI from cached HTML and prevents leaking
