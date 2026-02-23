@@ -32,6 +32,8 @@ Ce document ne couvre volontairement pas le branding UI/PWA.
   - `CLOUDINARY_CLOUD_NAME`
   - `CLOUDINARY_API_KEY`
   - `CLOUDINARY_API_SECRET`
+- Map (homepage):
+  - `MAPBOX_ACCESS_TOKEN` (token public Mapbox, préfixe `pk_...`)
 
 ## Secret Rails (sessions)
 
@@ -91,6 +93,7 @@ HEROKU_APP=lv-client1 \
 CLIENT_DOMAIN=booking.client.com \
 PRIMARY_OWNER_EMAIL=owner@client.com \
 HOST_DEFAULT_IMAGE_URL=https://example.com/host.jpg \
+MAPBOX_ACCESS_TOKEN=pk_xxx \
 STRIPE_SECRET_KEY=sk_live_xxx \
 MAIL_FROM=no-reply@client.com \
 SMTP_ADDRESS=smtp.mailgun.org \

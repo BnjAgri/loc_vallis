@@ -41,6 +41,8 @@ Optional environment variables:
   PRIMARY_OWNER_EMAIL   (Recommended) The only allowed Owner email in production.
   HOST_DEFAULT_IMAGE_URL (Optional) Default image URL for /host page.
 
+  MAPBOX_ACCESS_TOKEN   (Optional) Mapbox public token (pk_...) used on the homepage map.
+
 Optional flags:
   --create-app           Create the Heroku app if it doesn't exist
   --add-domain           Add the custom domain to the Heroku app and enable ACM
@@ -142,6 +144,10 @@ fi
 
 if [[ -n "${HOST_DEFAULT_IMAGE_URL:-}" ]]; then
   config_args+=("HOST_DEFAULT_IMAGE_URL=${HOST_DEFAULT_IMAGE_URL}")
+fi
+
+if [[ -n "${MAPBOX_ACCESS_TOKEN:-}" ]]; then
+  config_args+=("MAPBOX_ACCESS_TOKEN=${MAPBOX_ACCESS_TOKEN}")
 fi
 
 # Optional SMTP

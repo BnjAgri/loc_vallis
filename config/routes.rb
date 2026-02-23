@@ -84,6 +84,8 @@ Rails.application.routes.draw do
       end
 
       resources :clients, only: %i[index show destroy]
+
+      resource :provisioning, only: %i[show create]
     end
   end
 end
