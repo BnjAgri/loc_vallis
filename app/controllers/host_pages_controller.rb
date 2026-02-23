@@ -1,7 +1,7 @@
 class HostPagesController < ApplicationController
   before_action :require_owner!, only: %i[edit update]
 
-  DEFAULT_IMAGE_URL = "https://static.mediapart.fr/etmagine/article_google_discover/files/2024/10/14/portrait-de-ric-zemmour-avril-2022.jpg".freeze
+  DEFAULT_IMAGE_URL = "https://res.cloudinary.com/du8dsc7cg/image/upload/v1771866361/IMG_0938_xe3zs6.jpg".freeze
 
   def show
     @host_page = HostPage.first
