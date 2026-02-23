@@ -1,7 +1,10 @@
 class HostPagesController < ApplicationController
   before_action :require_owner!, only: %i[edit update]
 
-  DEFAULT_IMAGE_URL = "https://res.cloudinary.com/du8dsc7cg/image/upload/v1771866361/IMG_0938_xe3zs6.jpg".freeze
+  DEFAULT_IMAGE_URL = ENV.fetch(
+    "HOST_DEFAULT_IMAGE_URL",
+    "https://raw.githubusercontent.com/lewagon/fullstack-images/master/uikit/breakfast.jpg"
+  ).freeze
 
   def show
     @host_page = HostPage.first

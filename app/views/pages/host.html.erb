@@ -5,7 +5,10 @@
     <div class="card-body prose lv-host">
       <figure class="lv-host__photo">
         <%= image_tag(
-          "https://res.cloudinary.com/du8dsc7cg/image/upload/v1771866361/IMG_0938_xe3zs6.jpg",
+          ENV.fetch(
+            "HOST_DEFAULT_IMAGE_URL",
+            "https://raw.githubusercontent.com/lewagon/fullstack-images/master/uikit/breakfast.jpg"
+          ),
           class: "img-fluid",
           alt: t("pages.host.image_alt"),
           loading: "lazy",
