@@ -1,3 +1,6 @@
+<% content_for :title, "#{t('shared.nav.rooms')} · #{t('app.title')}" %>
+<% content_for :meta_description, t('.subtitle') %>
+
 <div class="banner">
   <div class="container">
     <h1><%= sanitize(t(".welcome_html", owner: @hero_owner_name, location: @hero_location), tags: %w[strong]) %></h1>

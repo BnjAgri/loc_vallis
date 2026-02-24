@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  get "sitemap.xml", to: "sitemaps#show", defaults: { format: :xml }
+
   # (generated routes removed; use resources below within locale scope)
   post "stripe/webhook", to: "stripe_webhooks#create"
 

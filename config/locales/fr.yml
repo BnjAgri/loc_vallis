@@ -67,6 +67,7 @@ fr:
 
   app:
     title: "LocVallis"
+    meta_description: "Maison et chambres d'hôtes à Anglès (Tarn) — réservations en ligne, disponibilités et blog local."
 
   shared:
     locale:

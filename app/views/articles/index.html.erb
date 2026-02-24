@@ -1,4 +1,7 @@
 <div class="container py-4">
+	<% content_for :title, "#{t('shared.nav.blog')} · #{t('app.title')}" %>
+	<% content_for :meta_description, t('.subtitle') %>
+
 	<% actions = nil %>
 	<% if owner_signed_in? %>
 		<% actions = capture do %>
