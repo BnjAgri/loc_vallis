@@ -6,7 +6,7 @@
  * and can leak authenticated HTML across sessions on the same device.
  */
 
-const CACHE_NAME = "loc-vallis-v3";
+const CACHE_NAME = "loc-vallis-v4";
 const PRECACHE_URLS = [
   "/manifest.json",
   "/icons/icon-192.png",
@@ -52,6 +52,14 @@ self.addEventListener("fetch", (event) => {
     return;
   }
 
+  // Never cache Active Storage URLs.
+  // They can be signed/temporary and caching a 404 can permanently break
+  // previews until the cache is cleared.
+  if (url.pathname.startsWith("/rails/active_storage/")) {
+    event.respondWith(fetch(request));
+    return;
+  }
+
   // For navigation (HTML), always go to network.
   // This avoids "random logout" UI from cached HTML and prevents leaking
   // authenticated content via the Cache API.
@@ -74,7 +82,9 @@ self.addEventListener("fetch", (event) => {
         try {
           const networkResponse = await fetch(request);
           const cache = await caches.open(CACHE_NAME);
-          cache.put(request, networkResponse.clone());
+          if (networkResponse.ok) {
+            cache.put(request, networkResponse.clone());
+          }
           return networkResponse;
         } catch {
           return (await caches.match(request)) || Response.error();
@@ -91,7 +101,9 @@ self.addEventListener("fetch", (event) => {
 
       const networkResponse = await fetch(request);
       const cache = await caches.open(CACHE_NAME);
-      cache.put(request, networkResponse.clone());
+      if (networkResponse.ok) {
+        cache.put(request, networkResponse.clone());
+      }
       return networkResponse;
     })()
   );
