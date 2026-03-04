@@ -1,4 +1,6 @@
 <div class="container py-4">
+	<% content_for :title, "#{@article.title} · #{t('app.title')}" %>
+	<% content_for :meta_description, truncate(strip_tags(@article.content.to_s), length: 160) %>
 	<% actions = capture do %>
 		<%= link_to t(".back_to_index"), articles_path, class: "btn btn-soft" %>
 		<% if owner_signed_in? && @article.owner_id == current_owner.id %>
@@ -23,6 +25,9 @@
 		actions: actions %>
 
 	<% image_src = @article.image.attached? ? url_for(@article.image) : @article.safe_image_url %>
+	<% if image_src.present? %>
+		<% content_for :og_image_url, image_src %>
+	<% end %>
 
 	<div class="card lv-card overflow-hidden">
 		<div style="height: 360px; overflow: hidden;">

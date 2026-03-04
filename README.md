@@ -4,6 +4,7 @@ Rails app generated with [lewagon/rails-templates](https://github.com/lewagon/ra
 
 - `docs/ARCHITECTURE.md` : vue d'ensemble du domaine, flux Booking/Stripe, points d'entrée.
 - `docs/MAINTENANCE.md` : variables d'env, opérations courantes, guide de maintenance.
+- `docs/PROVISIONING_CLIENT.md` : runbook “nouveau client” (domaine + Stripe + email).
 
 
 ## Cloudinary (Active Storage)

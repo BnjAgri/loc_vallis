@@ -21,6 +21,15 @@
 
 <% main_image_url = all_images.first %>
 
+<% content_for :title, "#{@room.name} · #{t('app.title')}" %>
+<% if @room.description.present? %>
+  <% content_for :meta_description, truncate(@room.description.to_s, length: 160) %>
+<% end %>
+<% content_for :og_type, "product" %>
+<% if main_image_url.present? %>
+  <% content_for :og_image_url, main_image_url %>
+<% end %>
+
 <% min_period = @room.opening_periods.order(:nightly_price_cents).first %>
 
 <%= render "shared/ui/page_header",

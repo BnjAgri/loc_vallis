@@ -27,8 +27,10 @@ class MessagesControllerTest < ActionDispatch::IntegrationTest
   test "owner can send a message to the guest" do
     sign_in @owner
 
-    assert_difference "@booking.messages.count", +1 do
-      post booking_messages_path(booking_id: @booking), params: { message: { body: "Bonjour" } }
+    assert_enqueued_emails 1 do
+      assert_difference "@booking.messages.count", +1 do
+        post booking_messages_path(booking_id: @booking), params: { message: { body: "Bonjour" } }
+      end
     end
 
     assert_redirected_to admin_booking_path(id: @booking)
@@ -39,8 +41,10 @@ class MessagesControllerTest < ActionDispatch::IntegrationTest
   test "guest can send a message to the owner" do
     sign_in @user
 
-    assert_difference "@booking.messages.count", +1 do
-      post booking_messages_path(booking_id: @booking), params: { message: { body: "Hello" } }
+    assert_enqueued_emails 1 do
+      assert_difference "@booking.messages.count", +1 do
+        post booking_messages_path(booking_id: @booking), params: { message: { body: "Hello" } }
+      end
     end
 
     assert_redirected_to booking_path(id: @booking)
@@ -51,8 +55,10 @@ class MessagesControllerTest < ActionDispatch::IntegrationTest
   test "non-participant cannot send a message" do
     sign_in @other_user
 
-    assert_no_difference "@booking.messages.count" do
-      post booking_messages_path(booking_id: @booking), params: { message: { body: "Hacked" } }
+    assert_enqueued_emails 0 do
+      assert_no_difference "@booking.messages.count" do
+        post booking_messages_path(booking_id: @booking), params: { message: { body: "Hacked" } }
+      end
     end
 
     assert_redirected_to root_path

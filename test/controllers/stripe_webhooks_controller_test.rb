@@ -95,4 +95,110 @@ class StripeWebhooksControllerTest < ActionDispatch::IntegrationTest
     Stripe::Webhook.define_singleton_method(:construct_event, original) if original
     ENV["STRIPE_WEBHOOK_SECRET"] = previous_secret
   end
+
+  test "checkout.session.async_payment_succeeded confirms booking" do
+    previous_secret = ENV["STRIPE_WEBHOOK_SECRET"]
+    original = nil
+
+    travel_to Time.zone.parse("2026-01-06 10:00:00") do
+      session = OpenStruct.new(
+        id: "cs_test_async_123",
+        payment_intent: "pi_test_async_123",
+        payment_status: "paid",
+        metadata: OpenStruct.new(booking_id: @booking.id)
+      )
+
+      event = OpenStruct.new(
+        type: "checkout.session.async_payment_succeeded",
+        data: OpenStruct.new(object: session)
+      )
+
+      ENV["STRIPE_WEBHOOK_SECRET"] = "whsec_test"
+
+      original = Stripe::Webhook.method(:construct_event)
+      Stripe::Webhook.define_singleton_method(:construct_event) { |_payload, _sig_header, _secret| event }
+
+      post "/stripe/webhook", headers: { "HTTP_STRIPE_SIGNATURE" => "sig" }, params: "{}"
+      assert_response :ok
+
+      @booking.reload
+      assert_equal "confirmed_paid", @booking.status
+      assert_equal "cs_test_async_123", @booking.stripe_checkout_session_id
+      assert_equal "pi_test_async_123", @booking.stripe_payment_intent_id
+    end
+  ensure
+    Stripe::Webhook.define_singleton_method(:construct_event, original) if original
+    ENV["STRIPE_WEBHOOK_SECRET"] = previous_secret
+  end
+
+  test "payment_intent.succeeded confirms booking" do
+    previous_secret = ENV["STRIPE_WEBHOOK_SECRET"]
+    original = nil
+
+    @booking.update!(stripe_payment_intent_id: "pi_test_999")
+
+    travel_to Time.zone.parse("2026-01-06 10:00:00") do
+      payment_intent = OpenStruct.new(id: "pi_test_999")
+      event = OpenStruct.new(type: "payment_intent.succeeded", data: OpenStruct.new(object: payment_intent))
+
+      ENV["STRIPE_WEBHOOK_SECRET"] = "whsec_test"
+
+      original = Stripe::Webhook.method(:construct_event)
+      Stripe::Webhook.define_singleton_method(:construct_event) { |_payload, _sig_header, _secret| event }
+
+      post "/stripe/webhook", headers: { "HTTP_STRIPE_SIGNATURE" => "sig" }, params: "{}"
+      assert_response :ok
+
+      @booking.reload
+      assert_equal "confirmed_paid", @booking.status
+    end
+  ensure
+    Stripe::Webhook.define_singleton_method(:construct_event, original) if original
+    ENV["STRIPE_WEBHOOK_SECRET"] = previous_secret
+  end
+
+  test "refund.updated marks booking refunded (idempotent)" do
+    previous_secret = ENV["STRIPE_WEBHOOK_SECRET"]
+    original = nil
+
+    @booking.update!(status: "confirmed_paid", stripe_refund_id: "re_test_123", refunded_at: nil)
+
+    travel_to Time.zone.parse("2026-01-08 10:00:00") do
+      refund = OpenStruct.new(id: "re_test_123")
+      event = OpenStruct.new(type: "refund.updated", data: OpenStruct.new(object: refund))
+
+      ENV["STRIPE_WEBHOOK_SECRET"] = "whsec_test"
+
+      original = Stripe::Webhook.method(:construct_event)
+      Stripe::Webhook.define_singleton_method(:construct_event) { |_payload, _sig_header, _secret| event }
+
+      post "/stripe/webhook", headers: { "HTTP_STRIPE_SIGNATURE" => "sig" }, params: "{}"
+      assert_response :ok
+
+      @booking.reload
+      assert_equal "refunded", @booking.status
+      assert_equal Time.current, @booking.refunded_at
+
+      # Replay should remain OK and not change refunded_at.
+      post "/stripe/webhook", headers: { "HTTP_STRIPE_SIGNATURE" => "sig" }, params: "{}"
+      assert_response :ok
+
+      @booking.reload
+      assert_equal "refunded", @booking.status
+      assert_equal Time.current, @booking.refunded_at
+    end
+  ensure
+    Stripe::Webhook.define_singleton_method(:construct_event, original) if original
+    ENV["STRIPE_WEBHOOK_SECRET"] = previous_secret
+  end
+
+  test "returns bad_request when STRIPE_WEBHOOK_SECRET missing" do
+    previous_secret = ENV["STRIPE_WEBHOOK_SECRET"]
+    ENV["STRIPE_WEBHOOK_SECRET"] = nil
+
+    post "/stripe/webhook", headers: { "HTTP_STRIPE_SIGNATURE" => "sig" }, params: "{}"
+    assert_response :bad_request
+  ensure
+    ENV["STRIPE_WEBHOOK_SECRET"] = previous_secret
+  end
 end

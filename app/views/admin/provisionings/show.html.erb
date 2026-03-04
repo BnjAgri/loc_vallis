@@ -1,0 +1,156 @@
+<div class="container py-4">
+  <div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-4">
+    <div>
+      <h1 class="h3 mb-0">Provisioning (dev)</h1>
+      <div class="text-muted">Génère une commande Heroku + script. N’exécute rien et ne persiste aucun secret.</div>
+    </div>
+  </div>
+
+  <div class="row g-4">
+    <div class="col-12 col-lg-6">
+      <div class="card">
+        <div class="card-body">
+          <%= form_with scope: :provisioning, url: admin_provisioning_path, method: :post, data: { turbo: false } do |f| %>
+            <div class="row g-3">
+              <div class="col-12">
+                <%= f.label :heroku_app, "HEROKU_APP", class: "form-label" %>
+                <%= f.text_field :heroku_app, class: "form-control", value: @provisioning["heroku_app"], required: true %>
+              </div>
+
+              <div class="col-12">
+                <%= f.label :client_domain, "CLIENT_DOMAIN", class: "form-label" %>
+                <%= f.text_field :client_domain, class: "form-control", value: @provisioning["client_domain"], required: true %>
+              </div>
+
+              <div class="col-6">
+                <%= f.label :app_protocol, "APP_PROTOCOL (optionnel)", class: "form-label" %>
+                <%= f.text_field :app_protocol, class: "form-control", value: (@provisioning["app_protocol"].presence || "https") %>
+              </div>
+
+              <div class="col-6">
+                <%= f.label :app_base_url, "APP_BASE_URL (optionnel)", class: "form-label" %>
+                <%= f.text_field :app_base_url, class: "form-control", value: @provisioning["app_base_url"] %>
+              </div>
+
+              <div class="col-12">
+                <%= f.label :mail_from, "MAIL_FROM", class: "form-label" %>
+                <%= f.email_field :mail_from, class: "form-control", value: @provisioning["mail_from"], required: true %>
+              </div>
+
+              <div class="col-12">
+                <%= f.label :stripe_secret_key, "STRIPE_SECRET_KEY", class: "form-label" %>
+                <%= f.password_field :stripe_secret_key, class: "form-control", value: @provisioning["stripe_secret_key"], required: true %>
+              </div>
+
+              <div class="col-12">
+                <%= f.label :stripe_webhook_secret, "STRIPE_WEBHOOK_SECRET (optionnel, whsec_...)", class: "form-label" %>
+                <%= f.password_field :stripe_webhook_secret, class: "form-control", value: @provisioning["stripe_webhook_secret"] %>
+              </div>
+
+              <div class="col-12">
+                <hr class="my-2" />
+                <div class="fw-semibold mb-2">SMTP (optionnel)</div>
+              </div>
+
+              <div class="col-12">
+                <%= f.label :smtp_address, "SMTP_ADDRESS", class: "form-label" %>
+                <%= f.text_field :smtp_address, class: "form-control", value: @provisioning["smtp_address"] %>
+              </div>
+
+              <div class="col-6">
+                <%= f.label :smtp_port, "SMTP_PORT", class: "form-label" %>
+                <%= f.text_field :smtp_port, class: "form-control", value: (@provisioning["smtp_port"].presence || "587") %>
+              </div>
+
+              <div class="col-6">
+                <%= f.label :smtp_domain, "SMTP_DOMAIN", class: "form-label" %>
+                <%= f.text_field :smtp_domain, class: "form-control", value: @provisioning["smtp_domain"] %>
+              </div>
+
+              <div class="col-6">
+                <%= f.label :smtp_username, "SMTP_USERNAME", class: "form-label" %>
+                <%= f.text_field :smtp_username, class: "form-control", value: @provisioning["smtp_username"] %>
+              </div>
+
+              <div class="col-6">
+                <%= f.label :smtp_password, "SMTP_PASSWORD", class: "form-label" %>
+                <%= f.password_field :smtp_password, class: "form-control", value: @provisioning["smtp_password"] %>
+              </div>
+
+              <div class="col-4">
+                <%= f.label :smtp_starttls, "SMTP_STARTTLS", class: "form-label" %>
+                <%= f.text_field :smtp_starttls, class: "form-control", value: (@provisioning["smtp_starttls"].presence || "true") %>
+              </div>
+
+              <div class="col-4">
+                <%= f.label :smtp_ssl, "SMTP_SSL", class: "form-label" %>
+                <%= f.text_field :smtp_ssl, class: "form-control", value: (@provisioning["smtp_ssl"].presence || "false") %>
+              </div>
+
+              <div class="col-4">
+                <%= f.label :smtp_auth, "SMTP_AUTH", class: "form-label" %>
+                <%= f.text_field :smtp_auth, class: "form-control", value: (@provisioning["smtp_auth"].presence || "plain") %>
+              </div>
+
+              <div class="col-12">
+                <hr class="my-2" />
+                <div class="fw-semibold mb-2">Flags</div>
+
+                <div class="form-check">
+                  <%= f.check_box :create_app, { class: "form-check-input" }, "1", "0" %>
+                  <%= f.label :create_app, "--create-app", class: "form-check-label" %>
+                </div>
+
+                <div class="form-check">
+                  <%= f.check_box :add_domain, { class: "form-check-input" }, "1", "0" %>
+                  <%= f.label :add_domain, "--add-domain", class: "form-check-label" %>
+                </div>
+
+                <div class="form-check">
+                  <%= f.check_box :scale, { class: "form-check-input" }, "1", "0" %>
+                  <%= f.label :scale, "--scale", class: "form-check-label" %>
+                </div>
+
+                <div class="form-check">
+                  <%= f.check_box :db_prepare, { class: "form-check-input" }, "1", "0" %>
+                  <%= f.label :db_prepare, "--db-prepare", class: "form-check-label" %>
+                </div>
+              </div>
+
+              <div class="col-12 d-flex justify-content-end">
+                <%= f.submit "Générer", class: "btn btn-primary" %>
+              </div>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-12 col-lg-6">
+      <div class="card">
+        <div class="card-body">
+          <h2 class="h5">Commande générée</h2>
+
+          <% if @generated.present? %>
+            <div class="mb-3">
+              <div class="text-muted small mb-2">À exécuter depuis la racine du repo Loc Vallis.</div>
+              <pre class="bg-light border rounded p-3 mb-0"><%= @generated[:command] %></pre>
+            </div>
+
+            <h3 class="h6">Webhook Stripe</h3>
+            <div class="text-muted small">URL</div>
+            <pre class="bg-light border rounded p-3"><%= @generated[:webhook_url] %></pre>
+
+            <div class="text-muted small">Événements</div>
+            <pre class="bg-light border rounded p-3"><%= @generated[:events].join("\n") %></pre>
+
+            <div class="text-muted small">Une fois le webhook créé, poser le secret (whsec_...)</div>
+            <pre class="bg-light border rounded p-3 mb-0">heroku config:set -a <%= @generated[:heroku_app] %> STRIPE_WEBHOOK_SECRET=whsec_...</pre>
+          <% else %>
+            <p class="text-muted mb-0">Remplis le formulaire puis clique sur “Générer”.</p>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

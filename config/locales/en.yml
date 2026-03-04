@@ -42,6 +42,7 @@ en:
 
   app:
     title: "LocVallis"
+    meta_description: "Guesthouse in Anglès (Tarn) — online booking, availability, and local tips."
 
   shared:
     locale:

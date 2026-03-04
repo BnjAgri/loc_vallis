@@ -67,6 +67,7 @@ fr:
 
   app:
     title: "LocVallis"
+    meta_description: "Maison et chambres d'hôtes à Anglès (Tarn) — réservations en ligne, disponibilités et blog local."
 
   shared:
     locale:
@@ -453,7 +454,7 @@ fr:
 
     index:
       welcome_html: "Bienvenue chez <strong>%{owner}</strong> à <strong>%{location}</strong>!"
-      subtitle: "Maison et chambres d'hôtes sur la route de Saint Jacques de Compostelle"
+      subtitle: "Maison et chambres d'hôtes sur le chemin de Saint Jacques de Compostelle"
       accommodations: "Nos hébergements"
       pwa_install:
         title: "Installer l'application"

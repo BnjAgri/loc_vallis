@@ -249,7 +249,7 @@ module Admin
       end
 
       assert_redirected_to edit_admin_room_opening_period_path(room_id: room, id: opening_period)
-      assert_match(/overlapping an existing booking/i, flash[:alert].to_s)
+      assert_equal I18n.t("admin.opening_periods.flash.cannot_block_overlapping_booking"), flash[:alert].to_s
     end
   end
 end
