@@ -18,16 +18,27 @@ class StripeWebhooksController < ApplicationController
       return head :bad_request
     end
 
+    if sig_header.blank?
+      Rails.logger.warn("[Stripe] Missing Stripe-Signature header")
+      return head :bad_request
+    end
+
     event = Stripe::Webhook.construct_event(
       payload,
       sig_header,
       webhook_secret
     )
 
+    Rails.logger.info("[Stripe] Webhook received: type=#{event.type} id=#{event.id}")
+
     handle_event(event)
 
     head :ok
-  rescue JSON::ParserError, Stripe::SignatureVerificationError
+  rescue JSON::ParserError => e
+    Rails.logger.warn("[Stripe] Webhook JSON parse error: #{e.message}")
+    head :bad_request
+  rescue Stripe::SignatureVerificationError => e
+    Rails.logger.warn("[Stripe] Webhook signature verification failed: #{e.message}")
     head :bad_request
   end
 
@@ -37,9 +48,13 @@ class StripeWebhooksController < ApplicationController
     case event.type
     when "checkout.session.completed"
       handle_checkout_completed(event.data.object)
+    when "checkout.session.async_payment_succeeded"
+      handle_checkout_completed(event.data.object)
     when "checkout.session.async_payment_failed", "checkout.session.expired"
       # Intentionally no state change here; we expire via job/guard.
       nil
+    when "payment_intent.succeeded"
+      handle_payment_intent_succeeded(event.data.object)
     when "refund.updated"
       handle_refund_updated(event.data.object)
     end
@@ -57,6 +72,20 @@ class StripeWebhooksController < ApplicationController
 
     booking.update!(stripe_checkout_session_id: session.id) if booking.stripe_checkout_session_id.blank?
     booking.update!(stripe_payment_intent_id: session.payment_intent) if session.payment_intent.present? && booking.stripe_payment_intent_id.blank?
+
+    return unless booking.status == "approved_pending_payment"
+    return if booking.payment_expires_at.present? && Time.current >= booking.payment_expires_at
+
+    booking.update!(status: "confirmed_paid")
+    BookingMailer.with(booking: booking).confirmed.deliver_later
+  end
+
+  def handle_payment_intent_succeeded(payment_intent)
+    payment_intent_id = payment_intent.respond_to?(:id) ? payment_intent.id : nil
+    return if payment_intent_id.blank?
+
+    booking = Booking.find_by(stripe_payment_intent_id: payment_intent_id)
+    return if booking.nil?
 
     return unless booking.status == "approved_pending_payment"
     return if booking.payment_expires_at.present? && Time.current >= booking.payment_expires_at
