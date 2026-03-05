@@ -46,7 +46,13 @@ class RoomsController < ApplicationController
 
     available_set = open_set.subtract(booked_set)
 
-    @enabled_ranges = available_set.to_range_hashes.map { |r| { from: r[:from].to_s, to: r[:to].to_s } }
+    # We store opening periods as end-exclusive ranges in DB ([start_date, end_date)).
+    # Our DateRangeSet uses inclusive Date..Date pairs representing *nights* (start dates).
+    # Flatpickr (range mode) needs the checkout day to be selectable as the end date,
+    # so we extend each availability range by one day on its end.
+    @enabled_ranges = available_set.to_range_hashes.map do |r|
+      { from: r[:from].to_s, to: (r[:to] + 1.day).to_s }
+    end
     # Keep disabled empty to avoid any precedence quirks between Flatpickr enable/disable.
     @disabled_ranges = []
 
