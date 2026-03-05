@@ -8,10 +8,17 @@ module ApplicationHelper
 		path, query = fullpath.split("?", 2)
 
 		segments = path.split("/")
-		available = I18n.available_locales.map(&:to_s)
+		available = (Rails.application.config.i18n.available_locales.presence || I18n.available_locales).map(&:to_s)
+		current_locale = request.path_parameters[:locale].to_s
 
-		# Remove any existing locale prefix.
-		segments.delete_at(1) if segments[1].present? && available.include?(segments[1])
+		# Remove any existing locale prefix(es).
+		# We strip repeatedly to recover from malformed URLs like "/es/es".
+		while segments[1].present? && (
+			(current_locale.present? && segments[1] == current_locale) ||
+			available.include?(segments[1])
+		)
+			segments.delete_at(1)
+		end
 
 		# Add locale prefix unless it's the default locale (which we keep unprefixed).
 		target = target_locale&.to_sym

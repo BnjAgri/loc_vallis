@@ -1,0 +1,43 @@
+es:
+  shared:
+    footer:
+      cgv: "Condiciones"
+
+  pages:
+    cgv:
+      title: "Términos y condiciones"
+      updated_at: "Última actualización: %{date}"
+      back: "Volver"
+
+      parties:
+        title: "1. Vendedor"
+        body: "Estos términos se aplican a las reservas realizadas en este sitio web. El vendedor es %{publisher_name}. Contacto: %{publisher_email}."
+
+      booking_process:
+        title: "2. Reserva"
+        body: "Envías una solicitud de reserva con tus fechas. La reserva solo se confirma tras la aprobación del anfitrión y, cuando corresponda, el pago en línea."
+
+      prices:
+        title: "3. Precios"
+        body: "Los precios se muestran en euros (impuestos incluidos) e incluyen el precio por noche y cualquier servicio opcional seleccionado."
+
+      payment:
+        title: "4. Pago"
+        body: "El pago (cuando corresponda) se procesa en línea a través de un proveedor de pagos. La confirmación del pago es prueba de la transacción."
+
+      cancellation:
+        title: "5. Cancelación"
+        policy: "Cualquier cancelación con menos de 7 días antes de la fecha de inicio da lugar a una retención del 30% del total de la reserva."
+        optional_services_note: "Los servicios opcionales quedan excluidos de este cálculo de retención."
+
+      no_withdrawal:
+        title: "6. Reembolso"
+        body: "Cualquier cancelación con más de 7 días antes de la fecha de inicio da lugar a un reembolso completo al cliente. Según la normativa francesa de consumo (Artículo L221-28), los servicios de alojamiento prestados en una fecha específica no están sujetos al derecho de desistimiento."
+
+      liability:
+        title: "7. Responsabilidad"
+        body: "El vendedor no es responsable de daños indirectos. En caso de fuerza mayor, las obligaciones pueden suspenderse."
+
+      law:
+        title: "8. Legislación aplicable"
+        body: "Estos términos se rigen por la legislación francesa. En caso de litigio, las partes buscarán una solución amistosa antes de cualquier acción judicial."
