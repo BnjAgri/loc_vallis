@@ -117,4 +117,35 @@ class StripeBookingFlowTest < ActionDispatch::IntegrationTest
     Stripe::Webhook.define_singleton_method(:construct_event, original_construct) if original_construct
     ENV["STRIPE_WEBHOOK_SECRET"] = previous_secret
   end
+
+  test "payment_success confirms booking when Stripe session is paid (fallback)" do
+    previous_key = Stripe.api_key
+    Stripe.api_key = "sk_test"
+
+    @booking.update!(stripe_checkout_session_id: "cs_test_paid_123")
+
+    fake_session = OpenStruct.new(
+      id: "cs_test_paid_123",
+      payment_intent: OpenStruct.new(id: "pi_test_paid_123"),
+      payment_status: "paid"
+    )
+
+    original_retrieve = Stripe::Checkout::Session.method(:retrieve)
+    Stripe::Checkout::Session.define_singleton_method(:retrieve) { |_args| fake_session }
+
+    travel_to Time.zone.parse("2026-01-06 10:00:00") do
+      sign_in @user
+
+      get payment_success_booking_path(id: @booking.id)
+      assert_response :success
+
+      @booking.reload
+      assert_equal "confirmed_paid", @booking.status
+      assert_equal "cs_test_paid_123", @booking.stripe_checkout_session_id
+      assert_equal "pi_test_paid_123", @booking.stripe_payment_intent_id
+    end
+  ensure
+    Stripe::Checkout::Session.define_singleton_method(:retrieve, original_retrieve) if original_retrieve
+    Stripe.api_key = previous_key
+  end
 end
