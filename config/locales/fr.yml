@@ -73,6 +73,7 @@ fr:
     locale:
       fr: "FR"
       en: "EN"
+      es: "ES"
     nav:
       rooms: "Chambres"
       host: "Votre hôte"

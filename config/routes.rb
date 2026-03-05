@@ -8,7 +8,7 @@ Rails.application.routes.draw do
   # Can be used by load balancers and uptime monitors to verify that the app is live.
   get "up" => "rails/health#show", as: :rails_health_check
 
-  scope "(:locale)", locale: /fr|en/ do
+  scope "(:locale)", locale: /fr|en|es/ do
     devise_for :owners, skip: [:sessions, :registrations]
     devise_for :users, skip: [:sessions]
 

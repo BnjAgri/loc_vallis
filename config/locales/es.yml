@@ -1,0 +1,522 @@
+es:
+  date:
+    formats:
+      default: "%d/%m/%Y"
+      short: "%d/%m/%Y"
+      long: "%-d de %B de %Y"
+
+  time:
+    formats:
+      default: "%d/%m/%Y %H:%M"
+      short: "%d/%m %H:%M"
+      long: "%-d de %B de %Y %H:%M"
+
+  app:
+    title: "LocVallis"
+    meta_description: "Casa de huéspedes en Anglès (Tarn) — reservas en línea, disponibilidad y consejos locales."
+
+  shared:
+    locale:
+      fr: "FR"
+      en: "EN"
+      es: "ES"
+    nav:
+      rooms: "Habitaciones"
+      host: "Tu anfitrión"
+      blog: "Anglès y alrededores"
+      my_bookings: "Mis reservas"
+      profile: "Mi perfil"
+      password_label: "Contraseña"
+      account: "Cuenta"
+      edit_profile: "Editar mi perfil"
+      inbox: "Bandeja de entrada"
+      logout: "Cerrar sesión"
+      dashboard: "Panel"
+      accommodations: "Alojamientos"
+      planning: "Planificación"
+      clients: "Clientes"
+      login: "Iniciar sesión"
+    authorization:
+      not_authorized: "No estás autorizado para realizar esta acción."
+      unauthenticated: "Debes iniciar sesión para continuar."
+
+    actions:
+      all: "Todo"
+      unread: "No leídos"
+      send: "Enviar"
+      cancel: "Cancelar"
+
+    footer:
+      legal: "Aviso legal"
+      cgv: "Condiciones"
+
+    ui:
+      booking_summary_card:
+        label: "Reserva"
+        traveler: "Viajero:"
+        dates: "Fechas"
+        nights:
+          one: "1 noche"
+          other: "%{count} noches"
+        total: "Total"
+        tax_included: "impuestos incluidos"
+        subtotal_nights: "Subtotal noches:"
+        subtotal_services: "Subtotal servicios:"
+        optional_services: "Servicios opcionales"
+
+  pages:
+    host:
+      title: "Tu anfitrión"
+      section_title: "Sencillo y sincero"
+      image_alt: "Foto de tu anfitrión"
+      body:
+        p1: "Nacido y criado en Anglès, en el corazón del Tarn, Claude es un joven jubilado todavía impulsado por la energía de su primera vida: un restaurador apasionado. Amante de la naturaleza, caminante incansable y muy implicado en la vida del pueblo, le gusta compartir lo que hace especial a su región: la convivencia, la sencillez y una conexión íntima con los paisajes que la rodean."
+        p2: "Siempre lleno de ideas para enriquecer la estancia de sus huéspedes, Claude conoce los senderos escondidos, los miradores tranquilos, las historias locales y las mejores direcciones de la zona. Guía, aconseja y cuenta anécdotas — siempre con entusiasmo."
+        p3: "En la cocina, puede preparar cenas caseras bajo petición, inspiradas en productos locales. Platos sencillos y sinceros, pensados para favorecer la conversación alrededor de una mesa cálida."
+        p4: "Ese mismo espíritu vive en su casa de huéspedes: un lugar acogedor y sin pretensiones, donde uno se siente inmediatamente “como en casa”. Tanto si buscas momentos amistosos como un retiro más tranquilo, Claude ofrecerá el equilibrio perfecto para una estancia auténtica y relajante."
+      coming_soon: "Contenido disponible próximamente."
+    legal:
+      title: "Aviso legal"
+      not_provided: "No proporcionado"
+      back: "Volver"
+      publisher:
+        title: "Editor del sitio web"
+        name: "Nombre:"
+        address: "Dirección:"
+        email: "Email:"
+        phone: "Teléfono:"
+        siret: "Nº de empresa (SIRET):"
+      host:
+        title: "Alojamiento"
+        name: "Nombre:"
+        address: "Dirección:"
+        phone: "Teléfono:"
+        contact: "Contacto:"
+      ip:
+        title: "Propiedad intelectual"
+        body: "El contenido de este sitio (textos, imágenes, logotipos, elementos gráficos) está protegido. Cualquier reproducción, representación o distribución, total o parcial, sin autorización previa está prohibida."
+      data:
+        title: "Datos personales"
+        body: "Los datos recogidos a través de este sitio se utilizan únicamente para gestionar solicitudes de reserva y mensajes. Puedes solicitar acceso, rectificación o eliminación de tus datos contactando con el editor del sitio."
+      cookies:
+        title: "Cookies"
+        body: "Este sitio puede utilizar cookies técnicas necesarias para su funcionamiento y, cuando corresponda, cookies de medición de audiencia. Puedes configurar tu navegador para rechazar algunas o todas las cookies."
+      contact:
+        title: "Contacto"
+        body: "Para cualquier pregunta, puedes contactar con el editor del sitio usando los datos anteriores."
+
+  inbox:
+    title: "Bandeja de entrada"
+    subtitle: "Conversaciones por reserva"
+    empty: "Aún no hay conversaciones."
+    no_messages: "Aún no hay mensajes."
+    booking_ref: "Reserva #%{id}"
+    last_message_prefix: "%{sender}:"
+    counts:
+      unread_conversations:
+        one: "%{count} conversación no leída"
+        other: "%{count} conversaciones no leídas"
+      unread_messages:
+        one: "%{count} mensaje no leído"
+        other: "%{count} mensajes no leídos"
+      unread_badge:
+        one: "%{count} no leído"
+        other: "%{count} no leídos"
+
+  messages:
+    sender:
+      me: "Tú"
+      host: "Anfitrión"
+      traveler: "Viajero"
+    composer:
+      label: "Tu mensaje"
+      placeholder: "Escribe un mensaje…"
+    flash:
+      not_sent: "No se pudo enviar el mensaje."
+
+  hello: "Hola mundo"
+
+  articles:
+    create:
+      success: "Artículo publicado."
+    update:
+      success: "Artículo actualizado."
+    destroy:
+      success: "Artículo eliminado."
+    index:
+      title: "Anglès y alrededores"
+      subtitle: "Ideas de paseos y descubrimientos alrededor de la casa de huéspedes."
+      new_article: "Nuevo artículo"
+    show:
+      back_to_index: "Volver a Anglès y alrededores"
+    new:
+      title: "Nuevo artículo"
+      subtitle: "Comparte una idea de paseo o un descubrimiento."
+      back_to_index: "Volver a Anglès y alrededores"
+    edit:
+      title: "Editar artículo"
+      subtitle: "Actualiza el contenido y la imagen."
+      back: "Volver"
+
+  host_page:
+    edit:
+      title: "Editar página del anfitrión"
+      subtitle: "Actualiza el título, el contenido y la imagen."
+      back: "Volver"
+    update:
+      success: "Página del anfitrión actualizada."
+
+  sessions:
+    flash:
+      missing_credentials: "Se requieren email y contraseña"
+      invalid_credentials: "Email o contraseña incorrectos"
+      logged_out: "Sesión cerrada"
+      session_expired: "Sesión caducada, vuelve a iniciar sesión."
+
+  booking_quote:
+    errors:
+      room_required: "La habitación es obligatoria"
+      start_date_required: "La fecha de inicio es obligatoria"
+      end_date_required: "La fecha de fin es obligatoria"
+      end_date_after_start_date: "La fecha de fin debe ser posterior a la fecha de inicio"
+      dates_not_covered: "Las fechas deben estar completamente cubiertas por los periodos de apertura"
+      currency_mismatch: "Los periodos de apertura deben compartir la misma moneda"
+      dates_overlap_booking: "Las fechas se solapan con una reserva existente"
+
+  unified_sessions:
+    new:
+      title: "Iniciar sesión"
+      submit: "Iniciar sesión"
+      sign_up: "Crear cuenta"
+      forgot_password: "¿Olvidaste tu contraseña?"
+      password_label: "Contraseña"
+      email_unknown: "Email desconocido"
+
+  devise:
+    registrations:
+      new:
+        sign_up: "Crear cuenta"
+        first_name: "Nombre"
+        last_name: "Apellidos"
+        email: "Email"
+        postal_address: "Dirección postal"
+        phone: "Teléfono"
+        guesthouse_name: "Nombre de la casa de huéspedes"
+        password: "Contraseña"
+        password_confirmation: "Confirmar contraseña"
+        minimum_password_length: "mínimo %{count} caracteres"
+        sign_up_button: "Crear cuenta"
+
+    passwords:
+      new:
+        title: "¿Olvidaste tu contraseña?"
+        instructions: "Introduce tu email y te enviaremos instrucciones para restablecer tu contraseña."
+        email_label: "Email"
+        submit: "Restablecer contraseña"
+      edit:
+        title: "Cambiar tu contraseña"
+        password_label: "Nueva contraseña"
+        password_confirmation_label: "Confirmar nueva contraseña"
+        minimum_password_length: "mínimo %{count} caracteres"
+        submit: "Cambiar mi contraseña"
+
+  reviews:
+    flash:
+      already_left: "Ya has dejado una reseña para esta reserva."
+      thanks: "¡Gracias por tu reseña!"
+
+  admin:
+    shared:
+      flash:
+        deletion_blocked_upcoming_bookings: "Hay reservas próximas; no se permite eliminar"
+    rooms:
+      flash:
+        created: "Habitación creada."
+        updated: "Habitación actualizada."
+        deleted: "Habitación eliminada."
+      photos:
+        existing_title: "Fotos existentes"
+        delete_button: "Eliminar"
+        delete_confirm: "¿Eliminar esta foto permanentemente?"
+        flash:
+          deleted: "Foto eliminada."
+          not_found: "Foto no encontrada."
+      urls:
+        existing_title: "URLs de imágenes existentes"
+        delete_button: "Eliminar"
+        delete_confirm: "¿Eliminar esta URL de imagen?"
+        flash:
+          deleted: "URL eliminada."
+          not_found: "URL no encontrada."
+    opening_periods:
+      flash:
+        added: "Periodo de apertura añadido."
+        removed: "Periodo de apertura eliminado."
+        updated: "Periodo de apertura actualizado."
+        blocked: "Periodo de apertura actualizado (fechas eliminadas)."
+        cannot_block_overlapping_booking: "No se pueden bloquear fechas que se solapan con una reserva existente."
+    bookings:
+      flash:
+        approved: "Reserva aprobada."
+        declined: "Reserva rechazada."
+        canceled: "Reserva cancelada."
+        refund_initiated: "Reembolso iniciado."
+      index:
+        title: "Panel"
+        subtitle: "Mensajes, reservas y gestión de habitaciones"
+        unread_badge: "%{count} no leído"
+        stripe_dashboard: "Stripe"
+        manage_rooms: "Gestionar habitaciones"
+        manage_rooms_subtitle: "Crear, editar, precios y periodos de apertura"
+        planning: "Planificación"
+        create_room: "Crear una habitación"
+        messages_title: "Mensajes"
+        no_messages: "Aún no hay mensajes."
+        transactions_title: "Transacciones"
+        open_stripe: "Abrir Stripe"
+        no_transactions: "Aún no hay transacciones."
+        transactions:
+          columns:
+            date: "Fecha"
+            booking: "Reserva"
+            client: "Cliente"
+            amount: "Importe"
+            status: "Estado"
+            stripe: "Stripe"
+          links:
+            payment: "Pago %{short_id}"
+            checkout: "Checkout %{short_id}"
+            refund: "Reembolso %{short_id}"
+        reservations_title: "Reservas"
+        manage_reservations: "Gestionar reservas"
+        no_reservations: "Aún no hay reservas."
+        no_rooms: "Aún no hay habitaciones."
+        room: "Habitación"
+        planning_button: "Planificación"
+        edit_button: "Editar"
+        delete_button: "Eliminar"
+        delete_confirm: "¿Eliminar esta habitación?"
+
+    clients:
+      flash:
+        deleted: "Perfil de usuario eliminado."
+        active_bookings: "Existen reservas activas para este usuario. Cancélalas primero."
+      index:
+        title: "Clientes"
+        empty: "Aún no hay clientes."
+        client: "Cliente"
+        email: "Email"
+        next_booking: "Próxima reserva"
+        current_status: "Estado actual"
+        total_bookings: "Reservas"
+        cancellations: "Cancelaciones"
+        no_upcoming: "Próxima: —"
+        no_status: "—"
+        sort:
+          label: "Ordenar:"
+          alpha: "Nombre"
+          alpha_asc: "Nombre A→Z"
+          alpha_desc: "Nombre Z→A"
+          next_booking: "Próxima reserva"
+          next_booking_asc: "Próxima ↑"
+          next_booking_desc: "Próxima ↓"
+      show:
+        back: "Volver"
+        ban: "Eliminar"
+        ban_cancel: "Cancelar"
+        ban_confirm: "Esta acción es irreversible. ¿Quieres eliminar el perfil de este usuario?"
+        profile: "Perfil"
+        full_name: "Nombre"
+        phone: "Teléfono"
+        address: "Dirección"
+        next_booking: "Próxima reserva"
+        no_upcoming: "No hay reservas próximas."
+        open_booking: "Abrir"
+        booking_history: "Historial de reservas"
+        no_bookings: "Aún no hay reservas."
+        dates: "Fechas"
+        room: "Habitación"
+        status: "Estado"
+        open: "Abrir"
+        messages: "Mensajes"
+        no_messages: "Aún no hay mensajes."
+        more_messages: "+%{count} mensajes"
+        reviews: "Reseñas"
+        no_reviews: "Aún no hay reseñas."
+        rating:
+          one: "%{count} estrella"
+          other: "%{count} estrellas"
+
+  rooms:
+    show:
+      carousel_previous: "Anterior"
+      carousel_next: "Siguiente"
+      thumbnail_alt: "Miniatura %{index}"
+      capacity: "Capacidad: %{count} personas"
+      per_night_suffix: "/noche"
+      select_dates_hint: "Selecciona tus fechas para ver el total y reservar."
+      availability_calendar_aria: "Calendario de disponibilidad"
+      book_button: "Solicitud de reserva"
+      summary:
+        nightly_rate: "Precio por noche"
+        nights: "Noches"
+        total: "Total"
+      optional_services:
+        title: "Servicios opcionales"
+        hint: "Puedes elegir estas opciones durante la reserva."
+      reviews:
+        title: "Reseñas"
+        none: "Aún no hay reseñas."
+        count:
+          one: "%{count} reseña"
+          other: "%{count} reseñas"
+
+    index:
+      welcome_html: "¡Bienvenido a <strong>%{owner}</strong> en <strong>%{location}</strong>!"
+      subtitle: "Casa de huéspedes y B&B en la ruta del Camino de Santiago"
+      accommodations: "Nuestros alojamientos"
+      pwa_install:
+        title: "Instalar la app"
+        body: "Añade Loc Vallis a tu pantalla de inicio para un acceso más rápido."
+        install: "Instalar"
+        dismiss: "Ahora no"
+        ios_instructions: "En iPhone/iPad: toca Compartir y luego “Añadir a pantalla de inicio”"
+      guesthouse_intro:
+        title: "Un remanso de paz en el corazón del Tarn"
+        first_sentence: "Enclavada en el encanto atemporal del pueblo de Anglès, nuestra pequeña casa de huéspedes y dos habitaciones B&B te dan la bienvenida a un lugar donde reinan la calma y la naturaleza."
+        more_text: "Aquí, el tiempo parece ir más despacio. Entre bosques profundos, lagos tranquilos y calles auténticas, disfrutarás de una estancia reparadora — ideal para reconectar con lo esencial. Ya sea una pausa suave, una escapada romántica o una experiencia en plena naturaleza, Anglès ofrece la tranquilidad que buscas."
+        read_more: "Leer más"
+        read_less: "Mostrar menos"
+        signature: "Claude"
+      capacity: "Capacidad: %{count} personas"
+      from_price: "Desde"
+      per_night: "por noche"
+      reviews_label: "Reseñas:"
+      book_button: "Reservar"
+      no_reviews: "Sin reseñas"
+      address_label: "Dirección:"
+      contact_title: "Contacto"
+      mapbox_access_token_missing: "Falta MAPBOX_ACCESS_TOKEN"
+      alt_to_move_hint: "Mantén Alt para mover el mapa"
+      guesthouse_name_label: "Nombre de la casa de huéspedes"
+      owner_label: "Anfitrión"
+      postal_address_label: "Dirección postal"
+      phone_label: "Teléfono"
+      email_label: "Email"
+      not_provided: "No proporcionado"
+      practical_info:
+        title: "Información práctica"
+        parking: "Aparcamiento disponible en el alojamiento"
+        bike_storage: "Guardabicicletas disponible"
+        no_dogs: "No se admiten perros"
+        wifi: "Wi‑Fi gratis e ilimitado"
+        washer: "Lavadora (+€5)"
+        dryer: "Secadora (+€5)"
+
+  bookings:
+    statuses:
+      requested: "Solicitada"
+      approved_pending_payment: "Pago pendiente"
+      confirmed_paid: "Pagada"
+      completed: "Completada"
+      declined: "Rechazada"
+      canceled: "Cancelada"
+      expired: "Caducada"
+      refunded: "Reembolsada"
+    flash:
+      request_sent: "Solicitud de reserva enviada."
+      canceled: "Reserva cancelada."
+      unable_to_cancel: "No se pudo cancelar la reserva."
+    new:
+      title: "Solicitud de reserva para %{room}"
+      process_hint: "Tu solicitud se enviará a tu anfitrión, quien te contactará en 24 horas para confirmar la reserva."
+      important: "Importante"
+      no_payment_notice: "No se solicitará ningún pago en esta etapa."
+      room_preview_alt: "Vista previa de %{room}"
+      start_date: "Fecha de inicio"
+      end_date: "Fecha de fin"
+      submit: "Enviar solicitud"
+      cgv_link_text: "condiciones"
+      accept_terms_html: "He leído y acepto las %{cgv_link}. Cualquier cancelación con menos de 7 días de antelación a la fecha de inicio supondrá una retención del 30% del total (sin incluir servicios opcionales)."
+      optional_services:
+        title: "Servicios opcionales"
+        hint: "Estas opciones se añaden al total de la reserva."
+
+    show:
+      title: "Tu reserva #%{id}"
+      title_requested: "Tu solicitud ha sido enviada, reserva #%{id}"
+      requested_subtitle: "Tu anfitrión ha sido notificado de tu solicitud. Te contactará en 24 horas para confirmar tu estancia. Si quieres enviarle un mensaje rápido, ¡nuestro chat está disponible!"
+      metro:
+        request: "Solicitud"
+        approved: "Aprobada"
+        payment: "Pago"
+        waiting: "Hasta pronto"
+      actions:
+        pay_now: "Pagar ahora"
+      cancel_confirm:
+        message: "¿Cancelar esta reserva? Esta acción no se puede deshacer."
+        confirm: "Sí, cancelar"
+        cancel: "Mantener reserva"
+      payment:
+        label: "Pago"
+        days:
+          one: "día"
+          other: "días"
+        headline_html: "Te quedan %{days_html} para pagar"
+        deadline: "Pagar antes de:"
+        secure: "Pago seguro mediante Stripe."
+      review:
+        after_stay: "Después de tu estancia"
+        title: "Tu reseña"
+        rating: "Puntuación"
+        comment: "Comentario"
+        submit: "Enviar mi reseña"
+        not_available: "Podrás dejar una reseña después de tu estancia (solo una vez por reserva)."
+      conversation:
+        label: "Conversación"
+        title: "Mensajes con el anfitrión"
+
+    payment_success:
+      title: "Pago recibido"
+      subtitle: "Reserva #%{id}"
+      thanks: "Gracias"
+      confirmed:
+        title: "Tu pago está confirmado."
+        body_html: "Tu reserva está ahora <strong>confirmada</strong>."
+      pending:
+        title: "Hemos recibido tu pago."
+        body: "La confirmación está en curso (webhook de Stripe). Si es necesario, actualiza en unos instantes."
+      actions:
+        view_booking: "Ver mi reserva"
+        print: "Imprimir confirmación"
+        back_home: "Volver al inicio"
+      summary:
+        label: "Resumen"
+        total_amount: "Importe total"
+        session: "Sesión:"
+        payment_intent: "PaymentIntent:"
+
+  profiles:
+    flash:
+      updated: "Perfil actualizado."
+      deleted: "Cuenta eliminada."
+    edit:
+      title: "Mi perfil"
+      first_name: "Nombre"
+      last_name: "Apellidos"
+      guesthouse_name: "Nombre de la casa de huéspedes"
+      postal_address: "Dirección postal"
+      phone: "Teléfono"
+      security_title: "Seguridad"
+      email: "Email"
+      password: "Nueva contraseña"
+      password_hint: "Déjalo en blanco para mantener tu contraseña actual."
+      password_confirmation: "Confirmación de contraseña"
+      current_password: "Contraseña actual"
+      current_password_hint: "Solo es necesaria para cambiar el email o la contraseña."
+      save: "Guardar"
+      cancel: "Cancelar"
+      danger_title: "Zona de peligro"
+      delete_hint: "Eliminar tu cuenta es permanente."
+      delete_account: "Eliminar mi cuenta"
+      delete_confirm: "¿Eliminar tu cuenta? Esta acción es permanente."

@@ -48,6 +48,7 @@ en:
     locale:
       fr: "FR"
       en: "EN"
+      es: "ES"
     nav:
       rooms: "Rooms"
       host: "Your host"

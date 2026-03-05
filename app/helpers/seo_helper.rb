@@ -43,16 +43,18 @@ module SeoHelper
   end
 
   def seo_hreflang_links
-    return "" unless %w[fr en].include?(I18n.locale.to_s)
+    return "" unless %w[fr en es].include?(I18n.locale.to_s)
     return "" if controller_path.start_with?("admin/")
 
     fr = url_for(request.path_parameters.merge(locale: "fr"))
     en = url_for(request.path_parameters.merge(locale: "en"))
+    es = url_for(request.path_parameters.merge(locale: "es"))
 
     safe_join(
       [
         tag.link(rel: "alternate", hreflang: "fr", href: fr),
-        tag.link(rel: "alternate", hreflang: "en", href: en)
+        tag.link(rel: "alternate", hreflang: "en", href: en),
+        tag.link(rel: "alternate", hreflang: "es", href: es)
       ],
       "\n"
     )

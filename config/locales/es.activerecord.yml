@@ -1,0 +1,43 @@
+es:
+  activerecord:
+    attributes:
+      user:
+        current_password: "Contraseña actual"
+      owner:
+        current_password: "Contraseña actual"
+      opening_period:
+        start_date: "Fecha de inicio"
+        end_date: "Fecha de fin"
+    errors:
+      models:
+        booking:
+          attributes:
+            accepts_terms:
+              accepted: "Debes aceptar los términos y condiciones"
+            end_date:
+              after_start_date: "debe ser posterior a la fecha de inicio"
+            base:
+              dates_overlap_existing_booking: "Las fechas se solapan con una reserva existente"
+        opening_period:
+          attributes:
+            end_date:
+              after_start_date: "debe ser posterior a la fecha de inicio"
+        article:
+          attributes:
+            title:
+              blank: "no puede estar en blanco"
+            content:
+              blank: "no puede estar en blanco"
+            image_url:
+              blank: "no puede estar en blanco"
+              invalid_image_url: "debe ser una URL http(s) a una imagen JPG, PNG o GIF"
+
+        host_page:
+          attributes:
+            title:
+              blank: "no puede estar en blanco"
+            content:
+              blank: "no puede estar en blanco"
+            image_url:
+              blank: "no puede estar en blanco"
+              invalid_image_url: "debe ser una URL http(s) a una imagen JPG, PNG o GIF"
