@@ -64,20 +64,14 @@ class StripeWebhooksController < ApplicationController
     payment_status = session.respond_to?(:payment_status) ? session.payment_status : nil
     return unless payment_status == "paid"
 
-    booking_id = session.metadata&.booking_id || session.metadata&.[]("booking_id")
-
-    booking = booking_id.present? ? Booking.find_by(id: booking_id) : Booking.find_by(stripe_checkout_session_id: session.id)
-
+    booking = find_booking_from_checkout_session(session)
     return if booking.nil?
 
-    booking.update!(stripe_checkout_session_id: session.id) if booking.stripe_checkout_session_id.blank?
-    booking.update!(stripe_payment_intent_id: session.payment_intent) if session.payment_intent.present? && booking.stripe_payment_intent_id.blank?
-
-    return unless booking.status == "approved_pending_payment"
-    return if booking.payment_expires_at.present? && Time.current >= booking.payment_expires_at
-
-    booking.update!(status: "confirmed_paid")
-    BookingMailer.with(booking: booking).confirmed.deliver_later
+    StripeBookingConfirmer.call(
+      booking: booking,
+      stripe_checkout_session_id: session.id,
+      stripe_payment_intent_id: session.payment_intent
+    )
   end
 
   def handle_payment_intent_succeeded(payment_intent)
@@ -87,11 +81,31 @@ class StripeWebhooksController < ApplicationController
     booking = Booking.find_by(stripe_payment_intent_id: payment_intent_id)
     return if booking.nil?
 
-    return unless booking.status == "approved_pending_payment"
-    return if booking.payment_expires_at.present? && Time.current >= booking.payment_expires_at
+    StripeBookingConfirmer.call(
+      booking: booking,
+      stripe_payment_intent_id: payment_intent_id
+    )
+  end
 
-    booking.update!(status: "confirmed_paid")
-    BookingMailer.with(booking: booking).confirmed.deliver_later
+  def find_booking_from_checkout_session(session)
+    metadata = session.respond_to?(:metadata) ? session.metadata : nil
+    booking_id = metadata&.respond_to?(:booking_id) ? metadata.booking_id : nil
+    booking_id ||= metadata&.[]("booking_id") if metadata.respond_to?(:[])
+
+    # StripeCheckoutSessionCreator also sets `client_reference_id` to booking.id.
+    client_reference_id = session.respond_to?(:client_reference_id) ? session.client_reference_id : nil
+
+    booking = nil
+    booking ||= Booking.find_by(id: booking_id) if booking_id.present?
+    booking ||= Booking.find_by(id: client_reference_id) if client_reference_id.present?
+
+    session_id = session.respond_to?(:id) ? session.id : nil
+    booking ||= Booking.find_by(stripe_checkout_session_id: session_id) if session_id.present?
+
+    payment_intent_id = session.respond_to?(:payment_intent) ? session.payment_intent : nil
+    booking ||= Booking.find_by(stripe_payment_intent_id: payment_intent_id) if payment_intent_id.present?
+
+    booking
   end
 
   def handle_refund_updated(refund)

@@ -49,6 +49,18 @@ class BookingsController < ApplicationController
     @stripe_session = Stripe::Checkout::Session.retrieve(
       { id: @booking.stripe_checkout_session_id, expand: ["payment_intent"] }
     )
+
+    payment_status = @stripe_session.respond_to?(:payment_status) ? @stripe_session.payment_status : nil
+    return unless payment_status == "paid"
+
+    payment_intent = @stripe_session.respond_to?(:payment_intent) ? @stripe_session.payment_intent : nil
+    payment_intent_id = payment_intent.respond_to?(:id) ? payment_intent.id : payment_intent
+
+    StripeBookingConfirmer.call(
+      booking: @booking,
+      stripe_checkout_session_id: @stripe_session.id,
+      stripe_payment_intent_id: payment_intent_id
+    )
   rescue Stripe::StripeError => e
     Rails.logger.warn("[Stripe] Unable to retrieve checkout session: #{e.class}: #{e.message}")
     @stripe_session = nil
